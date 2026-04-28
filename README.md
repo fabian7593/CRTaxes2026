@@ -8,7 +8,7 @@
 
 **Calculadora completa de impuestos y cargas sociales para trabajadores independientes en Costa Rica**
 
-[Demo en vivo](#) • [Reportar Bug](../../issues) • [Solicitar Feature](../../issues)
+[Reportar Bug](../../issues) • [Solicitar Feature](../../issues)
 
 </div>
 
@@ -133,12 +133,7 @@ La CCSS utiliza un sistema de **categorías progresivas** basadas en el ingreso 
 
 **Ajuste 2026**: El 1° de enero de 2026 entró en vigor el quinto incremento trienal (+0.16 puntos porcentuales) según acuerdo JD CCSS Sesión N°9038/2019.
 
-**Tasas IVM 2026 (afiliado)**:
-- Cat. 1: 4.00% → **4.16%**
-- Cat. 2: 5.49% → **5.65%**
-- Cat. 3: 7.37% → **7.53%**
-- Cat. 4: 7.82% → **7.98%**
-- Cat. 5: 8.26% → **8.42%**
+
 
 #### ⚠️ Base Mínima de Cotización (BMC)
 
@@ -154,11 +149,6 @@ Si tu ingreso bruto mensual es menor a ₡341.228, la CCSS te cobrará sobre est
 - Multa fija: 3 salarios base (₡1.386.600 en 2026)
 - Cuotas omitidas retroactivas con intereses moratorios (8.52% anual)
 - TRIBU-CR cruza automáticamente: facturación electrónica + D-101 Hacienda + reportes CCSS
-
-**Ejemplo real**: Si reportás ₡1.000.000/mes cuando realmente ganás ₡2.000.000/mes:
-- "Ahorro" mensual: ~₡100.000
-- Costo si te detectan (1 año): ~₡2.700.000
-- **Ratio**: Por cada ₡1 "ahorrado" arriesgás ₡27 en sanciones
 
 ---
 
@@ -226,17 +216,7 @@ Tenés dos opciones (no se pueden combinar):
 - Útil si tus gastos superan el 25% del bruto
 - **No podés** deducir la CCSS adicional si usás esta opción
 
-**Ejemplo comparativo** (ingreso bruto anual ₡20.000.000):
 
-| Concepto | Ficto 25% | Gastos Reales ₡6.000.000 |
-|----------|-----------|--------------------------|
-| Ingreso bruto | ₡20.000.000 | ₡20.000.000 |
-| Deducción | ₡5.000.000 | ₡6.000.000 |
-| CCSS deducible | ₡2.400.000 | ₡0 |
-| **Renta neta** | **₡12.600.000** | **₡14.000.000** |
-| ISR aproximado | ₡1.237.200 | ₡1.517.200 |
-
-En este caso, el ficto es mejor aunque los gastos reales sean mayores.
 
 #### 🎁 Créditos Fiscales
 
@@ -257,12 +237,6 @@ Si aportás a un **Régimen Voluntario de Pensiones (RVP)** en una Operadora de 
 - **Operadoras**: BAC Pensiones, BCR Pensiones, BN Vital, Popular Pensiones, etc.
 - **Beneficio**: Reduce la renta neta imponible antes de aplicar los tramos ISR
 - **Importante**: Como TI no tenés ROP (requiere patrono), el RVP es tu mejor herramienta para complementar la pensión IVM
-
-**Ejemplo** (ingreso bruto ₡20.000.000/año):
-- Aporte RVP: ₡2.000.000 (10%)
-- Renta neta sin RVP: ₡12.600.000 → ISR ₡1.237.200
-- Renta neta con RVP: ₡10.600.000 → ISR ₡837.200
-- **Ahorro fiscal**: ₡400.000/año + ₡2.000.000 para tu pensión futura
 
 #### 📅 Declaración y Pago
 
@@ -286,13 +260,7 @@ El IVA es un impuesto del **13%** que se aplica sobre la venta de bienes y servi
 - Emitís Factura Electrónica de Exportación v4.4 al 0%
 - El D-104 mensual igual es obligatorio (declaración en ceros)
 - Podés acumular crédito fiscal por compras locales con IVA
-- Si te inscribís en el **Registro de Exportadores**, podés recuperar ese crédito
 
-**Requisitos para la exención**:
-1. Cliente domiciliado en el exterior
-2. Servicio utilizado fuera de Costa Rica
-3. Pago recibido del exterior (transferencia internacional)
-4. Factura electrónica de exportación
 
 #### 🏢 Cliente Local
 
@@ -305,12 +273,6 @@ El IVA es un impuesto del **13%** que se aplica sobre la venta de bienes y servi
 - Plazo: Antes del día 15 de cada mes
 - Omitir la declaración genera multa de ₡231.100
 
-**Ejemplo**:
-- Tarifa mensual: $3.000
-- Tipo de cambio: ₡510
-- Subtotal: ₡1.530.000
-- IVA 13%: ₡198.900
-- **Total a cobrar**: ₡1.728.900
 
 El cliente paga ₡1.728.900, vos recibís ₡1.530.000 en tu bolsillo y trasladás ₡198.900 a Hacienda.
 
@@ -322,7 +284,7 @@ Desde 2018, la facturación electrónica es **obligatoria** en Costa Rica:
 - **Tipos de factura**:
   - v4.3: Factura electrónica estándar (cliente local)
   - v4.4: Factura electrónica de exportación (cliente exterior)
-- **Proveedores**: Hacienda, FacturaYa, Factura.cr, Contífico, etc.
+- **Proveedores**: Orioltech, Hacienda, etc.
 - **Validación**: Cada factura debe ser validada por Hacienda en tiempo real
 
 ---
@@ -354,60 +316,6 @@ Desde 2018, la facturación electrónica es **obligatoria** en Costa Rica:
 
 ---
 
-## 🚀 Uso
-
-### Opción 1: GitHub Pages (Recomendado)
-
-1. Hacé fork de este repositorio
-2. Andá a **Settings → Pages**
-3. Seleccioná rama `main` y carpeta `/ (root)`
-4. Tu calculadora estará disponible en: `https://<tu-usuario>.github.io/<nombre-repo>/`
-
-### Opción 2: Uso Local
-
-```bash
-# Clonar el repositorio
-git clone https://github.com/fabian7593/calculadora-fiscal-cr-2026.git
-
-# Abrir index.html en tu navegador
-# No requiere servidor ni build — es HTML/CSS/JS puro
-```
-
-### Opción 3: Despliegue en Servidor
-
-Simplemente copiá los archivos a tu servidor web. No requiere Node.js, PHP ni ningún runtime.
-
----
-
-## 📁 Estructura del Proyecto
-
-```
-calculadora-fiscal-cr-2026/
-├── index.html              # HTML principal con estructura semántica
-├── assets/
-│   ├── css/
-│   │   └── main.css        # Estilos completos (sin inline styles)
-│   └── js/
-│       └── calc.js         # Lógica de cálculo y renderizado
-└── README.md               # Este archivo
-```
-
-### Tecnologías
-
-- **HTML5**: Estructura semántica y accesible
-- **CSS3**: Variables CSS, Grid, Flexbox, diseño responsive
-- **JavaScript Vanilla**: Sin dependencias, sin frameworks
-- **Fuentes**: Google Fonts (Sora + JetBrains Mono)
-
-### Características Técnicas
-
-- ✅ **Sin dependencias**: No requiere npm, webpack, ni build process
-- ✅ **Responsive**: Funciona en desktop, tablet y móvil
-- ✅ **Accesible**: Tooltips informativos, labels semánticos
-- ✅ **Performante**: Cálculos instantáneos, sin llamadas a servidor
-- ✅ **Mantenible**: Código limpio, comentado y organizado
-
----
 
 ## 🤝 Contribuir
 
@@ -421,16 +329,6 @@ calculadora-fiscal-cr-2026/
 4. **Push** a la rama (`git push origin feature/nueva-funcionalidad`)
 5. Abrí un **Pull Request**
 
-### Ideas para contribuir
-
-- 📅 Actualizar tramos ISR cuando cambien
-- 🏥 Actualizar escala CCSS con nuevos decretos
-- 🌐 Agregar soporte para otros idiomas
-- 📊 Agregar más visualizaciones y gráficos
-- 🧪 Agregar tests automatizados
-- 📱 Mejorar la experiencia móvil
-- ♿ Mejorar la accesibilidad
-- 📖 Mejorar la documentación
 
 ### Reportar Bugs
 
@@ -440,9 +338,7 @@ Si encontrás un error en los cálculos o en la aplicación:
 2. Creá un nuevo issue con:
    - Descripción clara del problema
    - Pasos para reproducirlo
-   - Valores de entrada que usaste
    - Resultado esperado vs. resultado obtenido
-   - Screenshots si es posible
 
 ---
 
@@ -518,22 +414,6 @@ Esta calculadora es una **herramienta informativa y educativa**. Los cálculos s
 - [Facturación Electrónica Hacienda](https://www.hacienda.go.cr/contenido/14350-factura-electronica)
 - [Calculadora BCCR Tipo de Cambio](https://www.bccr.fi.cr)
 
----
-
-## 📊 Estadísticas del Proyecto
-
-![GitHub stars](https://img.shields.io/github/stars/fabian7593/calculadora-fiscal-cr-2026?style=social)
-![GitHub forks](https://img.shields.io/github/forks/fabian7593/calculadora-fiscal-cr-2026?style=social)
-![GitHub issues](https://img.shields.io/github/issues/fabian7593/calculadora-fiscal-cr-2026)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/fabian7593/calculadora-fiscal-cr-2026)
-
----
-
-## 🙏 Agradecimientos
-
-- A la comunidad de desarrolladores independientes de Costa Rica
-- A los profesionales en contabilidad que validaron los cálculos
-- A todos los que contribuyen con feedback y mejoras
 
 ---
 
@@ -542,8 +422,6 @@ Esta calculadora es una **herramienta informativa y educativa**. Los cálculos s
 **¿Te resultó útil esta herramienta?**
 
 ⭐ Dale una estrella al repositorio
-
-🐛 Reportá bugs o sugerencias en [Issues](../../issues)
 
 🤝 Contribuí con mejoras mediante Pull Requests
 
