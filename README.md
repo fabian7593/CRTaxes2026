@@ -1,4 +1,4 @@
-# 🧮 Calculadora Fiscal CR 2026 — Trabajador Independiente
+# Calculadora Fiscal CR 2026 — Trabajador Independiente
 
 <div align="center">
 
@@ -14,7 +14,7 @@
 
 ---
 
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
 - [Descripción](#-descripción)
 - [¿Qué es un Trabajador Independiente?](#-qué-es-un-trabajador-independiente)
@@ -397,7 +397,8 @@ Si encontrás un error en los cálculos o en la aplicación:
 
 - 🌐 GitHub: [@fabian7593](https://github.com/fabian7593) (Arcane Coder)
 - 💼 LinkedIn: [frosales-softdev](https://www.linkedin.com/in/frosales-softdev/)
-- 📧 Contacto: [A través de GitHub](https://github.com/fabian7593)
+- 📧 Email: fabian7593@gmail.com / fabianr7593@gmail.com
+- 📱 WhatsApp: +506 8346 1166
 
 ### Sobre el Autor
 
