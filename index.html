@@ -5,227 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Calculadora Fiscal CR 2026 — Trabajador Independiente</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-:root {
-  --ink:#1a1a2e; --ink2:#2d2d4e; --ink3:#4a4a6a;
-  --muted:#8888aa; --soft:#c4c4d8; --line:#e8e8f0;
-  --bg:#f5f4f0; --bg2:#eeecf0; --surface:#fff; --surface2:#f9f8ff;
-  --emerald:#00c896; --emerald-bg:#e6fff9; --emerald-mid:#00a07a;
-  --crimson:#e84545; --crimson-bg:#fff0f0;
-  --amber:#f5a400; --amber-bg:#fff8e6; --amber-mid:#c07800;
-  --cobalt:#3b5bdb; --cobalt-bg:#eef2ff;
-  --violet:#7c3aed; --violet-bg:#f5f0ff;
-  --teal:#0891b2; --teal-bg:#e0f7fa;
-  --r:14px; --rs:8px;
-  --shadow:0 1px 3px rgba(26,26,46,.06),0 4px 16px rgba(26,26,46,.06);
-  --shadow-lg:0 8px 40px rgba(26,26,46,.15);
-  --mono:'JetBrains Mono',monospace; --sans:'Sora',sans-serif;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh}
-
-/* ── LAYOUT ────────────────────────────────────────── */
-.page{max-width:1100px;margin:0 auto;padding:0 16px 80px}
-.two-col{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start}
-@media(max-width:840px){
-  .two-col{grid-template-columns:1fr}
-  .sticky-result{position:static!important;top:auto!important}
-}
-
-/* ── HERO ───────────────────────────────────────────── */
-.hero{background:var(--ink);color:#fff;padding:36px 0 28px;position:relative;overflow:hidden;margin-bottom:0}
-.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(0,200,150,.16) 0%,transparent 68%);pointer-events:none}
-.hero::after{content:'';position:absolute;bottom:-60px;left:25%;width:200px;height:200px;background:radial-gradient(circle,rgba(59,91,219,.12) 0%,transparent 68%);pointer-events:none}
-.hero-inner{max-width:1100px;margin:0 auto;padding:0 16px}
-.hero-eyebrow{font-family:var(--mono);font-size:10px;color:var(--emerald);letter-spacing:.2em;text-transform:uppercase;margin-bottom:10px}
-.hero h1{font-size:clamp(20px,3.5vw,30px);font-weight:700;line-height:1.2;margin-bottom:6px}
-.hero h1 em{font-style:normal;color:var(--emerald)}
-.hero-sub{font-size:11px;color:rgba(255,255,255,.45);font-family:var(--mono);line-height:1.6;max-width:600px}
-.hero-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
-.hbadge{font-family:var(--mono);font-size:9px;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);letter-spacing:.05em}
-.hbadge.g{border-color:rgba(0,200,150,.4);color:var(--emerald)}
-.hbadge.a{border-color:rgba(245,164,0,.4);color:var(--amber)}
-
-/* ── CARDS ──────────────────────────────────────────── */
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
-.card-title{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.card-title::after{content:'';flex:1;height:1px;background:var(--line)}
-.ci{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
-.ci-g{background:var(--emerald-bg)} .ci-a{background:var(--amber-bg)}
-.ci-b{background:var(--cobalt-bg)} .ci-r{background:var(--crimson-bg)}
-
-/* ── REGIME TABS ─────────────────────────────────────── */
-.rtabs{display:flex;background:var(--bg2);border-radius:var(--r);padding:4px;margin-bottom:14px;border:1px solid var(--line);gap:4px}
-.rtab{flex:1;padding:9px 10px;border-radius:10px;border:none;background:transparent;font-family:var(--sans);font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .2s;text-align:center}
-.rtab .ri{font-size:16px;display:block;margin-bottom:1px}
-.rtab .rs{font-size:10px;font-weight:400;font-family:var(--mono);opacity:.7;display:block}
-.rtab.solo{background:var(--surface);color:var(--emerald-mid);box-shadow:var(--shadow)}
-.rtab.mixto{background:var(--surface);color:var(--amber-mid);box-shadow:var(--shadow)}
-.wstrip{background:var(--amber-bg);border:1.5px solid rgba(245,164,0,.4);border-radius:10px;padding:10px 14px;font-size:11px;color:var(--amber-mid);line-height:1.6;display:none;margin-bottom:14px}
-.wstrip.show{display:block}
-
-/* ── SLIDERS ─────────────────────────────────────────── */
-.sr{margin-bottom:18px} .sr:last-child{margin-bottom:0}
-.sr-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:7px;gap:8px}
-.sr-label{font-size:13px;color:var(--ink3);display:flex;align-items:center;gap:4px;flex-wrap:wrap;flex:1}
-.sr-val{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--ink);white-space:nowrap;flex-shrink:0}
-.sr-val.g{color:var(--emerald-mid)} .sr-val.a{color:var(--amber-mid)}
-.sr-val.b{color:var(--cobalt)} .sr-val.r{color:var(--crimson)}
-.sr-track{position:relative;height:6px;background:var(--bg2);border-radius:3px;border:1px solid var(--line)}
-.sr-fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--emerald),var(--cobalt));border-radius:3px;pointer-events:none;transition:width .08s}
-.sr-track input[type=range]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0}
-.sr-hints{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--soft);margin-top:4px}
-
-/* ── CHIPS ───────────────────────────────────────────── */
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
-.chip{font-family:var(--sans);font-size:12px;font-weight:500;padding:6px 14px;border-radius:20px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink3);cursor:pointer;transition:all .15s;white-space:nowrap}
-.chip:hover{border-color:var(--soft);color:var(--ink)}
-.chip.on-g{background:var(--emerald-bg);border-color:var(--emerald);color:var(--emerald-mid)}
-.chip.on-a{background:var(--amber-bg);border-color:var(--amber);color:var(--amber-mid)}
-
-/* ── INLINE TOOLTIP ──────────────────────────────────── */
-.tipw{position:relative;display:inline-flex;align-items:center}
-.tpic{width:16px;height:16px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--line);color:var(--muted);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:help;font-family:var(--sans);transition:all .15s;flex-shrink:0}
-.tpic:hover{border-color:var(--cobalt);color:var(--cobalt)}
-.tipb{display:none;position:absolute;left:50%;top:calc(100% + 10px);transform:translateX(-50%);background:var(--ink);color:rgba(255,255,255,.85);border-radius:10px;padding:13px 15px;min-width:260px;max-width:320px;font-size:11px;line-height:1.65;z-index:400;box-shadow:var(--shadow-lg)}
-.tipb::before{content:'';position:absolute;top:-5px;left:50%;width:8px;height:8px;background:var(--ink);transform:translateX(-50%) rotate(45deg)}
-.tipw:hover .tipb{display:block}
-/* fix tooltip overflow on right edge */
-.tipw.tip-left .tipb{left:auto;right:0;transform:none}
-.tipw.tip-left .tipb::before{left:auto;right:12px;transform:rotate(45deg)}
-
-/* ── MODAL ───────────────────────────────────────────── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,26,46,.55);z-index:500;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
-.modal-overlay.open{display:flex}
-.modal{background:var(--surface);border-radius:16px;box-shadow:var(--shadow-lg);width:100%;max-width:680px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden}
-.modal-head{padding:18px 20px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-shrink:0}
-.modal-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.modal-title{font-size:15px;font-weight:600;color:var(--ink);flex:1}
-.modal-subtitle{font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:1px}
-.modal-close{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--bg2);color:var(--muted);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
-.modal-close:hover{background:var(--crimson-bg);border-color:var(--crimson);color:var(--crimson)}
-.modal-body{padding:20px;overflow-y:auto;flex:1}
-
-/* ── INFO BUTTON ─────────────────────────────────────── */
-.info-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink3);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;font-family:var(--sans)}
-.info-btn:hover{border-color:var(--cobalt);color:var(--cobalt);background:var(--cobalt-bg)}
-.info-btn .ib-dot{width:6px;height:6px;border-radius:50%;background:var(--cobalt);flex-shrink:0}
-.info-btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-
-/* ── CCSS DISPLAY (compact, inline in card) ─────────── */
-.ccss-compact{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:10px}
-.ccss-cat-pill{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.ccss-cat-name{font-size:13px;font-weight:600;color:var(--ink)}
-.ccss-cat-rates{display:flex;gap:6px;flex-wrap:wrap}
-.ccss-rate-tag{font-family:var(--mono);font-size:11px;padding:3px 10px;border-radius:20px;background:var(--emerald-bg);border:1px solid rgba(0,200,150,.3);color:var(--emerald-mid);font-weight:500}
-.ccss-rate-tag.r{background:var(--cobalt-bg);border-color:rgba(59,91,219,.3);color:var(--cobalt)}
-.ccss-footer-compact{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10px;color:var(--muted)}
-.ccss-footer-compact strong{color:var(--emerald-mid)}
-.ccss-footer-compact .w{color:var(--amber-mid)}
-
-/* ── CCSS MODAL TABLES ───────────────────────────────── */
-.ctbl{width:100%;min-width:300px;border-collapse:collapse;font-size:11px}
-.ctbl thead tr.th-b th{background:var(--cobalt-bg);color:var(--cobalt);font-weight:600;padding:6px 8px;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase}
-.ctbl thead tr.th-p th{background:var(--violet-bg);color:var(--violet);font-weight:600;padding:6px 8px;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase}
-.ctbl thead tr.th-g th{background:var(--emerald-bg);color:var(--emerald-mid);font-weight:600;padding:6px 8px;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase}
-.ctbl thead tr.th-sub th{font-family:var(--mono);font-size:9px;color:var(--muted);font-weight:400;padding:4px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
-.ctbl thead tr.th-sub th:first-child,.ctbl thead tr.th-sub th:nth-child(2){text-align:left}
-.ctbl td{padding:7px 8px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:10px;color:var(--ink3);text-align:right;white-space:nowrap}
-.ctbl td:first-child,.ctbl td:nth-child(2){text-align:left}
-.ctbl tr:last-child td{border-bottom:none}
-.ctbl tr.cur td{background:var(--emerald-bg);color:var(--emerald-mid);font-weight:500}
-.ctbl .ca{color:var(--amber-mid);font-weight:500}
-.ctbl-gap td{height:10px;border:none!important;background:transparent!important}
-.you-b{display:inline-block;background:var(--emerald);color:#fff;font-size:8px;padding:1px 5px;border-radius:3px;margin-left:4px;vertical-align:middle;font-weight:600}
-.ctbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px}
-
-/* ── TRAMOS (modal) ─────────────────────────────────── */
-.tramo-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;margin-bottom:4px;border:1px solid transparent}
-.tramo-item.act{background:var(--amber-bg);border-color:rgba(245,164,0,.3)}
-.t-pct{font-family:var(--mono);font-size:12px;color:var(--muted);min-width:40px;text-align:right;font-weight:500}
-.tramo-item.act .t-pct{color:var(--amber-mid)}
-.t-bar{flex:1;height:4px;background:var(--line);border-radius:2px}
-.t-fill{height:100%;background:var(--amber);border-radius:2px;transition:width .4s}
-.t-range{font-family:var(--mono);font-size:10px;color:var(--muted);min-width:90px;text-align:right}
-.tramo-item.act .t-range{color:var(--ink3)}
-.t-imp{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--amber-mid);min-width:70px;text-align:right}
-
-/* ── ROP GRID (modal) ───────────────────────────────── */
-.rop-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:480px){.rop-grid{grid-template-columns:1fr}}
-.ri{border-radius:10px;padding:12px 14px;border:1.5px solid var(--line);background:var(--surface2)}
-.ri.g{border-color:rgba(0,200,150,.4);background:var(--emerald-bg)}
-.ri.off{opacity:.55}
-.ri.v{border-color:rgba(124,58,237,.4);background:var(--violet-bg)}
-.ri.t{border-color:rgba(8,145,178,.4);background:var(--teal-bg)}
-.ri-tag{font-size:9px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;color:var(--muted)}
-.ri.g .ri-tag{color:var(--emerald-mid)} .ri.v .ri-tag{color:var(--violet)} .ri.t .ri-tag{color:var(--teal)}
-.ri-name{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:4px}
-.ri-desc{font-size:10px;color:var(--ink3);line-height:1.5}
-.ri-pct{font-family:var(--mono);font-size:11px;margin-top:6px;color:var(--muted)}
-.ri.g .ri-pct{color:var(--emerald-mid)} .ri.v .ri-pct{color:var(--violet)} .ri.t .ri-pct{color:var(--teal)}
-
-/* ── RESULT PANEL ────────────────────────────────────── */
-.result-hero{background:var(--ink);color:#fff;border-radius:var(--r);padding:22px;margin-bottom:12px;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
-.result-hero::before{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;background:radial-gradient(circle,rgba(0,200,150,.18) 0%,transparent 70%);pointer-events:none}
-.result-label{font-size:10px;font-family:var(--mono);color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
-.result-main{font-size:clamp(26px,4vw,36px);font-weight:700;color:var(--emerald);line-height:1;margin-bottom:2px}
-.result-usd{font-family:var(--mono);font-size:15px;color:rgba(255,255,255,.45);margin-bottom:12px}
-.result-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:4px 12px;font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.5)}
-.result-pill span{color:var(--emerald)}
-.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.mini-m{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 12px;box-shadow:var(--shadow)}
-.mm-lbl{font-size:9px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
-.mm-v{font-size:15px;font-weight:600;color:var(--ink);font-family:var(--mono)}
-.mm-v.r{color:var(--crimson)} .mm-v.a{color:var(--amber-mid)}
-.mm-s{font-size:9px;font-family:var(--mono);color:var(--muted)}
-.dist-bar{height:10px;border-radius:5px;overflow:hidden;display:flex;background:var(--bg2);margin:8px 0}
-.db-seg{height:100%;transition:width .4s ease}
-.dist-leg{display:flex;flex-wrap:wrap;gap:8px}
-.dl-i{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--ink3);font-family:var(--mono)}
-.dl-d{width:8px;height:8px;border-radius:2px;flex-shrink:0}
-.anual-row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0}
-.anual-row.tot{border-top:1px solid var(--line);padding-top:10px;margin-top:2px}
-
-/* ── IVA STRIP ───────────────────────────────────────── */
-.iva-strip{border-radius:8px;padding:10px 14px;font-size:11px;line-height:1.6;margin-bottom:12px}
-.iva-strip.ext{background:var(--emerald-bg);border:1px solid rgba(0,200,150,.3);color:var(--emerald-mid)}
-.iva-strip.loc{background:var(--amber-bg);border:1px solid rgba(245,164,0,.3);color:var(--amber-mid)}
-
-/* ── BREAKDOWN ───────────────────────────────────────── */
-.bkdn-tbl{width:100%;border-collapse:collapse}
-.bkdn-tbl tr{border-bottom:1px solid var(--line)}
-.bkdn-tbl tr:last-child{border-bottom:none}
-.bkdn-tbl td{padding:7px 4px;font-size:12px;color:var(--ink3)}
-.bkdn-tbl td:last-child{text-align:right;font-family:var(--mono);font-size:11px;white-space:nowrap}
-.bkdn-tbl tr.sub td{background:var(--surface2);font-weight:600;font-size:13px;color:var(--ink)}
-.bkdn-tbl tr.tot td{background:var(--emerald-bg);font-weight:700;font-size:13px;color:var(--emerald-mid)}
-.bkdn-tbl tr.sh td{background:var(--bg);font-size:9px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:5px 4px}
-.bkdn-neg{color:var(--crimson)} .bkdn-pos{color:var(--emerald-mid)} .bkdn-neu{color:var(--amber-mid)}
-.bkdn-note{font-family:var(--mono);font-size:9px;color:var(--soft);margin-left:4px}
-.bkdn-scroll{overflow-x:auto}
-
-/* ── ALERT ───────────────────────────────────────────── */
-.alt{border-radius:8px;padding:10px 14px;font-size:11px;line-height:1.6;margin-bottom:12px}
-.alt.info{background:var(--cobalt-bg);border:1px solid rgba(59,91,219,.2);color:var(--cobalt)}
-.alt.warn{background:var(--amber-bg);border:1px solid rgba(245,164,0,.3);color:var(--amber-mid)}
-.alt.ok{background:var(--emerald-bg);border:1px solid rgba(0,200,150,.3);color:var(--emerald-mid)}
-.alt strong{font-weight:600}
-
-/* ── SCENARIO STRIP ──────────────────────────────────── */
-.sc-strip{border-radius:8px;padding:8px 12px;font-size:11px;font-weight:500;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.sc-strip.solo{background:var(--emerald-bg);color:var(--emerald-mid);border:1px solid rgba(0,200,150,.3)}
-.sc-strip.mixto{background:var(--amber-bg);color:var(--amber-mid);border:1px solid rgba(245,164,0,.3)}
-
-/* ── IVM NOTICE ──────────────────────────────────────── */
-.ivm-notice{background:#f0fff8;border:1px solid rgba(0,200,150,.25);border-radius:8px;padding:10px 13px;font-size:11px;color:#006b50;line-height:1.6;margin-bottom:12px}
-
-/* ── SECTION DIVIDER ─────────────────────────────────── */
-.divlbl{font-size:10px;font-family:var(--mono);color:var(--soft);text-transform:uppercase;letter-spacing:.08em;margin:16px 0 10px;display:flex;align-items:center;gap:8px}
-.divlbl::before,.divlbl::after{content:'';flex:1;height:1px;background:var(--line)}
-hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
-</style>
+<link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
 
@@ -246,9 +26,9 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
       <div class="ivm-notice">
         <strong>⚙️ Ajuste IVM enero 2026 (+0,16 pp):</strong> La JD CCSS (Sesión N°9038, 2019) estableció incrementos trianales. El quinto incremento entró en vigor el 1° ene 2026: cat. 1 de 4.00%→4.16% · cat. 4 de 7.82%→7.98% · cat. 5 de 8.26%→8.42%. Fuente: CCSS/Teletica dic-2025, BLP Legal oct-2025. La Tabla 2 muestra tasas 2026 vigentes. Base rangos: Decreto N°44756-MTSS, Gaceta N°232, 10 dic 2024.
       </div>
-      <p style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:12px">Columna <span style="color:var(--amber-mid);font-weight:500">Afiliado</span> = lo que pagás vos · Estado complementa el total</p>
+      <p class="modal-ccss-note">Columna <span class="modal-ccss-highlight">Afiliado</span> = lo que pagás vos · Estado complementa el total</p>
       <div class="ctbl-scroll"><table class="ctbl" id="ccss-tbl-modal"></table></div>
-      <div class="ccss-footer-compact" id="ccss-footer-modal" style="margin-top:12px"></div>
+      <div class="ccss-footer-compact ccss-footer-modal" id="ccss-footer-modal"></div>
     </div>
   </div>
 </div>
@@ -265,7 +45,7 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
       <button class="modal-close" onclick="closeModal('modal-rop')">✕</button>
     </div>
     <div class="modal-body">
-      <div class="alt info" style="margin-bottom:16px">
+      <div class="alt info modal-rop-alert">
         <strong>Como trabajador independiente no tenés patrono</strong>, por lo tanto no cotizás al ROP ni al FCL. Esos fondos requieren aporte patronal. Podés ahorrar voluntariamente para pensión, que sí es deducible del ISR.
       </div>
       <div class="rop-grid">
@@ -292,19 +72,19 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
       <button class="modal-close" onclick="closeModal('modal-isr')">✕</button>
     </div>
     <div class="modal-body">
-      <div class="alt info" style="margin-bottom:14px">
+      <div class="alt info modal-isr-alert">
         Cada tramo aplica <strong>solo sobre el monto que cae dentro de ese rango</strong>. La tasa del 25% <em>no</em> aplica sobre el total — únicamente sobre el excedente de ₡20.872.000. Los tramos activos (con tu ingreso actual) se muestran en amarillo.
       </div>
-      <div style="display:flex;gap:8px;font-family:var(--mono);font-size:9px;color:var(--muted);padding:0 4px;margin-bottom:6px;letter-spacing:.05em">
-        <span style="min-width:40px;text-align:right">TASA</span>
-        <span style="flex:1;text-align:center">PROPORCIÓN USADA</span>
-        <span style="min-width:90px;text-align:right">MONTO</span>
-        <span style="min-width:70px;text-align:right">ISR</span>
+      <div class="modal-isr-header">
+        <span class="modal-isr-col-tasa">TASA</span>
+        <span class="modal-isr-col-prop">PROPORCIÓN USADA</span>
+        <span class="modal-isr-col-monto">MONTO</span>
+        <span class="modal-isr-col-isr">ISR</span>
       </div>
       <div id="tramogrid"></div>
-      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;padding:10px 4px 0;border-top:1px solid var(--line);font-family:var(--mono);font-size:12px">
-        <span style="color:var(--muted)">ISR bruto total:</span>
-        <span style="color:var(--amber-mid);font-weight:600" id="tramotot"></span>
+      <div class="modal-isr-footer">
+        <span class="modal-isr-footer-label">ISR bruto total:</span>
+        <span class="modal-isr-footer-value" id="tramotot"></span>
       </div>
     </div>
   </div>
@@ -312,7 +92,7 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
 
 <!-- Modal CCSS Riesgo -->
 <div class="modal-overlay" id="modal-ccss-riesgo" onclick="if(event.target===this)closeModal('modal-ccss-riesgo')">
-  <div class="modal" style="max-width:560px">
+  <div class="modal modal-riesgo">
     <div class="modal-head">
       <div class="modal-icon ci-r">⚠️</div>
       <div>
@@ -322,18 +102,16 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
       <button class="modal-close" onclick="closeModal('modal-ccss-riesgo')">✕</button>
     </div>
     <div class="modal-body">
-      <div class="alt warn" style="margin-bottom:16px">
+      <div class="alt warn modal-riesgo-alert">
         <strong>Solo informativo.</strong> Reportar un ingreso menor al real a la CCSS constituye una infracción (art. 44 Ley constitutiva CCSS). TRIBU-CR cruza datos de facturación electrónica, Hacienda y CCSS. Las cuotas omitidas se cobran retroactivamente con recargos e intereses.
       </div>
-
       <!-- Ingreso real: derivado automáticamente -->
-      <div style="background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:14px">
-        <div style="font-size:10px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Ingreso bruto mensual real (de tus datos arriba)</div>
-        <div style="font-family:var(--mono);font-size:18px;font-weight:600;color:var(--emerald-mid)" id="riesgo-bruto-display">₡—</div>
+      <div class="modal-riesgo-bruto">
+        <div class="modal-riesgo-bruto-label">Ingreso bruto mensual real (de tus datos arriba)</div>
+        <div class="modal-riesgo-bruto-value" id="riesgo-bruto-display">₡—</div>
       </div>
-
       <!-- Slider: monto que reportaría -->
-      <div class="sr" style="margin-bottom:18px">
+      <div class="sr modal-riesgo-slider">
         <div class="sr-top">
           <span class="sr-label" style="font-size:13px;color:var(--ink3)">Monto que reportarías a la CCSS (CRC/mes)</span>
           <span class="sr-val r" id="riesgo-decl-val">₡—</span>
@@ -345,7 +123,6 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
         </div>
         <div class="sr-hints"><span>BMC ₡341k</span><span>₡8M</span></div>
       </div>
-
       <!-- Resultado del riesgo -->
       <div id="riesgo-ccss-result"></div>
     </div>
@@ -367,7 +144,7 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
   </div>
 </div>
 
-<div class="page" style="padding-top:22px">
+<div class="page page-main">
 <div class="two-col">
 
 <!-- ═══ LEFT ════════════════════════════════════════════ -->
@@ -393,7 +170,7 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
   <div class="card">
     <div class="card-title"><span class="ci ci-g">💵</span>Ingresos</div>
 
-    <div id="wrap-sal" style="display:none">
+    <div id="wrap-sal" class="wrap-sal-hidden">
       <div class="sr">
         <div class="sr-top"><span class="sr-label">Salario bruto mensual (empleo, CRC)</span><span class="sr-val b" id="out-sal">₡1,200,000</span></div>
         <div class="sr-track"><div class="sr-fill" id="fill-sal"></div><input type="range" id="sl-sal" min="400000" max="5000000" step="50000" value="1200000" oninput="uf(this,'fill-sal');calc()"></div>
@@ -409,9 +186,9 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
     </div>
 
     <div class="sr">
-      <div class="sr-top"><span class="sr-label">Tipo de cambio USD → CRC (BCCR referencial)</span><span class="sr-val" id="out-tc">₡510</span></div>
-      <div class="sr-track"><div class="sr-fill" id="fill-tc"></div><input type="range" id="sl-tc" min="460" max="600" step="1" value="510" oninput="uf(this,'fill-tc');calc()"></div>
-      <div class="sr-hints"><span>₡460</span><span>₡600</span></div>
+      <div class="sr-top"><span class="sr-label">Tipo de cambio USD → CRC (API en vivo)</span><span class="sr-val" id="out-tc">₡460</span></div>
+      <div class="sr-track"><div class="sr-fill" id="fill-tc"></div><input type="range" id="sl-tc" min="400" max="650" step="1" value="460" oninput="tcLoaded=true;uf(this,'fill-tc');calc()"></div>
+      <div class="sr-hints"><span>₡400</span><span>₡650</span></div>
     </div>
 
     <div class="sr">
@@ -426,8 +203,8 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
     <div class="card-title"><span class="ci ci-b">📋</span>Configuración fiscal</div>
 
     <!-- Tipo cliente -->
-    <div style="margin-bottom:16px">
-      <div style="font-size:13px;color:var(--ink3);display:flex;align-items:center;gap:6px;margin-bottom:6px">
+    <div class="config-section">
+      <div class="config-label">
         Tipo de cliente
         <span class="tipw tip-left">
           <span class="tpic">?</span>
@@ -443,8 +220,8 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
     <hr class="sep">
 
     <!-- Deducible -->
-    <div style="margin-bottom:16px">
-      <div style="font-size:13px;color:var(--ink3);display:flex;align-items:center;gap:6px;margin-bottom:6px">
+    <div class="config-section">
+      <div class="config-label">
         Deducción para renta (art. 8 Ley 7092)
         <span class="tipw tip-left">
           <span class="tpic">?</span>
@@ -456,7 +233,7 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
         <button class="chip" id="breal" onclick="setDed('real')">Gastos reales documentados</button>
       </div>
     </div>
-    <div id="wrap-gastos" style="display:none">
+    <div id="wrap-gastos" class="wrap-gastos-hidden">
       <div class="sr">
         <div class="sr-top"><span class="sr-label">Gastos reales anuales con factura electrónica (CRC)</span><span class="sr-val a" id="out-gastos">₡1,200,000</span></div>
         <div class="sr-track"><div class="sr-fill" id="fill-gastos"></div><input type="range" id="sl-gastos" min="0" max="15000000" step="100000" value="1200000" oninput="uf(this,'fill-gastos');calc()"></div>
@@ -466,7 +243,7 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
     <hr class="sep">
 
     <!-- Hijos -->
-    <div style="margin-bottom:14px">
+    <div class="config-section-sm">
       <div class="sr-top" style="margin-bottom:8px">
         <span class="sr-label" style="font-size:13px;color:var(--ink3)">
           Hijos (crédito fiscal ₡20.520/año c/u)
@@ -482,8 +259,8 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
     </div>
 
     <!-- Cónyuge -->
-    <div style="margin-bottom:14px">
-      <div style="font-size:13px;color:var(--ink3);display:flex;align-items:center;gap:6px;margin-bottom:6px">
+    <div class="config-section-sm">
+      <div class="config-label">
         Cónyuge (crédito ₡31.080/año)
         <span class="tipw">
           <span class="tpic">?</span>
@@ -498,7 +275,7 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
 
     <!-- Pensión voluntaria -->
     <div>
-      <div style="font-size:13px;color:var(--ink3);display:flex;align-items:center;gap:6px;margin-bottom:6px">
+      <div class="config-label">
         Pensión voluntaria (art. 71 Ley 7983)
         <span class="tipw tip-left">
           <span class="tpic">?</span>
@@ -520,11 +297,31 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
       <strong>Régimen obligatorio, no voluntario.</strong> Inscribirse en Hacienda como TI = inscribirse como trabajador independiente en la CCSS dentro de 8 días hábiles. El seguro voluntario aplica únicamente a quienes <em>no</em> tienen actividad lucrativa declarada.
     </div>
 
+    <!-- Documentos oficiales -->
+    <div class="doc-links">
+      <a href="https://aissfa.ccss.sa.cr/arc/normativa/18/reglamento_trabajador_independiente.pdf" target="_blank" rel="noopener noreferrer" class="doc-link">
+        <span class="doc-icon">📄</span>
+        <div class="doc-info">
+          <div class="doc-title">Reglamento TI CCSS</div>
+          <div class="doc-desc">Reglamento oficial trabajador independiente</div>
+        </div>
+        <span class="doc-arrow">↗</span>
+      </a>
+      <a href="https://d1qqtien6gys07.cloudfront.net/wp-content/uploads/2025/02/Escala-Contributiva-TI-AV-y-Mig-ENERO-2025.pdf" target="_blank" rel="noopener noreferrer" class="doc-link">
+        <span class="doc-icon">📊</span>
+        <div class="doc-info">
+          <div class="doc-title">Escala Contributiva 2025</div>
+          <div class="doc-desc">Tabla oficial AV-TI enero 2025 (ref.)</div>
+        </div>
+        <span class="doc-arrow">↗</span>
+      </a>
+    </div>
+
     <!-- Base CCSS: derivada automáticamente del ingreso bruto mensual -->
-    <div style="background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div class="ccss-base-box">
       <div>
-        <div style="font-size:10px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">Base de cotización CCSS</div>
-        <div style="font-size:12px;color:var(--ink3);display:flex;align-items:center;gap:5px">
+        <div class="ccss-base-label">Base de cotización CCSS</div>
+        <div class="ccss-base-desc">
           Ingreso bruto mensual (tarifa USD × TC)
           <span class="tipw">
             <span class="tpic">?</span>
@@ -532,9 +329,9 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
           </span>
         </div>
       </div>
-      <div style="text-align:right">
-        <div style="font-family:var(--mono);font-size:16px;font-weight:600;color:var(--emerald-mid)" id="out-ccss">₡—</div>
-        <div style="font-family:var(--mono);font-size:10px;color:var(--muted)" id="out-ccss-sub">= $— × ₡—</div>
+      <div class="ccss-base-values">
+        <div class="ccss-base-value" id="out-ccss">₡—</div>
+        <div class="ccss-base-sub" id="out-ccss-sub">= $— × ₡—</div>
       </div>
     </div>
 
@@ -542,7 +339,7 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
     <div class="ccss-compact">
       <div class="ccss-cat-pill">
         <div>
-          <div style="font-size:10px;font-family:var(--mono);color:var(--muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Categoría actual</div>
+          <div class="ccss-cat-label">Categoría actual</div>
           <div class="ccss-cat-name" id="ccss-cat-name">Cat. — · —</div>
         </div>
         <div class="ccss-cat-rates">
@@ -567,14 +364,14 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
       <button class="info-btn" onclick="openModal('modal-rop')">
         <span class="ib-dot"></span> Fondos de pensión TI
       </button>
-      <button class="info-btn" onclick="openModal('modal-ccss-riesgo')" style="border-color:rgba(232,69,69,.35);color:var(--crimson)">
-        <span class="ib-dot" style="background:var(--crimson)"></span> Riesgo de reportar monto menor
+      <button class="info-btn info-btn-danger" onclick="openModal('modal-ccss-riesgo')">
+        <span class="ib-dot ib-dot-danger"></span> Riesgo de reportar monto menor
       </button>
     </div>
   </div>
 
   <!-- IVA -->
-  <div id="ivainfo" style="margin-bottom:14px"></div>
+  <div id="ivainfo" class="ivainfo-section"></div>
 
   <!-- DESGLOSE ANUAL -->
   <div class="card">
@@ -583,7 +380,7 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
       <table class="bkdn-tbl" id="bkdn"></table>
     </div>
     <!-- ISR info button -->
-    <div class="info-btn-row" style="margin-top:12px">
+    <div class="info-btn-row info-btn-row-top">
       <button class="info-btn" onclick="openModal('modal-isr')">
         <span class="ib-dot"></span> Ver tramos ISR 2026 en detalle
       </button>
@@ -593,7 +390,7 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
 </div><!-- /left -->
 
 <!-- ═══ RIGHT — STICKY ══════════════════════════════════ -->
-<div class="sticky-result" style="position:sticky;top:20px">
+<div class="sticky-result">
 
   <div id="sc-strip-wrap"></div>
 
@@ -630,15 +427,15 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
   </div>
 
   <!-- Distribution -->
-  <div class="card" style="padding:16px">
-    <div style="font-size:10px;font-family:var(--mono);color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em">Distribución del ingreso bruto</div>
+  <div class="card card-compact">
+    <div class="card-compact-title">Distribución del ingreso bruto</div>
     <div class="dist-bar" id="dist-bar"></div>
     <div class="dist-leg" id="dist-leg"></div>
   </div>
 
   <!-- Annual summary -->
-  <div class="card" style="padding:16px">
-    <div style="font-size:10px;font-family:var(--mono);color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.07em">Resumen anual</div>
+  <div class="card card-compact">
+    <div class="card-compact-title card-compact-title-lg">Resumen anual</div>
     <div id="anual-sum"></div>
   </div>
 
@@ -646,360 +443,47 @@ hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0}
 </div><!-- /two-col -->
 </div><!-- /page -->
 
-<script>
-// ─── STATE ────────────────────────────────────────────
-let reg='solo',cli=false,ded='ficto',con=0,pen=0;
-
-// ─── HELPERS ─────────────────────────────────────────
-const $=id=>document.getElementById(id);
-const NF=new Intl.NumberFormat('es-CR');
-const fm=(n,d=0)=>NF.format(+(Math.round(n*1e6)/1e6).toFixed(d));
-const fC=n=>'₡'+fm(Math.abs(n));
-const fU=n=>(n<0?'-':'')+'$'+fm(Math.abs(n));
-const fP=n=>(n*100).toFixed(1)+'%';
-const uf=(el,id)=>{const p=(el.value-el.min)/(el.max-el.min)*100;$(id).style.width=p+'%'};
-
-function initFills(){
-  [['sl-rate','fill-rate'],['sl-tc','fill-tc'],['sl-meses','fill-meses'],
-   ['sl-sal','fill-sal'],['sl-gastos','fill-gastos'],['sl-hijos','fill-hijos']
-  ].forEach(([s,f])=>{const e=$(s);if(e)uf(e,f)});
-}
-
-// ─── RIESGO CCSS ─────────────────────────────────────
-function calcRiesgoCCSS(){
-  const bruto=Math.max(341228,+$('sl-rate').value * +$('sl-tc').value);
-  const decl=+$('riesgo-sl').value;
-  $('riesgo-decl-val').textContent=fC(decl);
-
-  if(decl>=bruto){
-    $('riesgo-ccss-result').innerHTML=`<div class="alt ok">Reportás el monto real. Sin exposición a sanciones de la CCSS.</div>`;
-    return;
-  }
-
-  const catReal=getCat(bruto);
-  const catDecl=getCat(decl);
-  const cuotaReal=catReal.ca;
-  const cuotaDecl=catDecl.ca;
-  const ahorroPorMes=cuotaReal-cuotaDecl;
-  const ahorroAnual=ahorroPorMes*12;
-  const pct=((bruto-decl)/bruto*100).toFixed(0);
-
-  // Sanciones: art. 44 Ley CCSS — multa de 3 salarios base + cuotas omitidas + intereses
-  const salBase=462200; // salario base 2026
-  const multaFija=salBase*3;
-  const cuotasOmitAnual=ahorroAnual;
-  const intereses1ano=cuotasOmitAnual*0.0852; // tasa moratoria 8.52% (misma que Hacienda)
-  const costoTotal=multaFija+cuotasOmitAnual+intereses1ano;
-  const ratio=(costoTotal/ahorroAnual).toFixed(1);
-
-  $('riesgo-ccss-result').innerHTML=`
-    <div style="background:var(--crimson-bg);border:1px solid rgba(232,69,69,.3);border-radius:10px;padding:14px 16px">
-      <div style="font-size:12px;font-weight:600;color:var(--crimson);margin-bottom:10px">
-        Reportás ${pct}% menos — Cat. real: ${catReal.cat} · Cat. declarada: ${catDecl.cat}
+<!-- ═══ FOOTER ════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-main">
+      <div class="footer-left">
+        <div class="footer-eyebrow">// open source project</div>
+        <div class="footer-title">Hecho con <span class="footer-heart">❤️</span> en Costa Rica 🇨🇷</div>
+        <div class="footer-sub">Calculadora fiscal de código abierto para la comunidad tech costarricense</div>
       </div>
-
-      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
-        <div style="display:flex;justify-content:space-between;font-size:12px">
-          <span style="color:var(--ink3)">Cuota real mensual (cat. ${catReal.cat})</span>
-          <span style="font-family:var(--mono);color:var(--emerald-mid)">${fC(cuotaReal)}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:12px">
-          <span style="color:var(--ink3)">Cuota declarada mensual (cat. ${catDecl.cat})</span>
-          <span style="font-family:var(--mono);color:var(--crimson)">${fC(cuotaDecl)}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;border-top:1px solid var(--line);padding-top:6px">
-          <span style="color:var(--ink3)">"Ahorro" mensual</span>
-          <span style="font-family:var(--mono);font-weight:600;color:var(--amber-mid)">${fC(ahorroPorMes)}/mes · ${fC(ahorroAnual)}/año</span>
+      <div class="footer-right">
+        <div class="footer-author-card">
+          <img src="https://github.com/fabian7593.png" alt="Fabián Rosales" class="footer-avatar">
+          <div class="footer-author-info">
+            <div class="footer-author-name">Fabián Rosales</div>
+            <div class="footer-author-role">Software Developer</div>
+            <div class="footer-social">
+              <a href="https://github.com/fabian7593" target="_blank" rel="noopener noreferrer" class="footer-social-link" title="GitHub">
+                <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+              </a>
+              <a href="https://www.linkedin.com/in/frosales-softdev/" target="_blank" rel="noopener noreferrer" class="footer-social-link" title="LinkedIn">
+                <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div style="font-size:11px;font-weight:600;color:var(--crimson);margin-bottom:8px">Costo si te detectan (art. 44 Ley CCSS):</div>
-      <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:10px">
-        <div style="display:flex;justify-content:space-between;font-size:11px">
-          <span style="color:var(--ink3)">Cuotas omitidas retroactivas (1 año)</span>
-          <span style="font-family:var(--mono);color:var(--crimson)">${fC(cuotasOmitAnual)}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:11px">
-          <span style="color:var(--ink3)">Multa fija (3 salarios base, art. 44)</span>
-          <span style="font-family:var(--mono);color:var(--crimson)">${fC(multaFija)}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:11px">
-          <span style="color:var(--ink3)">Intereses moratorios (8,52% / año)</span>
-          <span style="font-family:var(--mono);color:var(--crimson)">${fC(intereses1ano)}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;border-top:1px solid rgba(232,69,69,.3);padding-top:6px">
-          <span style="color:var(--ink)">Total sanción estimada (1er año)</span>
-          <span style="font-family:var(--mono);color:var(--crimson)">${fC(costoTotal)}</span>
-        </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-repo-badge">
+        <a href="https://github.com/fabian7593/CRTaxes2026" target="_blank" rel="noopener noreferrer" class="footer-repo-link">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>
+          Star on GitHub
+        </a>
       </div>
+      <div class="footer-license">MIT License · 2026</div>
+    </div>
+  </div>
+</footer>
 
-      <div style="background:rgba(232,69,69,.08);border-radius:8px;padding:10px 12px;font-size:11px;color:var(--crimson)">
-        Por cada ₡1 "ahorrado" en cuotas arriesgás <strong>${ratio} colones</strong> en sanciones. TRIBU-CR cruza tu factura electrónica, tu D-101 de Hacienda y tus reportes CCSS automáticamente.
-      </div>
-    </div>`;
-}
 
-// ─── MODALS ───────────────────────────────────────────
-function openModal(id){$(id).classList.add('open');document.body.style.overflow='hidden'}
-function closeModal(id){$(id).classList.remove('open');document.body.style.overflow=''}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'))&&(document.body.style.overflow='')});
 
-// ─── CCSS DATA ────────────────────────────────────────
-// Base: Escala Contributiva TI-AV, Gaceta N°232, 10 dic 2024 (Decreto N°44756-MTSS)
-// IVM afiliado 2026 = 2025 + 0.0016 (acuerdo JD CCSS Sesión N°9038/2019, quinto incremento ene-2026)
-const CCSS=[
-  {cat:1,max:341227, ivm26:.0416,ivm_est:.0529,ivm_lpt:.0030,sem:.0289,sem_est:.0911},
-  {cat:2,max:734217, ivm26:.0565,ivm_est:.0410,ivm_lpt:.0000,sem:.0433,sem_est:.0767},
-  {cat:3,max:1468434,ivm26:.0753,ivm_est:.0222,ivm_lpt:.0000,sem:.0624,sem_est:.0576},
-  {cat:4,max:2202651,ivm26:.0798,ivm_est:.0177,ivm_lpt:.0000,sem:.0802,sem_est:.0398},
-  {cat:5,max:Infinity,ivm26:.0842,ivm_est:.0133,ivm_lpt:.0000,sem:.1069,sem_est:.0131},
-];
-function getCat(ing){
-  const b=Math.max(341228,ing);
-  const c=CCSS.find(c=>b<=(c.max===Infinity?1e12:c.max))||CCSS[4];
-  return{...c,b,ta:c.ivm26+c.sem,cs:c.sem*b,ci:c.ivm26*b,ca:(c.ivm26+c.sem)*b};
-}
-
-// ─── ISR TRAMOS 2026 ─────────────────────────────────
-const TR=[
-  {d:0,h:6244000,t:0,l:'Exento'},
-  {d:6244000,h:8329000,t:.10,l:'10%'},
-  {d:8329000,h:10414000,t:.15,l:'15%'},
-  {d:10414000,h:20872000,t:.20,l:'20%'},
-  {d:20872000,h:1e12,t:.25,l:'25%'},
-];
-function calcISR(rn){
-  let tot=0,det=[];
-  for(const t of TR){
-    if(rn<=t.d){det.push({...t,base:0,imp:0});continue}
-    const base=Math.min(rn,t.h)-t.d,imp=base*t.t;
-    tot+=imp;det.push({...t,base,imp});
-  }
-  return{tot,det};
-}
-
-// ─── SETTERS ─────────────────────────────────────────
-function setReg(r){
-  reg=r;
-  $('psolo').className='rtab '+(r==='solo'?'solo':'');
-  $('pmixto').className='rtab '+(r==='mixto'?'mixto':'');
-  $('wrap-sal').style.display=r==='mixto'?'block':'none';
-  $('wmixto').className='wstrip '+(r==='mixto'?'show':'');
-  calc();
-}
-function setCliente(c){
-  cli=c==='loc';
-  $('bext').className='chip '+(c==='ext'?'on-g':'');
-  $('bloc').className='chip '+(c==='loc'?'on-a':'');
-  calc();
-}
-function setDed(d){
-  ded=d;
-  $('bficto').className='chip '+(d==='ficto'?'on-g':'');
-  $('breal').className='chip '+(d==='real'?'on-a':'');
-  $('wrap-gastos').style.display=d==='real'?'block':'none';
-  calc();
-}
-function setCon(v){con=v;$('bnoc').className='chip '+(v===0?'on-g':'');$('bc').className='chip '+(v===1?'on-g':'');calc()}
-function setPen(v){pen=v;$('bnop').className='chip '+(v===0?'on-g':'');$('bp').className='chip '+(v===1?'on-g':'');calc()}
-
-// ─── RENDER CCSS TABLES (for modal) ──────────────────
-function renderCCSSTables(ccssBase,catInfo){
-  const semH=`<thead><tr class="th-b"><th colspan="5">TABLA 1 — SEGURO SALUD (SEM) · Tasa conjunta 12% · Gaceta N°232 dic 2024</th></tr><tr class="th-sub"><th>Cat.</th><th>Rango (CRC)</th><th>Afiliado</th><th>Estado</th><th>Conjunto</th></tr></thead>`;
-  const semR=CCSS.map((c,i)=>{
-    const cur=ccssBase<=(c.max===Infinity?1e12:c.max)&&(i===0||ccssBase>CCSS[i-1].max);
-    const rng=i===0?'Hasta '+fC(c.max):(c.max===Infinity?'> '+fC(CCSS[i-1].max):fC(CCSS[i-1].max+1)+'–'+fC(c.max));
-    return`<tr class="${cur?'cur':''}"><td>Cat ${c.cat}${cur?'<span class="you-b">vos</span>':''}</td><td>${rng}</td><td class="ca">${(c.sem*100).toFixed(2)}%</td><td>${(c.sem_est*100).toFixed(2)}%</td><td>12.00%</td></tr>`;
-  }).join('');
-  const ivmH=`<thead><tr class="th-p"><th colspan="5">TABLA 2 — SEGURO PENSIÓN (IVM) · Gaceta N°232 + ajuste +0.16pp ene-2026</th></tr><tr class="th-sub"><th>Cat.</th><th>Rango (CRC)</th><th>Afiliado 2026</th><th>Estado+LPT</th><th>Conjunto</th></tr></thead>`;
-  const ivmR=CCSS.map((c,i)=>{
-    const cur=ccssBase<=(c.max===Infinity?1e12:c.max)&&(i===0||ccssBase>CCSS[i-1].max);
-    const rng=i===0?'Hasta '+fC(c.max):(c.max===Infinity?'> '+fC(CCSS[i-1].max):fC(CCSS[i-1].max+1)+'–'+fC(c.max));
-    return`<tr class="${cur?'cur':''}"><td>Cat ${c.cat}${cur?'<span class="you-b">vos</span>':''}</td><td>${rng}</td><td class="ca">${(c.ivm26*100).toFixed(2)}%</td><td>${((c.ivm_est+c.ivm_lpt)*100).toFixed(2)}%</td><td>${((c.ivm26+c.ivm_est+c.ivm_lpt)*100).toFixed(2)}%</td></tr>`;
-  }).join('');
-  const sumH=`<thead><tr class="th-g"><th colspan="4">RESUMEN — LO QUE PAGÁS VOS (SEM + IVM afiliado 2026)</th></tr><tr class="th-sub"><th>Cat.</th><th>Rango</th><th>Total afiliado</th><th>Cuota mensual</th></tr></thead>`;
-  const sumR=CCSS.map((c,i)=>{
-    const cur=ccssBase<=(c.max===Infinity?1e12:c.max)&&(i===0||ccssBase>CCSS[i-1].max);
-    const rng=i===0?'Hasta '+fC(c.max):(c.max===Infinity?'> '+fC(CCSS[i-1].max):fC(CCSS[i-1].max+1)+'–'+fC(c.max));
-    const mid=c.max===Infinity?CCSS[i-1].max*1.5:i===0?c.max/2:(CCSS[i-1].max+c.max)/2;
-    return`<tr class="${cur?'cur':''}"><td>Cat ${c.cat}${cur?'<span class="you-b">vos</span>':''}</td><td>${rng}</td><td class="ca">${((c.sem+c.ivm26)*100).toFixed(2)}%</td><td style="color:${cur?'var(--emerald-mid)':'var(--muted)'}">${cur?fC(catInfo.ca):'~'+fC((c.sem+c.ivm26)*mid)}</td></tr>`;
-  }).join('');
-  $('ccss-tbl-modal').innerHTML=
-    semH+'<tbody>'+semR+'</tbody>'+
-    '<tbody><tr class="ctbl-gap"><td colspan="5"></td></tr></tbody>'+
-    ivmH+'<tbody>'+ivmR+'</tbody>'+
-    '<tbody><tr class="ctbl-gap"><td colspan="5"></td></tr></tbody>'+
-    sumH+'<tbody>'+sumR+'</tbody>';
-  $('ccss-footer-modal').innerHTML=`<span>Cuota mensual: <strong>${fC(catInfo.ca)}</strong></span><span>SEM: <strong>${fC(catInfo.cs)}</strong></span><span>IVM: <strong>${fC(catInfo.ci)}</strong></span><span>Anual: <strong>${fC(catInfo.ca*12)}</strong></span><span class="w">BMC: ₡341.228 (SEM)</span>`;
-}
-
-// ─── MAIN CALC ────────────────────────────────────────
-function calc(){
-  const rate   =+$('sl-rate').value;
-  const tc     =+$('sl-tc').value;
-  const meses  =+$('sl-meses').value;
-  const hijos  =+$('sl-hijos').value;
-  const gastosR=+$('sl-gastos').value;
-  const salCRC =+$('sl-sal').value;
-
-  // ccssBase = ingreso bruto mensual derivado automáticamente de rate × tc
-  const ccssBase = Math.max(341228, rate * tc);
-
-  $('out-rate').textContent=fU(rate);
-  $('out-tc').textContent='₡'+tc;
-  $('out-meses').textContent=meses+' meses';
-  $('out-hijos').textContent=hijos;
-  $('out-gastos').textContent=fC(gastosR);
-  $('out-sal').textContent=fC(salCRC);
-  // CCSS display: muestra el bruto mensual real
-  $('out-ccss').textContent=fC(ccssBase);
-  $('out-ccss-sub').textContent=`= $${fm(rate)} × ₡${fm(tc)}${ccssBase===341228&&rate*tc<341228?' (BMC mín)':''}`;
-
-  // Sync slider riesgo con el bruto actual
-  $('riesgo-bruto-display').textContent=fC(ccssBase);
-  // Ajustar max del slider de riesgo al doble del bruto para dar rango útil
-  const rSl=$('riesgo-sl');
-  rSl.max=Math.max(8000000,ccssBase);
-  if(+rSl.value>ccssBase){rSl.value=ccssBase;uf(rSl,'riesgo-fill');}
-  $('riesgo-decl-val').textContent=fC(+rSl.value);
-  calcRiesgoCCSS();
-
-  const spBruto=rate*meses*tc, spUSD=rate*meses;
-  const catInfo=getCat(ccssBase);
-  const ccssMes=catInfo.ca, ccssAno=ccssMes*12;
-
-  let dedGastos=ded==='ficto'?spBruto*0.25:gastosR+ccssAno;
-  const penAno=pen?spBruto*0.10:0;
-  const cCred=hijos*20520+con*31080;
-
-  let rentaNeta,isrBruto,isrFinal,tramoDet;
-  if(reg==='solo'){
-    const ccssDed=ded==='ficto'?ccssAno:0;
-    rentaNeta=Math.max(0,spBruto-dedGastos-penAno-ccssDed);
-    const r=calcISR(rentaNeta);isrBruto=r.tot;tramoDet=r.det;
-    isrFinal=Math.max(0,isrBruto-cCred);
-  } else {
-    const ccssDed=ded==='ficto'?ccssAno:0;
-    rentaNeta=Math.max(0,spBruto-dedGastos-penAno-ccssDed);
-    const exRest=Math.max(0,6244000-Math.min(salCRC*12,6244000));
-    const rn2=Math.max(0,rentaNeta-exRest);
-    const r=calcISR(rn2);isrBruto=r.tot;tramoDet=r.det;
-    isrFinal=Math.max(0,isrBruto);rentaNeta=rn2;
-  }
-
-  const netoAno=spBruto-ccssAno-isrFinal;
-  const netoMes=netoAno/meses; // sin divisor — neto mensual real
-  const brutMes=spBruto/meses;
-
-  // ── Compact CCSS display ─────────────────────────
-  const catRangeLabels=['hasta ₡341.227','₡341.228 – ₡734.217','₡734.218 – ₡1.468.434','₡1.468.435 – ₡2.202.651','más de ₡2.202.651'];
-  $('ccss-cat-name').textContent=`Cat. ${catInfo.cat} · ${catRangeLabels[catInfo.cat-1]}`;
-  $('ccss-sem-tag').textContent=`SEM ${(catInfo.sem*100).toFixed(2)}%`;
-  $('ccss-ivm-tag').textContent=`IVM ${(catInfo.ivm26*100).toFixed(2)}%`;
-  $('cf-mes').textContent=fC(ccssMes);
-  $('cf-sem').textContent=fC(catInfo.cs);
-  $('cf-ivm').textContent=fC(catInfo.ci);
-  $('cf-ano').textContent=fC(ccssAno);
-
-  // Update modal tables dynamically
-  renderCCSSTables(ccssBase,catInfo);
-
-  // ROP labels
-  $('ivm-pct-show').textContent=`Afiliado 2026: ${(catInfo.ivm26*100).toFixed(2)}% · Estado: ${(catInfo.ivm_est*100).toFixed(2)}%`;
-  $('sem-pct-show').textContent=`Afiliado: ${(catInfo.sem*100).toFixed(2)}% · Estado: ${(catInfo.sem_est*100).toFixed(2)}%`;
-
-  // ── Scenario strip ────────────────────────────────
-  $('sc-strip-wrap').innerHTML=reg==='solo'
-    ?'<div class="sc-strip solo">✓ Solo servicios — tramo exento completo disponible</div>'
-    :'<div class="sc-strip mixto">⚡ Régimen mixto — SP gravados sin tramo exento</div>';
-
-  // ── Right panel ───────────────────────────────────
-  $('r-neto').textContent=fC(netoMes);
-  $('r-neto-usd').textContent=fU(netoMes/tc)+' / mes';
-  $('r-meses-pill').textContent=meses+' meses facturados';
-  $('r-bruto').textContent=fC(brutMes);
-  $('r-bruto-u').textContent=fU(brutMes/tc);
-  $('r-ccss').textContent=fC(ccssMes);
-  $('r-ccss-pct').textContent=fP(catInfo.ta)+' (cat. '+catInfo.cat+')';
-  $('r-isr').textContent=fC(isrFinal/meses);
-  $('r-isr-u').textContent=fU(isrFinal/meses/tc);
-  $('r-tasa').textContent=fP((ccssAno+isrFinal)/spBruto);
-
-  // dist bar
-  const pN=netoAno/spBruto,pI=isrFinal/spBruto,pC=ccssAno/spBruto,pP=penAno/spBruto;
-  const segs=[{c:'#00c896',p:pN,l:'Neto'},{c:'#7c3aed',p:pI,l:'ISR'},{c:'#e84545',p:pC,l:'CCSS'},{c:'#f5a400',p:pP,l:'Pensión'}].filter(s=>s.p>0.001);
-  $('dist-bar').innerHTML=segs.map(s=>`<div class="db-seg" style="width:${(s.p*100).toFixed(1)}%;background:${s.c}"></div>`).join('');
-  $('dist-leg').innerHTML=segs.map(s=>`<div class="dl-i"><div class="dl-d" style="background:${s.c}"></div>${s.l} ${(s.p*100).toFixed(1)}%</div>`).join('');
-
-  // anual summary
-  const aSums=[
-    {l:'Ingreso bruto anual',v:spBruto,u:spUSD,pos:true},
-    {l:'CCSS anual',v:-ccssAno,u:-ccssAno/tc},
-    {l:'ISR anual',v:-isrFinal,u:-isrFinal/tc},
-    {l:'Neto anual en bolsillo',v:netoAno,u:netoAno/tc,pos:true,tot:true},
-  ];
-  $('anual-sum').innerHTML=aSums.map(r=>`
-    <div class="anual-row${r.tot?' tot':''}">
-      <span style="font-size:12px;color:var(--ink3)">${r.l}</span>
-      <div style="text-align:right">
-        <div style="font-family:var(--mono);font-size:${r.tot?'14px':'12px'};font-weight:${r.tot?'600':'400'};color:${r.pos?'var(--emerald-mid)':r.v<0?'var(--crimson)':'var(--ink)'}">${r.v<0?'−':'+'}${fC(r.v)}</div>
-        <div style="font-family:var(--mono);font-size:9px;color:var(--muted)">${fU(Math.abs(r.u))}</div>
-      </div>
-    </div>`).join('');
-
-  // ── IVA ──────────────────────────────────────────
-  $('ivainfo').innerHTML=cli
-    ?`<div class="iva-strip loc"><strong>🏢 Cliente local — IVA 13% aplicable.</strong> Cobrás ₡${fm(rate*tc*0.13)} adicionales/mes al cliente y los trasladás a Hacienda vía D-104 antes del día 15 de cada mes. El IVA no sale de tu bolsillo — lo paga el cliente — pero omitir la declaración genera multa de ₡231.100.</div>`
-    :`<div class="iva-strip ext"><strong>🌎 Cliente exterior — IVA exento (art. 8 Ley 9635).</strong> Emitís Factura Electrónica de Exportación v4.4 al 0%. El D-104 mensual igual es obligatorio; acumulás crédito fiscal por compras locales con IVA, recuperable si te inscribís en el Registro de Exportadores.</div>`;
-
-  // ── Breakdown table ───────────────────────────────
-  const rows=[];
-  if(reg==='mixto'){
-    rows.push({sec:'Empleo formal'});
-    rows.push({l:'Salario bruto anual',v:salCRC*12,u:salCRC*12/tc,cls:'bkdn-pos'});
-    rows.push({l:'CCSS obrero (~9.83%)',v:-(salCRC*.0983*12),u:0,cls:'bkdn-neg',note:'estimado'});
-    rows.push({sec:'Servicios profesionales'});
-  }
-  rows.push({l:`SP bruto (${meses} meses × ${fU(rate)})`,v:spBruto,u:spUSD,cls:'bkdn-pos'});
-  rows.push({l:`Deducible ${ded==='ficto'?'ficto 25%':'gastos reales'} (art. 8 Ley 7092)`,v:-dedGastos,u:-dedGastos/tc,cls:'bkdn-neg'});
-  if(pen) rows.push({l:'Pensión voluntaria deducible 10% (art. 71 Ley 7983)',v:-penAno,u:-penAno/tc,cls:'bkdn-neg'});
-  if(ded==='ficto') rows.push({l:'CCSS TI deducible adicional (art. 8 inc. b)',v:-ccssAno,u:-ccssAno/tc,cls:'bkdn-neg'});
-  rows.push({l:'Renta neta imponible',v:rentaNeta,u:rentaNeta/tc,cls:'',sub:true});
-  rows.push({l:'ISR escalonado (tramos 2026)',v:-isrBruto,u:-isrBruto/tc,cls:'bkdn-neg'});
-  if(cCred>0) rows.push({l:`Créditos fiscales (${hijos} hijo${hijos!==1?'s':''} ${con?'+ cónyuge':''})`,v:cCred,u:cCred/tc,cls:'bkdn-pos'});
-  rows.push({l:'ISR definitivo',v:-isrFinal,u:-isrFinal/tc,cls:'bkdn-neg',sub:true});
-  rows.push({l:`CCSS TI (cat. ${catInfo.cat} · ${(catInfo.ta*100).toFixed(2)}% · ${fC(ccssMes)}/mes × 12)`,v:-ccssAno,u:-ccssAno/tc,cls:'bkdn-neg'});
-  if(cli) rows.push({l:'IVA 13% (pass-through al cliente)',v:0,u:0,cls:'bkdn-neu',note:'no sale de tu bolsillo'});
-  rows.push({l:'Neto anual en bolsillo',v:netoAno,u:netoAno/tc,cls:'bkdn-pos',sub:true});
-  rows.push({l:'Neto mensual promedio',v:netoMes,u:netoMes/tc,cls:'bkdn-pos',tot:true});
-
-  $('bkdn').innerHTML=rows.map(r=>{
-    if(r.sec) return`<tr class="sh"><td colspan="2">${r.sec}</td></tr>`;
-    const z=r.v===0;
-    return`<tr class="${r.tot?'tot':r.sub?'sub':''}">
-      <td>${r.l}${r.note?`<span class="bkdn-note">(${r.note})</span>`:''}</td>
-      <td class="${r.cls}"><div>${z?'—':(r.v<0?'−':'')+fC(r.v)}</div><div style="font-size:9px;color:var(--muted)">${z?'':(r.u<0?'−':'')+fU(Math.abs(r.u))}</div></td>
-    </tr>`;
-  }).join('');
-
-  // ── Tramos (modal) ────────────────────────────────
-  const maxB=Math.max(...tramoDet.map(t=>t.base),1);
-  $('tramogrid').innerHTML=tramoDet.map(t=>{
-    const act=t.base>0;
-    const w=act?Math.min(100,t.base/maxB*100).toFixed(1):'0';
-    return`<div class="tramo-item${act?' act':''}">
-      <span class="t-pct">${t.l}</span>
-      <div class="t-bar"><div class="t-fill" style="width:${w}%"></div></div>
-      <span class="t-range">${act?fC(t.base):'—'}</span>
-      <span class="t-imp">${act&&t.t>0?fC(t.imp):(act?'₡0':'—')}</span>
-    </div>`;
-  }).join('');
-  $('tramotot').textContent=fC(isrBruto);
-}
-
-// ─── INIT ─────────────────────────────────────────────
-initFills();
-calc();
-</script>
+<script src="assets/js/calc.js"></script>
 </body>
 </html>
