@@ -274,8 +274,6 @@ El IVA es un impuesto del **13%** que se aplica sobre la venta de bienes y servi
 - Omitir la declaración genera multa de ₡231.100
 
 
-El cliente paga ₡1.728.900, vos recibís ₡1.530.000 en tu bolsillo y trasladás ₡198.900 a Hacienda.
-
 #### 📋 Facturación Electrónica
 
 Desde 2018, la facturación electrónica es **obligatoria** en Costa Rica:
@@ -403,11 +401,12 @@ Si encontrás un error en los cálculos o en la aplicación:
 
 ### Sobre el Autor
 
-Senior Software Engineer con más de 12 años de experiencia en desarrollo de aplicaciones móviles nativas (Android/iOS), backends con TypeScript/Node.js y sistemas .NET. Ha trabajado en proyectos de fintech, banca, salud y medios, entregando productos end-to-end que han alcanzado más de 250K descargas acumuladas.
+Senior Software Engineer con más de 12 años de experiencia en desarrollo de aplicaciones móviles nativas (Android/iOS), backends con TypeScript/Node.js y sistemas .NET. Ha trabajado en proyectos de fintech, banca, salud y medios, entregando productos end-to-end que han alcanzado más de 32K descargas acumuladas.
 
-Creador de proyectos open-source con 338 estrellas en GitHub, incluyendo MagicalCamera (biblioteca Android ampliamente adoptada), Tenshi (framework backend TypeScript modular), y Vortex TV (plataforma OTT multi-servicio). Especializado en arquitecturas limpias, microservicios multi-tenant, integración de APIs complejas (GraphQL, REST), y soluciones de alta precisión como sistemas RTK/GNSS con exactitud sub-20cm.
+Creador de proyectos open-source con 338 estrellas en GitHub, incluyendo MagicalCamera (biblioteca Android ampliamente adoptada), Tenshi (framework backend TypeScript modular), y Vortex TV (plataforma OTT multi-servicio). 
+Especializado en arquitecturas limpias, microservicios multi-tenant, integración de APIs complejas (GraphQL, REST)
 
-Este proyecto nace de la experiencia personal como trabajador independiente en Costa Rica y la necesidad de contar con una herramienta clara, actualizada y transparente para calcular impuestos y cargas sociales en el ecosistema tech costarricense.
+Este proyecto nace de la experiencia personal como trabajador independiente en Costa Rica y la necesidad de contar con una herramienta clara, actualizada y transparente para calcular impuestos y cargas sociales en Costa Rica.
 
 ---
 
