@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora Freelance CR 2026 v4</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0d0e10;--surface:#15171b;--surface2:#1c1f26;--surface3:#22262f;
+  --border:#272b35;--border2:#343844;
+  --text:#e8eaf0;--muted:#6e7483;--faint:#32363f;
+  --green:#2dd4a0;--green-dim:#0f2e22;
+  --red:#f16e6e;--red-dim:#3a1515;
+  --amber:#f5a623;--amber-dim:#352410;
+  --blue:#5b9cf6;--blue-dim:#152040;
+  --purple:#9f7aea;--purple-dim:#21163a;
+  --teal:#22d3ee;--teal-dim:#092830;
+  --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
+  --r:10px;--rs:6px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;padding:20px 14px 80px}
+.wrap{max-width:860px;margin:0 auto}
+
+/* HEADER */
+.htag{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px}
+h1{font-size:22px;font-weight:500;line-height:1.25;margin-bottom:4px}
+.hsub{font-size:11px;color:var(--muted);margin-bottom:20px}
+.badge{display:inline-flex;align-items:center;background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:3px 10px;font-family:var(--mono);font-size:10px;color:var(--muted);margin:0 4px 6px 0}
+.badge.g{background:var(--green-dim);border-color:var(--green);color:var(--green)}
+.badge.a{background:var(--amber-dim);border-color:var(--amber);color:var(--amber)}
+
+/* SECTION */
+.sec{margin-bottom:18px}
+.slbl{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.slbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:15px 18px}
+
+/* CONTROL */
+.ctrl{margin-bottom:14px}.ctrl:last-child{margin-bottom:0}
+.chdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px}
+.clbl{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.cval{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--text);white-space:nowrap}
+.cval.g{color:var(--green)}.cval.a{color:var(--amber)}.cval.r{color:var(--red)}.cval.b{color:var(--blue)}
+
+/* RANGE */
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:var(--border2);border-radius:2px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--text);border:2px solid var(--bg);cursor:pointer;transition:background .15s,transform .15s}
+input[type=range]::-webkit-slider-thumb:hover{background:var(--green);transform:scale(1.2)}
+
+/* TOGGLES */
+.tgrp{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.tog{font-family:var(--mono);font-size:10px;padding:4px 11px;border-radius:var(--rs);border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;letter-spacing:.03em;transition:all .15s;white-space:nowrap}
+.tog:hover{border-color:var(--text);color:var(--text)}
+.tog.tg{background:var(--green-dim);border-color:var(--green);color:var(--green)}
+.tog.ta{background:var(--amber-dim);border-color:var(--amber);color:var(--amber)}
+.tog.tr{background:var(--red-dim);border-color:var(--red);color:var(--red)}
+.tog.tb{background:var(--blue-dim);border-color:var(--blue);color:var(--blue)}
+
+/* TOOLTIP */
+.tipw{position:relative;display:inline-flex;align-items:center}
+.tpic{width:15px;height:15px;border-radius:50%;background:var(--surface3);border:1px solid var(--border2);color:var(--muted);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:help;flex-shrink:0;font-family:var(--sans);transition:all .15s}
+.tpic:hover{border-color:var(--blue);color:var(--blue)}
+.tipb{display:none;position:absolute;left:50%;top:calc(100% + 10px);transform:translateX(-50%);background:var(--surface3);border:1px solid var(--border2);border-radius:9px;padding:13px 15px;min-width:300px;max-width:360px;font-size:11px;color:var(--text);line-height:1.65;z-index:200;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+.tipb::before{content:'';position:absolute;top:-5px;left:50%;width:8px;height:8px;background:var(--surface3);border-left:1px solid var(--border2);border-top:1px solid var(--border2);transform:translateX(-50%) rotate(45deg)}
+.tipw:hover .tipb{display:block}
+.tiptbl{width:100%;border-collapse:collapse;margin-top:9px;font-family:var(--mono);font-size:10px}
+.tiptbl th{text-align:left;color:var(--muted);padding:3px 5px;border-bottom:1px solid var(--border2);font-weight:400}
+.tiptbl td{padding:4px 5px;border-bottom:1px solid var(--border)}
+.tiptbl tr:last-child td{border-bottom:none}
+.tiptbl .cur td{background:var(--green-dim);color:var(--green)}
+.tiptbl td:not(:first-child){text-align:right}
+.tiptbl .col-a{color:var(--amber)}
+
+/* REGIME PILLS */
+.rpills{display:flex;gap:6px;margin-bottom:14px}
+.rpill{flex:1;padding:10px 12px;border-radius:var(--r);border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;text-align:center;transition:all .2s;font-family:var(--sans)}
+.rpill span{display:block;font-size:10px;margin-top:2px;font-family:var(--mono)}
+.rpill.solo{background:var(--green-dim);border-color:var(--green);color:var(--green)}
+.rpill.mixto{background:var(--amber-dim);border-color:var(--amber);color:var(--amber)}
+
+/* WARN STRIP */
+.wstrip{background:var(--amber-dim);border:1px solid var(--amber);border-radius:var(--r);padding:10px 13px;font-size:11px;color:var(--amber);line-height:1.6;display:none;margin-bottom:13px}
+.wstrip.show{display:block}
+
+/* METRICS */
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:16px}
+.met{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;position:relative;overflow:hidden}
+.met.hi{border-color:var(--green);background:var(--green-dim)}
+.met.hi2{border-color:var(--amber);background:var(--amber-dim)}
+.mlbl{font-size:9px;color:var(--muted);font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.mval{font-family:var(--mono);font-size:17px;font-weight:500;line-height:1;margin-bottom:2px}
+.met.hi .mval{color:var(--green);font-size:19px}
+.met.hi2 .mval{color:var(--amber)}
+.msub{font-size:9px;color:var(--muted);font-family:var(--mono)}
+.mpct{position:absolute;top:9px;right:10px;font-family:var(--mono);font-size:9px;color:var(--muted)}
+
+/* BAR */
+.btrack{height:26px;background:var(--surface2);border-radius:var(--rs);overflow:hidden;display:flex;border:1px solid var(--border);margin-bottom:8px}
+.bseg{height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:500;transition:width .4s ease;overflow:hidden;white-space:nowrap;color:rgba(0,0,0,.75)}
+.bleg{display:flex;flex-wrap:wrap;gap:10px}
+.blegr{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);font-family:var(--mono)}
+.bdot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+/* BREAKDOWN */
+.bkdn{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:16px}
+.brow{display:flex;justify-content:space-between;align-items:center;padding:7px 14px;border-bottom:1px solid var(--border);gap:10px}
+.brow:last-child{border-bottom:none}
+.brow.sub{background:var(--surface2);border-top:1px solid var(--border2)}
+.brow.tot{background:var(--green-dim);border-top:1px solid var(--green)}
+.brow.sechdr{background:var(--surface3);padding:5px 14px}
+.blbl{font-size:11px;color:var(--muted);flex:1;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.brow.sub .blbl,.brow.tot .blbl{color:var(--text);font-weight:500;font-size:12px}
+.brow.sechdr .blbl{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.07em;text-transform:uppercase}
+.bnote{font-family:var(--mono);font-size:9px;color:var(--faint)}
+.bamt{font-family:var(--mono);font-size:11px;text-align:right;white-space:nowrap}
+.bamt .c{display:block;color:var(--text)}
+.bamt .u{display:block;font-size:9px;color:var(--muted)}
+.bamt.neg .c{color:var(--red)}.bamt.pos .c{color:var(--green)}.bamt.neu .c{color:var(--amber)}
+.brow.tot .bamt .c{color:var(--green);font-size:13px;font-weight:500}
+
+/* TRAMOS */
+.trow{display:flex;align-items:center;gap:8px;padding:5px 9px;border-radius:var(--rs);border:1px solid transparent;margin-bottom:2px}
+.trow.act{background:var(--surface2);border-color:var(--border)}
+.tpct{font-family:var(--mono);font-size:11px;color:var(--muted);min-width:34px;text-align:right}
+.trow.act .tpct{color:var(--amber)}
+.tbar{flex:1;height:4px;background:var(--border);border-radius:2px}
+.tfill{height:100%;border-radius:2px;background:var(--amber);transition:width .4s}
+.trng{font-family:var(--mono);font-size:10px;color:var(--muted);min-width:120px;text-align:center}
+.trow.act .trng{color:var(--text)}
+.timp{font-family:var(--mono);font-size:11px;color:var(--amber);min-width:70px;text-align:right}
+
+/* CCSS SCALE */
+.ccss-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:13px 15px;margin-top:12px}
+.ccss-title{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between}
+.ccsub{font-size:10px;color:var(--muted);margin-bottom:10px;font-family:var(--mono)}
+.ccss-table{width:100%;border-collapse:collapse;font-size:11px}
+.ccss-table th{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;text-align:right;border-bottom:1px solid var(--border2);font-weight:400}
+.ccss-table th:first-child,.ccss-table th:nth-child(2){text-align:left}
+.ccss-table td{padding:5px 8px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--muted);text-align:right}
+.ccss-table td:first-child,.ccss-table td:nth-child(2){text-align:left}
+.ccss-table tr:last-child td{border-bottom:none}
+.ccss-table .cur td{background:var(--green-dim);color:var(--green)}
+.ccss-table .cur td:first-child{border-radius:5px 0 0 5px}
+.ccss-table .cur td:last-child{border-radius:0 5px 5px 0}
+.ccss-table .cur td .you{font-size:9px;margin-left:4px;opacity:.8}
+.ccss-footer{margin-top:10px;display:flex;flex-wrap:wrap;gap:12px;font-family:var(--mono);font-size:10px;color:var(--muted);padding-top:8px;border-top:1px solid var(--border)}
+.ccss-footer strong{color:var(--green)}
+.ccss-footer .warn{color:var(--amber)}
+
+/* ROP TABLE */
+.rop-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.rop-item{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px}
+.rop-item.active{border-color:var(--green);background:var(--green-dim)}
+.rop-item.inactive{border-color:var(--faint);opacity:.65}
+.rop-tag{font-family:var(--mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.rop-item.active .rop-tag{color:var(--green)}
+.rop-item.inactive .rop-tag{color:var(--muted)}
+.rop-name{font-size:12px;font-weight:500;color:var(--text);margin-bottom:3px}
+.rop-desc{font-size:10px;color:var(--muted);line-height:1.5}
+.rop-pct{font-family:var(--mono);font-size:11px;margin-top:5px}
+.rop-item.active .rop-pct{color:var(--green)}
+.rop-item.inactive .rop-pct{color:var(--faint)}
+@media(max-width:500px){.rop-grid{grid-template-columns:1fr}}
+
+/* ALERTS */
+.alt{border-radius:var(--rs);padding:10px 13px;font-size:11px;line-height:1.6;margin-bottom:12px}
+.alt.info{background:var(--blue-dim);border:1px solid #1e3a5a;color:var(--blue)}
+.alt.warn{background:var(--amber-dim);border:1px solid #5a3f10;color:var(--amber)}
+.alt.danger{background:var(--red-dim);border:1px solid #5a1e1e;color:var(--red)}
+.alt.ok{background:var(--green-dim);border:1px solid #154535;color:var(--green)}
+.alt strong{font-weight:600}
+hr.sep{border:none;border-top:1px solid var(--border);margin:12px 0}
+.stag{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-family:var(--mono);font-size:10px;letter-spacing:.04em;margin-bottom:10px}
+.stag.solo{background:var(--green-dim);border:1px solid var(--green);color:var(--green)}
+.stag.mixto{background:var(--amber-dim);border:1px solid var(--amber);color:var(--amber)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="htag">// calculadora fiscal · costa rica 2026 · v4</div>
+<h1>Neto Freelance Developer CR</h1>
+<div class="hsub">Decreto 45333-H · Ley 7092 art. 8 inc. s) reformado dic-2025 · Escala CCSS TI base: La Gaceta N° 232 dic-2024 + ajuste IVM ene-2026</div>
+<div style="margin-bottom:22px">
+  <span class="badge g">Escala CCSS TI base 2025 + ajuste IVM 2026</span>
+  <span class="badge g">Tramos ISR 2026 Decreto 45333-H</span>
+  <span class="badge">FATCA / TRIBU-CR</span>
+  <span class="badge a">Sin ROP ni FCL (TI)</span>
+</div>
+
+<!-- RÉGIMEN -->
+<div class="sec">
+  <div class="slbl">Régimen de ingresos</div>
+  <div class="rpills">
+    <button class="rpill solo" id="psolo" onclick="setReg('solo')">
+      💻 Solo servicios profesionales
+      <span>freelancer / contractor puro</span>
+    </button>
+    <button class="rpill" id="pmixto" onclick="setReg('mixto')">
+      ⚡ Salario + servicios prof.
+      <span>empleo + trabajo externo</span>
+    </button>
+  </div>
+  <div class="wstrip" id="wmixto">
+    ⚠️ <strong>Régimen mixto — carga fiscal mayor.</strong> El tramo exento anual (₡6.244.000) ya lo consume tu salario. Los honorarios quedan gravados <strong>desde el primer colón</strong>, sin exento disponible. Así ocurrió en tu caso el año pasado con 3 meses a $3,300.
+  </div>
+</div>
+
+<!-- INGRESOS -->
+<div class="sec">
+  <div class="slbl">Ingresos</div>
+  <div class="card">
+    <div id="wrap-sal" style="display:none">
+      <div class="ctrl">
+        <div class="chdr">
+          <span class="clbl">Salario bruto mensual (empleo formal, CRC)</span>
+          <span class="cval b" id="out-sal">₡1,200,000</span>
+        </div>
+        <input type="range" id="sl-sal" min="400000" max="5000000" step="50000" value="1200000" oninput="calc()">
+      </div>
+      <hr class="sep">
+    </div>
+    <div class="ctrl">
+      <div class="chdr">
+        <span class="clbl">Tarifa servicios profesionales (USD/mes)</span>
+        <span class="cval g" id="out-rate">$5,000</span>
+      </div>
+      <input type="range" id="sl-rate" min="500" max="12000" step="100" value="5000" oninput="calc()">
+    </div>
+    <div class="ctrl">
+      <div class="chdr">
+        <span class="clbl">Tipo de cambio USD → CRC (BCCR referencial)</span>
+        <span class="cval" id="out-tc">460</span>
+      </div>
+      <input type="range" id="sl-tc" min="460" max="600" step="1" value="510" oninput="calc()">
+    </div>
+    <div class="ctrl">
+      <div class="chdr">
+        <span class="clbl">Meses facturados al año</span>
+        <span class="cval" id="out-meses">12 meses</span>
+      </div>
+      <input type="range" id="sl-meses" min="1" max="13" step="1" value="12" oninput="calc()">
+    </div>
+    <div class="ctrl">
+      <div class="chdr">
+        <span class="clbl">Divisor distribución mensual (simular aguinaldo)</span>
+        <span class="cval a" id="out-div">÷ 13</span>
+      </div>
+      <input type="range" id="sl-div" min="11" max="14" step="1" value="13" oninput="calc()">
+    </div>
+  </div>
+</div>
+
+<!-- CONFIG FISCAL -->
+<div class="sec">
+  <div class="slbl">Configuración fiscal</div>
+  <div class="card">
+    <div class="ctrl">
+      <div class="clbl" style="margin-bottom:8px">Tipo de cliente</div>
+      <div class="tgrp">
+        <button class="tog tg" id="bext" onclick="setCliente('ext')">Empresa exterior / USA → sin IVA</button>
+        <button class="tog" id="bloc" onclick="setCliente('loc')">Cliente local CR → IVA 13%</button>
+      </div>
+    </div>
+    <hr class="sep">
+    <div class="ctrl">
+      <div class="clbl" style="margin-bottom:8px">Deducción para renta (art. 8 Ley 7092)</div>
+      <div class="tgrp">
+        <button class="tog tg" id="bficto" onclick="setDed('ficto')">25% ficto (sin facturas)</button>
+        <button class="tog" id="breal" onclick="setDed('real')">Gastos reales documentados</button>
+      </div>
+    </div>
+    <div id="wrap-gastos" style="display:none;margin-top:12px">
+      <div class="ctrl">
+        <div class="chdr">
+          <span class="clbl">Gastos reales anuales con factura electrónica (CRC)</span>
+          <span class="cval a" id="out-gastos">₡1,200,000</span>
+        </div>
+        <input type="range" id="sl-gastos" min="0" max="15000000" step="100000" value="1200000" oninput="calc()">
+      </div>
+    </div>
+    <hr class="sep">
+    <div class="ctrl">
+      <div class="chdr">
+        <span class="clbl">Hijos (crédito fiscal ₡20.520/año c/u)</span>
+        <span class="cval" id="out-hijos">0</span>
+      </div>
+      <input type="range" id="sl-hijos" min="0" max="5" step="1" value="0" oninput="calc()">
+    </div>
+    <div class="ctrl">
+      <div class="clbl" style="margin-bottom:7px">Cónyuge (crédito ₡31.080/año)</div>
+      <div class="tgrp">
+        <button class="tog tg" id="bnoc" onclick="setCon(0)">Sin cónyuge</button>
+        <button class="tog" id="bc" onclick="setCon(1)">Con cónyuge</button>
+      </div>
+    </div>
+    <hr class="sep">
+    <div class="ctrl">
+      <div class="clbl" style="margin-bottom:7px">Pensión voluntaria (deducible art. 71 Ley 7983, máx 10% bruto)</div>
+      <div class="tgrp">
+        <button class="tog tg" id="bnop" onclick="setPen(0)">Sin pensión voluntaria</button>
+        <button class="tog" id="bp" onclick="setPen(1)">Con pensión voluntaria (10%)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CCSS -->
+<div class="sec">
+  <div class="slbl">CCSS — trabajador independiente 2026</div>
+  <div class="card">
+    <div class="alt info" style="margin-bottom:12px">
+      <strong>Régimen obligatorio, no voluntario.</strong> Inscribirse en Hacienda = inscribirse como TI en la CCSS (8 días hábiles). El seguro voluntario es solo para quienes <em>no</em> tienen actividad lucrativa declarada.
+    </div>
+
+    <div class="ctrl">
+      <div class="chdr">
+        <span class="clbl">
+          Ingreso bruto mensual reportado a la CCSS (CRC)
+          <span class="tipw">
+            <span class="tpic">?</span>
+            <div class="tipb">
+              <strong style="color:var(--green)">¿Bruto o neto para la CCSS?</strong><br><br>
+              Técnicamente el Reglamento TI (RACTI) dice <em>"ingreso neto"</em> (bruto menos gastos necesarios). Pero en la práctica:<br><br>
+              <strong style="color:var(--amber)">Si tenés contrato en USD</strong> la CCSS puede solicitar ese contrato para validar el monto. Tu contadora confirmó que calculan sobre el <strong>monto bruto del contrato</strong>.<br><br>
+              Si no tenés facturas de gastos operativos, reportar el bruto es lo más seguro y consistente con tu declaración de Hacienda.<br><br>
+              <strong style="color:var(--red)">Riesgo de reportar muy bajo:</strong> la CCSS puede auditar y cruzar contra tu D-101. Si hay inconsistencia, ajustan retroactivamente.<br><br>
+              <strong>BMC 2026:</strong> ₡346.789 (SEM) · ₡324.590 (IVM). Si reportás menos, cotizás sobre la BMC de todas formas.
+            </div>
+          </span>
+        </span>
+        <span class="cval g" id="out-ccss">₡1,500,000</span>
+      </div>
+      <input type="range" id="sl-ccss" min="346789" max="8000000" step="50000" value="1500000" oninput="calc()">
+    </div>
+
+    <!-- TABLA OFICIAL -->
+    <div class="ccss-card">
+      <div class="ccss-title">
+        Escala Contributiva TI — dos tablas separadas: SEM (Salud) + IVM (Pensión)
+        <span class="tipw" style="margin-left:6px">
+          <span class="tpic">?</span>
+          <div class="tipb" style="left:auto;right:0;transform:none">
+            <strong style="color:var(--green)">¿Por qué dos tablas?</strong><br><br>
+            La CCSS maneja dos seguros completamente separados:<br><br>
+            <strong style="color:var(--amber)">SEM</strong> = Seguro Enfermedad y Maternidad (tu salud, médicos, hospitales). Tasa conjunta siempre 12%. Vos pagás entre 2.89% y 10.69% según categoría; el Estado pone el resto.<br><br>
+            <strong style="color:var(--amber)">IVM</strong> = Invalidez, Vejez y Muerte (tu pensión futura). Tasa conjunta 9.59% base + 0.16pp en 2026. Vos pagás entre 4.16% y 8.42% según categoría.<br><br>
+            <strong>Tu cuota mensual = (afil. SEM + afil. IVM) × ingreso reportado</strong><br><br>
+            Ejemplo cat. 4: (8.02% + 7.98%) × ₡1.500.000 = <strong style="color:var(--green)">₡239.700/mes</strong><br><br>
+            <strong style="color:var(--red)">ROP y FCL no aplican para TI.</strong>
+          </div>
+        </span>
+      </div>
+
+      <!-- Alerta ajuste IVM 2026 -->
+      <div style="background:#1a2e1a;border:1px solid #2d5a2d;border-radius:6px;padding:10px 12px;margin:8px 0 10px;font-size:11px;color:#7ecf7e;line-height:1.6">
+        <strong>⚙️ Ajuste IVM enero 2026 (+0,16 pp por afiliado)</strong><br>
+        La Junta Directiva de la CCSS, en acuerdo de la Sesión N° 9038 (2019), estableció incrementos trianales al IVM. El quinto incremento entró en vigor el <strong>1° de enero de 2026</strong>: la tasa IVM del afiliado (trabajador/TI) sube <strong>0,16 puntos porcentuales</strong> en todas las categorías. Fuente: Teletica/CCSS dic-2025 · BLP Legal oct-2025 · BDO dic-2025.<br>
+        La escala de <em>rangos de ingreso y SEM</em> continúa basada en el <strong>Decreto N° 44756-MTSS, La Gaceta N° 232, 10 dic 2024</strong> (vigente para 2025 y base para 2026). Un decreto equivalente para 2026 (basado en el Decreto N° 45303-MTSS de salarios mínimos 2026) actualizará los rangos con el ajuste salarial de 1,63%; ese PDF de escala TI 2026 no estaba publicado públicamente al momento de este cálculo. La diferencia en los rangos es mínima (~1,63% de corrimiento).
+      </div>
+
+      <div class="ccsub">Columna <span style="color:var(--amber)">Afiliado</span> = lo que pagás vos · Estado y LPT complementan el total conjunto</div>
+      <table class="ccss-table" id="ccss-tbl"></table>
+      <div class="ccss-footer" id="ccss-footer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ROP / FONDOS INFO -->
+<div class="sec">
+  <div class="slbl">
+    Fondos de pensión — ¿cuáles aplican a un TI?
+    <span class="tipw">
+      <span class="tpic">?</span>
+      <div class="tipb">Fuente: SUPEN · OPC CCSS · BAC Pensiones · Ley 7983</div>
+    </span>
+  </div>
+  <div class="card">
+    <div class="alt info" style="margin-bottom:12px;font-size:11px">
+      <strong>Como trabajador independiente no tenés patrono</strong>, por lo tanto no cotizás al ROP ni al FCL. Esos fondos <strong>requieren aporte patronal</strong> para existir. Podés ahorrar voluntariamente para pensión, que sí es deducible del ISR.
+    </div>
+    <div class="rop-grid">
+      <div class="rop-item active">
+        <div class="rop-tag">✅ Obligatorio · TI</div>
+        <div class="rop-name">IVM — Invalidez Vejez Muerte</div>
+        <div class="rop-desc">Tu pensión básica de la CCSS. Requiere 300 cuotas (25 años) y 65 años de edad. Cuanto más cotizás y más alto el ingreso reportado, mayor será tu pensión.</div>
+        <div class="rop-pct" id="ivm-pct-show">Afiliado: —% · Estado: —%</div>
+      </div>
+      <div class="rop-item active">
+        <div class="rop-tag">✅ Obligatorio · TI</div>
+        <div class="rop-name">SEM — Salud (Enfermedad y Maternidad)</div>
+        <div class="rop-desc">Tu seguro de salud completo: médico general, especialistas, hospitales, medicamentos, emergencias, maternidad.</div>
+        <div class="rop-pct" id="sem-pct-show">Afiliado: —% · Estado: —%</div>
+      </div>
+      <div class="rop-item inactive">
+        <div class="rop-tag">❌ No aplica · TI</div>
+        <div class="rop-name">ROP — Pensión Complementaria Obligatoria</div>
+        <div class="rop-desc">Complemento de pensión (4.25% del salario). 1% lo pone el trabajador, el resto el patrono. <strong>Sin patrono = no existe para vos.</strong></div>
+        <div class="rop-pct" style="color:var(--faint)">Requiere relación laboral</div>
+      </div>
+      <div class="rop-item inactive">
+        <div class="rop-tag">❌ No aplica · TI</div>
+        <div class="rop-name">FCL — Fondo Capitalización Laboral</div>
+        <div class="rop-desc">Cesantía modernizada, retirable cada 5 años. 100% aporte patronal. <strong>Sin patrono = no existe para vos.</strong></div>
+        <div class="rop-pct" style="color:var(--faint)">Requiere relación laboral</div>
+      </div>
+      <div class="rop-item active" style="border-color:var(--purple);background:var(--purple-dim)">
+        <div class="rop-tag" style="color:var(--purple)">⭐ Voluntario · Recomendado</div>
+        <div class="rop-name">RVP — Pensión Voluntaria Complementaria</div>
+        <div class="rop-desc">Ahorro voluntario con una OPC (BAC, BCR, BN Vital, Popular). <strong>Deducible del ISR hasta 10% del ingreso bruto anual</strong> (art. 71 Ley 7983). Complementa tu IVM futuro.</div>
+        <div class="rop-pct" style="color:var(--purple)">Deducible ISR · Lo ponés vos</div>
+      </div>
+      <div class="rop-item" style="border-color:var(--teal);background:var(--teal-dim)">
+        <div class="rop-tag" style="color:var(--teal)">📋 Nota importante</div>
+        <div class="rop-name">Pensión futura como TI</div>
+        <div class="rop-desc">Tu pensión vendrá únicamente del IVM (si completás 300 cuotas). Sin ROP tu monto de pensión será menor que un asalariado equivalente. Por eso el RVP es muy recomendable para developers freelance.</div>
+        <div class="rop-pct" style="color:var(--teal)">Planificá a largo plazo</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTADO -->
+<div class="sec">
+  <div class="slbl">Resultado mensual (distribuido en <span id="ldiv">13</span> meses)</div>
+  <div id="stag-wrap"></div>
+  <div class="mgrid" id="metrics"></div>
+</div>
+
+<!-- BARRA -->
+<div class="sec">
+  <div class="slbl">Distribución del ingreso bruto</div>
+  <div class="card" style="padding:13px 15px">
+    <div class="btrack" id="btrack"></div>
+    <div class="bleg" id="bleg"></div>
+  </div>
+</div>
+
+<!-- DESGLOSE -->
+<div class="sec">
+  <div class="slbl">Desglose anual detallado</div>
+  <div class="bkdn" id="bkdn"></div>
+</div>
+
+<!-- TRAMOS ISR -->
+<div class="sec">
+  <div class="slbl">Tramos ISR 2026 — cálculo escalonado progresivo</div>
+  <div class="card">
+    <div class="alt info" style="margin-bottom:10px;font-size:11px">
+      Cada tramo aplica <strong>solo sobre el monto que cae dentro de ese rango</strong>. La tasa del 25% NO se aplica sobre el total, sino solo sobre el excedente de ₡20.872.000. Columna derecha = impuesto generado solo por ese tramo.
+    </div>
+    <div style="display:flex;gap:8px;font-family:var(--mono);font-size:9px;color:var(--muted);padding:0 9px;margin-bottom:3px;letter-spacing:.05em">
+      <span style="min-width:34px;text-align:right">TASA</span>
+      <span style="flex:1;text-align:center">PROPORCIÓN</span>
+      <span style="min-width:110px;text-align:center">MONTO EN TRAMO</span>
+      <span style="min-width:70px;text-align:right">IMPUESTO</span>
+    </div>
+    <div id="tramogrid"></div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:8px;padding:0 9px;font-family:var(--mono);font-size:11px">
+      <span style="color:var(--muted)">ISR bruto total:</span>
+      <span style="color:var(--amber)" id="tramotot"></span>
+    </div>
+  </div>
+</div>
+
+<!-- IVA -->
+<div class="sec">
+  <div class="slbl">IVA — situación según tipo de cliente</div>
+  <div id="ivainfo"></div>
+</div>
+
+<!-- RIESGO -->
+<div class="sec">
+  <div class="slbl">Simulador de riesgo — subdeclaración de ingresos</div>
+  <div class="card">
+    <div class="alt warn" style="margin-bottom:12px;font-size:11px">
+      <strong>Solo informativo.</strong> Subdeclarar es evasión fiscal (art. 81 CNPT). TRIBU-CR cruza bancos + CCSS + factura electrónica. FATCA/CRS intercambia datos con EE.UU. Prescripción: <strong>10 años</strong> para omisos del RUT.
+    </div>
+    <div class="ctrl">
+      <div class="chdr">
+        <span class="clbl">Ingreso real mensual (USD)</span>
+        <span class="cval g" id="out-real">$5,000</span>
+      </div>
+      <input type="range" id="sl-real" min="500" max="12000" step="100" value="5000" oninput="calcR()">
+    </div>
+    <div class="ctrl">
+      <div class="chdr">
+        <span class="clbl">Monto que declararías (USD)</span>
+        <span class="cval r" id="out-decl">$5,000</span>
+      </div>
+      <input type="range" id="sl-decl" min="500" max="12000" step="100" value="5000" oninput="calcR()">
+    </div>
+    <div id="riesgores"></div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+<script>
+// ─── STATE ───────────────────────────────────────────
+let reg='solo',cli=false,ded='ficto',con=0,pen=0;
+
+// ─── HELPERS ─────────────────────────────────────────
+const $=id=>document.getElementById(id);
+const NF=new Intl.NumberFormat('es-CR');
+const fm=(n,d=0)=>NF.format(+(Math.round(n*1e6)/1e6).toFixed(d));
+const fC=n=>'₡'+fm(Math.abs(n));
+const fU=n=>(n<0?'-':'')+'$'+fm(Math.abs(n));
+const fP=n=>(n*100).toFixed(1)+'%';
+
+// ─── CCSS ESCALA TI 2026 ─────────────────────────────
+// BASE: Escala Contributiva TI-AV, La Gaceta N°232, 10 dic 2024
+//       Decreto Ejecutivo N° 44756-MTSS (imagen oficial adjunta por usuario)
+// AJUSTE IVM 2026: +0.16pp en afiliado, per acuerdo JD CCSS Sesión N°9038/2019
+//   confirmado por: CCSS oficial, Teletica dic-2025, BLP Legal oct-2025, BDO dic-2025
+// RANGOS: se mantienen de la escala base (decreto 44756-MTSS);
+//   el decreto 45303-MTSS de ene-2026 ajusta salarios +1.63%, los rangos de la
+//   escala TI 2026 se moverán ~1.63% — pendiente publicación PDF oficial CCSS.
+// SEM: sin cambio (igual que 2025)
+// IVM afiliado 2026 = IVM afiliado 2025 + 0.0016
+
+// TABLA SEM (Salud) - base Gaceta N°232, dic 2024
+// Cat | Rango             | Afiliado | Estado  | Conjunto
+//  1  | hasta ₡341.227    | 2.89%    | 9.11%   | 12.00%
+//  2  | ₡341.228–734.217  | 4.33%    | 7.67%   | 12.00%
+//  3  | ₡734.218–1.468.434| 6.24%    | 5.76%   | 12.00%
+//  4  | ₡1.468.435–2.202.651| 8.02%  | 3.98%   | 12.00%
+//  5  | ₡2.202.652+       | 10.69%   | 1.31%   | 12.00%
+
+// TABLA IVM (Pensión) - base Gaceta N°232 + ajuste 2026
+// Cat | Rango             | Afil.2025| Afil.2026(+0.16pp)| Estado | LPT  | Conjunto
+//  1  | hasta ₡319.384    | 4.00%    | 4.16%             | 5.29%  | 0.30%| 9.75%
+//  2  | ₡319.385–734.217  | 5.49%    | 5.65%             | 4.10%  | 0.00%| 9.75%
+//  3  | ₡734.218–1.468.434| 7.37%    | 7.53%             | 2.22%  | 0.00%| 9.75%
+//  4  | ₡1.468.435–2.202.651| 7.82%  | 7.98%             | 1.77%  | 0.00%| 9.75%
+//  5  | ₡2.202.652+       | 8.26%    | 8.42%             | 1.33%  | 0.00%| 9.75%
+
+const CCSS_CATS=[
+  // {cat, max_sem, max_ivm, sem_afil, sem_est, ivm_afil_2025, ivm_afil_2026, ivm_est, ivm_lpt}
+  {cat:1, max:341227,  ivm25:0.0400,ivm26:0.0416,ivm_est:0.0529,ivm_lpt:0.0030, sem_afil:0.0289,sem_est:0.0911},
+  {cat:2, max:734217,  ivm25:0.0549,ivm26:0.0565,ivm_est:0.0410,ivm_lpt:0.0000, sem_afil:0.0433,sem_est:0.0767},
+  {cat:3, max:1468434, ivm25:0.0737,ivm26:0.0753,ivm_est:0.0222,ivm_lpt:0.0000, sem_afil:0.0624,sem_est:0.0576},
+  {cat:4, max:2202651, ivm25:0.0782,ivm26:0.0798,ivm_est:0.0177,ivm_lpt:0.0000, sem_afil:0.0802,sem_est:0.0398},
+  {cat:5, max:Infinity,ivm25:0.0826,ivm26:0.0842,ivm_est:0.0133,ivm_lpt:0.0000, sem_afil:0.1069,sem_est:0.0131},
+];
+
+function getCat(ingreso){
+  const base=Math.max(341228,ingreso); // BMC SEM como mínimo obligatorio
+  const c=CCSS_CATS.find(c=>base<=(c.max===Infinity?1e12:c.max))||CCSS_CATS[4];
+  const ivm_afil=c.ivm26; // usamos tasa 2026 con ajuste
+  const tasa_afil=ivm_afil+c.sem_afil;
+  return{...c, base, ivm_afil, tasa_afil,
+    cuota_sem:  c.sem_afil*base,
+    cuota_ivm:  ivm_afil*base,
+    cuota_afil: tasa_afil*base,
+  };
+}
+
+// ─── ISR TRAMOS 2026 (Decreto 45333-H) ───────────────
+const TRAMOS=[
+  {desde:0,       hasta:6244000,  tasa:0,    lbl:'Exento'},
+  {desde:6244000, hasta:8329000,  tasa:0.10, lbl:'10%'},
+  {desde:8329000, hasta:10414000, tasa:0.15, lbl:'15%'},
+  {desde:10414000,hasta:20872000, tasa:0.20, lbl:'20%'},
+  {desde:20872000,hasta:1e12,     tasa:0.25, lbl:'25%'},
+];
+function calcISR(rn){
+  let tot=0,det=[];
+  for(const t of TRAMOS){
+    if(rn<=t.desde){det.push({...t,base:0,imp:0});continue}
+    const base=Math.min(rn,t.hasta)-t.desde;
+    const imp=base*t.tasa;
+    tot+=imp;det.push({...t,base,imp});
+  }
+  return{tot,det};
+}
+
+// ─── SETTERS ─────────────────────────────────────────
+function setReg(r){
+  reg=r;
+  $('psolo').className='rpill '+(r==='solo'?'solo':'');
+  $('pmixto').className='rpill '+(r==='mixto'?'mixto':'');
+  $('wrap-sal').style.display=r==='mixto'?'block':'none';
+  $('wmixto').className='wstrip '+(r==='mixto'?'show':'');
+  calc();
+}
+function setCliente(c){
+  cli=c==='loc';
+  $('bext').className='tog '+(c==='ext'?'tg':'');
+  $('bloc').className='tog '+(c==='loc'?'ta':'');
+  calc();
+}
+function setDed(d){
+  ded=d;
+  $('bficto').className='tog '+(d==='ficto'?'tg':'');
+  $('breal').className='tog '+(d==='real'?'ta':'');
+  $('wrap-gastos').style.display=d==='real'?'block':'none';
+  calc();
+}
+function setCon(v){
+  con=v;
+  $('bnoc').className='tog '+(v===0?'tg':'');
+  $('bc').className='tog '+(v===1?'tg':'');
+  calc();
+}
+function setPen(v){
+  pen=v;
+  $('bnop').className='tog '+(v===0?'tg':'');
+  $('bp').className='tog '+(v===1?'tg':'');
+  calc();
+}
+
+// ─── MAIN CALC ────────────────────────────────────────
+function calc(){
+  const rate    =+$('sl-rate').value;
+  const tc      =+$('sl-tc').value;
+  const meses   =+$('sl-meses').value;
+  const div     =+$('sl-div').value;
+  const hijos   =+$('sl-hijos').value;
+  const gastosR =+$('sl-gastos').value;
+  const salCRC  =+$('sl-sal').value;
+  const ccssBase=+$('sl-ccss').value;
+
+  $('out-rate').textContent =fU(rate);
+  $('out-tc').textContent   ='₡'+tc;
+  $('out-meses').textContent=meses+' meses';
+  $('out-div').textContent  ='÷ '+div;
+  $('out-hijos').textContent=hijos;
+  $('out-gastos').textContent=fC(gastosR);
+  $('out-sal').textContent  =fC(salCRC);
+  $('ldiv').textContent     =div;
+  $('out-ccss').textContent =fC(ccssBase);
+
+  // ── Servicios profesionales ──
+  const spBruto =rate*meses*tc;
+  const spUSD   =rate*meses;
+
+  // CCSS TI — cuota mensual del afiliado
+  const catInfo =getCat(ccssBase);
+  const ccssMes =catInfo.cuota_afil;
+  const ccssAno =ccssMes*12;
+
+  // ── Gastos deducibles renta ──
+  let dedGastos=0;
+  if(ded==='ficto'){
+    dedGastos=spBruto*0.25;
+  } else {
+    // gastos reales; la CCSS también es deducible en gastos reales
+    dedGastos=gastosR+ccssAno;
+  }
+
+  // ── Pensión voluntaria ──
+  const penAno=pen?spBruto*0.10:0;
+
+  // ── ISR ──
+  const cCred=hijos*20520+con*31080;
+
+  let rentaNeta,isrBruto,isrFinal,tramoDet;
+  if(reg==='solo'){
+    // CCSS deducible si aplica ficto (práctica DGT)
+    const ccssDed=ded==='ficto'?ccssAno:0;
+    rentaNeta=Math.max(0,spBruto-dedGastos-penAno-ccssDed);
+    const r=calcISR(rentaNeta);
+    isrBruto=r.tot; tramoDet=r.det;
+    isrFinal=Math.max(0,isrBruto-cCred);
+  } else {
+    // Mixto: exento ya consumido por salario
+    const ccssDed=ded==='ficto'?ccssAno:0;
+    rentaNeta=Math.max(0,spBruto-dedGastos-penAno-ccssDed);
+    // Exento restante después del salario
+    const exUsado=Math.min(salCRC*12,6244000);
+    const exRest=Math.max(0,6244000-exUsado);
+    const rn2=Math.max(0,rentaNeta-exRest);
+    const r=calcISR(rn2);
+    isrBruto=r.tot; tramoDet=r.det;
+    isrFinal=Math.max(0,isrBruto); // créditos ya usados en salario
+    rentaNeta=rn2;
+  }
+
+  const netoAno =spBruto-ccssAno-isrFinal;
+  const netoMes =netoAno/div;
+  const brutMes =spBruto/div;
+
+  // ── CCSS tabla render — DOS TABLAS SEPARADAS ──────────
+  // Tabla SEM
+  const semHead=`<thead><tr style="background:var(--blue-dim)">
+    <th colspan="5" style="text-align:center;color:var(--blue);padding:6px 8px;font-size:10px;letter-spacing:.07em">
+      TABLA 1 — SEGURO SALUD (SEM) · Tasa conjunta siempre 12% · Fuente: Gaceta N°232, dic 2024
+    </th></tr>
+    <tr><th>Cat.</th><th>Rango ingreso (CRC)</th><th style="color:var(--amber)">Afiliado (vos)</th><th>Estado</th><th>Conjunto</th></tr>
+  </thead>`;
+  const semRows=CCSS_CATS.map((c,i)=>{
+    const cur=ccssBase<=(c.max===Infinity?1e12:c.max)&&(i===0||ccssBase>CCSS_CATS[i-1].max);
+    const rng=i===0?'Hasta '+fC(c.max):(c.max===Infinity?'Más de '+fC(CCSS_CATS[i-1].max):fC(CCSS_CATS[i-1].max+1)+' – '+fC(c.max));
+    return`<tr class="${cur?'cur':''}">
+      <td>Cat ${c.cat}${cur?'<span class="you"> ← vos</span>':''}</td>
+      <td>${rng}</td>
+      <td class="col-a">${(c.sem_afil*100).toFixed(2)}%</td>
+      <td>${(c.sem_est*100).toFixed(2)}%</td>
+      <td>12.00%</td>
+    </tr>`;
+  }).join('');
+
+  // Tabla IVM
+  const ivmHead=`<thead><tr style="background:var(--purple-dim)">
+    <th colspan="6" style="text-align:center;color:var(--purple);padding:6px 8px;font-size:10px;letter-spacing:.07em">
+      TABLA 2 — SEGURO PENSIÓN (IVM) · Tasa conjunta ~9.75% · Base: Gaceta N°232 dic 2024 + ajuste +0.16pp ene-2026
+    </th></tr>
+    <tr><th>Cat.</th><th>Rango ingreso (CRC)</th><th style="color:var(--muted)">Afiliado 2025</th><th style="color:var(--amber)">Afiliado 2026 (+0.16pp)</th><th>Estado+LPT</th><th>Conjunto</th></tr>
+  </thead>`;
+  const ivmRows=CCSS_CATS.map((c,i)=>{
+    const cur=ccssBase<=(c.max===Infinity?1e12:c.max)&&(i===0||ccssBase>CCSS_CATS[i-1].max);
+    const rng=i===0?'Hasta '+fC(c.max):(c.max===Infinity?'Más de '+fC(CCSS_CATS[i-1].max):fC(CCSS_CATS[i-1].max+1)+' – '+fC(c.max));
+    const estLPT=((c.ivm_est+c.ivm_lpt)*100).toFixed(2)+'%';
+    const conj=((c.ivm26+c.ivm_est+c.ivm_lpt)*100).toFixed(2)+'%';
+    return`<tr class="${cur?'cur':''}">
+      <td>Cat ${c.cat}${cur?'<span class="you"> ← vos</span>':''}</td>
+      <td>${rng}</td>
+      <td style="color:var(--muted)">${(c.ivm25*100).toFixed(2)}%</td>
+      <td class="col-a">${(c.ivm26*100).toFixed(2)}%</td>
+      <td>${estLPT}</td>
+      <td>${conj}</td>
+    </tr>`;
+  }).join('');
+
+  // Tabla resumen combinado
+  const sumHead=`<thead><tr style="background:var(--green-dim)">
+    <th colspan="4" style="text-align:center;color:var(--green);padding:6px 8px;font-size:10px;letter-spacing:.07em">
+      RESUMEN — LO QUE VOS PAGÁS (SEM afil. + IVM afil. 2026)
+    </th></tr>
+    <tr><th>Cat.</th><th>Rango</th><th style="color:var(--amber)">SEM + IVM (vos)</th><th style="color:var(--green)">Cuota mensual</th></tr>
+  </thead>`;
+  const sumRows=CCSS_CATS.map((c,i)=>{
+    const cur=ccssBase<=(c.max===Infinity?1e12:c.max)&&(i===0||ccssBase>CCSS_CATS[i-1].max);
+    const rng=i===0?'Hasta '+fC(c.max):(c.max===Infinity?'Más de '+fC(CCSS_CATS[i-1].max):fC(CCSS_CATS[i-1].max+1)+' – '+fC(c.max));
+    const totPct=((c.sem_afil+c.ivm26)*100).toFixed(2)+'%';
+    // Cuota de ejemplo sobre el punto medio del rango
+    const midBase=c.max===Infinity?CCSS_CATS[i-1].max*1.5:i===0?c.max/2:(CCSS_CATS[i-1].max+c.max)/2;
+    const cuotaEj=(c.sem_afil+c.ivm26)*midBase;
+    return`<tr class="${cur?'cur':''}">
+      <td>Cat ${c.cat}${cur?'<span class="you"> ← vos</span>':''}</td>
+      <td>${rng}</td>
+      <td class="col-a">${totPct}</td>
+      <td style="color:${cur?'var(--green)':'var(--muted)'}">${cur?fC(catInfo.cuota_afil)+'/mes':'~'+fC(cuotaEj)}</td>
+    </tr>`;
+  }).join('');
+
+  $('ccss-tbl').innerHTML=
+    semHead+'<tbody>'+semRows+'</tbody>'+
+    '<tbody><tr><td colspan="5" style="height:12px;border:none;background:transparent"></td></tr></tbody>'+
+    ivmHead+'<tbody>'+ivmRows+'</tbody>'+
+    '<tbody><tr><td colspan="6" style="height:12px;border:none;background:transparent"></td></tr></tbody>'+
+    sumHead+'<tbody>'+sumRows+'</tbody>';
+
+  $('ccss-footer').innerHTML=`
+    <span>Cuota mensual afiliado: <strong>${fC(catInfo.cuota_afil)}</strong></span>
+    <span>— SEM: <strong>${fC(catInfo.cuota_sem)}</strong></span>
+    <span>— IVM: <strong>${fC(catInfo.cuota_ivm)}</strong></span>
+    <span>Anual: <strong>${fC(ccssAno)}</strong></span>
+    <span class="warn">BMC obligatorio: ₡341.228 (SEM)</span>
+    <span style="color:var(--muted)">Base: Gaceta N°232 dic 2024 + ajuste IVM ene-2026</span>
+  `;
+
+  // ── ROP boxes info update ──
+  $('ivm-pct-show').textContent=`Afiliado 2026: ${(catInfo.ivm_afil*100).toFixed(2)}% (2025: ${(catInfo.ivm25*100).toFixed(2)}%) · Estado: ${(catInfo.ivm_est*100).toFixed(2)}%`;
+  $('sem-pct-show').textContent=`Afiliado: ${(catInfo.sem_afil*100).toFixed(2)}% · Estado: ${(catInfo.sem_est*100).toFixed(2)}%`;
+
+  // ── Scenario tag ──
+  $('stag-wrap').innerHTML=reg==='solo'
+    ?'<div class="stag solo">Solo servicios — tramo exento completo disponible</div>'
+    :'<div class="stag mixto">Régimen mixto — SP gravados sin tramo exento (consumido por salario)</div>';
+
+  // ── Metrics ──
+  const mets=[
+    {lbl:'Bruto serv. mensual (÷'+div+')', val:fC(brutMes),sub:fU(brutMes/tc),hi:false,pct:''},
+    {lbl:'CCSS mensual (cat '+catInfo.cat+')',val:fC(catInfo.cuota_afil),sub:fP(catInfo.tasa_afil)+' afiliado',hi:false,pct:''},
+    {lbl:'ISR mensual equiv.',val:fC(isrFinal/div),sub:fU(isrFinal/div/tc),hi:false,pct:fP(isrFinal/spBruto)},
+    {lbl:'Neto mensual',val:fC(netoMes),sub:fU(netoMes/tc),hi:true,pct:fP(netoAno/spBruto)},
+  ];
+  if(reg==='mixto') mets.unshift({lbl:'Salario mensual bruto',val:fC(salCRC),sub:'empleo formal',hi2:true,pct:''});
+  $('metrics').innerHTML=mets.map(m=>`
+    <div class="met ${m.hi?'hi':m.hi2?'hi2':''}">
+      <div class="mlbl">${m.lbl}</div>
+      <div class="mval">${m.val}</div>
+      <div class="msub">${m.sub}</div>
+      ${m.pct?`<div class="mpct">${m.pct}</div>`:''}
+    </div>`).join('');
+
+  // ── Bar ──
+  const pN=netoAno/spBruto,pI=isrFinal/spBruto,pC=ccssAno/spBruto,pP=penAno/spBruto;
+  const segs=[
+    {c:'#2dd4a0',p:pN,l:'Neto',mn:5},
+    {c:'#9f7aea',p:pI,l:'ISR',mn:3},
+    {c:'#f16e6e',p:pC,l:'CCSS',mn:3},
+    {c:'#f5a623',p:pP,l:'Pensión',mn:2},
+  ].filter(s=>s.p>0.001);
+  $('btrack').innerHTML=segs.map(s=>{
+    const w=(s.p*100).toFixed(1);
+    return`<div class="bseg" style="width:${w}%;background:${s.c}">${s.p*100>=s.mn?w+'%':''}</div>`;
+  }).join('');
+  $('bleg').innerHTML=segs.map(s=>
+    `<div class="blegr"><div class="bdot" style="background:${s.c}"></div>${s.l} ${(s.p*100).toFixed(1)}%</div>`
+  ).join('');
+
+  // ── Breakdown ──
+  const rows2=[];
+  if(reg==='mixto'){
+    rows2.push({sec:'Ingreso por empleo formal'});
+    rows2.push({l:'Salario bruto anual (12 meses)',v:salCRC*12,u:salCRC*12/tc,cls:'pos'});
+    rows2.push({l:'CCSS obrero asalariado (~9.83%)',v:-(salCRC*0.0983*12),u:0,cls:'neg',note:'estimado'});
+    rows2.push({sec:'Ingresos por servicios profesionales'});
+  }
+  rows2.push({l:`SP bruto (${meses} × ${fU(rate)})`,v:spBruto,u:spUSD,cls:'pos'});
+  rows2.push({l:`Deducible ${ded==='ficto'?'ficto 25%':'gastos reales'} (art. 8 Ley 7092)`,v:-dedGastos,u:-dedGastos/tc,cls:'neg'});
+  if(pen) rows2.push({l:'Pensión voluntaria deducible 10% (art. 71 Ley 7983)',v:-penAno,u:-penAno/tc,cls:'neg'});
+  if(ded==='ficto') rows2.push({l:'CCSS TI deducible adicional (art. 8 inc. b)',v:-ccssAno,u:-ccssAno/tc,cls:'neg'});
+  rows2.push({l:'Renta neta imponible servicios',v:rentaNeta,u:rentaNeta/tc,cls:'',sub:true});
+  rows2.push({l:'ISR escalonado bruto (tramos 2026)',v:-isrBruto,u:-isrBruto/tc,cls:'neg'});
+  if(cCred>0) rows2.push({l:`Créditos fiscales (${hijos} hijo${hijos!==1?'s':''} ${con?'+ cónyuge':''})`,v:cCred,u:cCred/tc,cls:'pos'});
+  rows2.push({l:'Impuesto sobre la renta definitivo',v:-isrFinal,u:-isrFinal/tc,cls:'neg',sub:true});
+  rows2.push({l:`CCSS TI (cat. ${catInfo.cat} · SEM ${(catInfo.sem_afil*100).toFixed(2)}% + IVM ${(catInfo.ivm_afil*100).toFixed(2)}% = ${(catInfo.tasa_afil*100).toFixed(2)}% · ${fC(catInfo.cuota_afil)}/mes × 12)`,v:-ccssAno,u:-ccssAno/tc,cls:'neg'});
+  if(cli) rows2.push({l:'IVA 13% (pass-through al cliente)',v:0,u:0,cls:'neu',note:'no sale de tu bolsillo'});
+  rows2.push({l:'Neto anual en bolsillo',v:netoAno,u:netoAno/tc,cls:'pos',sub:true});
+  rows2.push({l:`Neto mensual (÷${div})`,v:netoMes,u:netoMes/tc,cls:'pos',tot:true});
+
+  $('bkdn').innerHTML=rows2.map(r=>{
+    if(r.sec) return`<div class="brow sechdr"><span class="blbl">${r.sec}</span></div>`;
+    const z=r.v===0;
+    return`<div class="brow ${r.tot?'tot':r.sub?'sub':''}">
+      <span class="blbl">${r.l}${r.note?`<span class="bnote">(${r.note})</span>`:''}</span>
+      <span class="bamt ${r.cls}">
+        <span class="c">${z?'—':(r.v<0?'−':'')+fC(r.v)}</span>
+        <span class="u">${z?'':(r.u<0?'−':'')+fU(Math.abs(r.u))}</span>
+      </span>
+    </div>`;
+  }).join('');
+
+  // ── Tramos ──
+  const maxB=Math.max(...tramoDet.map(t=>t.base),1);
+  $('tramogrid').innerHTML=tramoDet.map(t=>{
+    const act=t.base>0;
+    const w=act?Math.min(100,t.base/maxB*100).toFixed(1):'0';
+    return`<div class="trow${act?' act':''}">
+      <span class="tpct">${t.lbl}</span>
+      <div class="tbar"><div class="tfill" style="width:${w}%"></div></div>
+      <span class="trng">${act?fC(t.base):'—'}</span>
+      <span class="timp">${act&&t.tasa>0?fC(t.imp):(act?'₡0':'—')}</span>
+    </div>`;
+  }).join('');
+  $('tramotot').textContent=fC(isrBruto);
+
+  // ── IVA ──
+  $('ivainfo').innerHTML=cli
+    ?`<div class="alt warn"><strong>Cliente local — IVA 13%.</strong> Cobrás ₡${fm(rate*tc*0.13)} adicionales por mes a tu tarifa base. Declarás en D-104 antes del día 15. El IVA no sale de tu bolsillo (lo paga el cliente), pero omitir D-104 = multa ₡231.100.</div>`
+    :`<div class="alt ok"><strong>Cliente en el exterior — Exportación de servicios, IVA exento (art. 8 Ley 9635).</strong> Emitís Factura Electrónica de Exportación v4.4 al 0%. D-104 mensual igual es obligatorio; acumulás crédito fiscal por tus compras con IVA, recuperable si pedís inscripción en Registro de Exportadores.</div>`;
+
+  // sync riesgo
+  $('sl-real').value=rate;$('out-real').textContent=fU(rate);
+  if(+$('sl-decl').value>rate)$('sl-decl').value=rate;
+  calcR();
+}
+
+// ─── RIESGO ──────────────────────────────────────────
+function calcR(){
+  const real=+$('sl-real').value,decl=+$('sl-decl').value;
+  const tc=+$('sl-tc').value,meses=+$('sl-meses').value;
+  $('out-real').textContent=fU(real);$('out-decl').textContent=fU(decl);
+  if(decl>=real){
+    $('riesgores').innerHTML=`<div class="alt ok" style="margin-top:10px">Declarás el 100% de tus ingresos. Sin exposición fiscal.</div>`;
+    return;
+  }
+  const oUSD=(real-decl)*meses,oCRC=oUSD*tc;
+  const isr=oCRC*0.22,ccss=oCRC*0.16;
+  const mulG=isr*1.0,mulMG=isr*1.5,int=(isr+ccss)*0.0852;
+  const tot=isr+ccss+mulG+int,ahorro=isr+ccss;
+  const pct=((real-decl)/real*100).toFixed(0);
+  $('riesgores').innerHTML=`
+    <div class="alt danger" style="margin-top:10px">
+      <strong>Ocultás ${pct}% (${fU(oUSD)}/año · ${fC(oCRC)})</strong><br><br>
+      <strong>"Ahorro" anual:</strong> ISR ~${fC(isr)} + CCSS ~${fC(ccss)} = <strong>${fC(ahorro)}</strong><br><br>
+      <strong>Costo si te detectan (art. 81 CNPT):</strong><br>
+      — Impuestos + CCSS retroactivos: ${fC(isr+ccss)}<br>
+      — Multa grave (100%): ${fC(mulG)} · Muy grave (150%): ${fC(mulMG)}<br>
+      — Intereses moratorios 8,52%/año: ${fC(int)}<br>
+      <strong>Total primer año detectado: ${fC(tot)}</strong><br><br>
+      Por cada ₡1 "ahorrado" arriesgás <strong>${(tot/ahorro).toFixed(1)} colones</strong>. TRIBU-CR cruza bancos + factura electrónica + CCSS automáticamente.
+    </div>`;
+}
+
+calc();
+</script>
+</body>
+</html>
