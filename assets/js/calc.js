@@ -92,7 +92,32 @@ function calcRiesgoCCSS(){
 }
 
 // ─── MODALS ───────────────────────────────────────────
-function openModal(id){$(id).classList.add('open');document.body.style.overflow='hidden'}
+function openModal(id){
+  $(id).classList.add('open');
+  document.body.style.overflow='hidden';
+  
+  // Si es el modal de riesgo CCSS, inicializar el slider con el valor bruto actual
+  if(id === 'modal-ccss-riesgo'){
+    const rate = +$('sl-rate').value;
+    const tc = +$('sl-tc').value;
+    const ccssBase = Math.max(341228, rate * tc);
+    const rSl = $('riesgo-sl');
+    
+    // Establecer el valor del slider al bruto actual
+    rSl.value = ccssBase;
+    
+    // Actualizar el max del slider para dar rango útil
+    rSl.max = Math.max(8000000, ccssBase * 2);
+    
+    // Actualizar la visualización
+    uf(rSl, 'riesgo-fill');
+    $('riesgo-decl-val').textContent = fC(ccssBase);
+    $('riesgo-bruto-display').textContent = fC(ccssBase);
+    
+    // Calcular el resultado inicial
+    calcRiesgoCCSS();
+  }
+}
 function closeModal(id){$(id).classList.remove('open');document.body.style.overflow=''}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'))&&(document.body.style.overflow='')});
 
@@ -246,8 +271,8 @@ function calc(){
   // ── Compact CCSS display ─────────────────────────
   const catRangeLabels=['hasta ₡341.227','₡341.228 – ₡734.217','₡734.218 – ₡1.468.434','₡1.468.435 – ₡2.202.651','más de ₡2.202.651'];
   $('ccss-cat-name').textContent=`Cat. ${catInfo.cat} · ${catRangeLabels[catInfo.cat-1]}`;
-  $('ccss-sem-tag').textContent=`SEM ${(catInfo.sem*100).toFixed(2)}%`;
-  $('ccss-ivm-tag').textContent=`IVM ${(catInfo.ivm26*100).toFixed(2)}%`;
+  $('ccss-sem-tag').textContent=`${(catInfo.sem*100).toFixed(2)}%`;
+  $('ccss-ivm-tag').textContent=`${(catInfo.ivm26*100).toFixed(2)}%`;
   $('cf-mes').textContent=fC(ccssMes);
   $('cf-sem').textContent=fC(catInfo.cs);
   $('cf-ivm').textContent=fC(catInfo.ci);
@@ -262,8 +287,8 @@ function calc(){
 
   // ── Scenario strip ────────────────────────────────
   $('sc-strip-wrap').innerHTML=reg==='solo'
-    ?'<div class="sc-strip solo">✓ Solo servicios — tramo exento completo disponible</div>'
-    :'<div class="sc-strip mixto">⚡ Régimen mixto — SP gravados sin tramo exento</div>';
+    ?'<div class="sc-strip"></div>'
+    :'<div class="sc-strip"></div>';
 
   // ── Right panel ───────────────────────────────────
   $('r-neto').textContent=fC(netoMes);
@@ -306,31 +331,154 @@ function calc(){
 
   // ── Breakdown table ───────────────────────────────
   const rows=[];
+  
+  // Definir tooltips para cada concepto
+  const tooltips = {
+    spBruto: 'Ingreso total del año por servicios profesionales antes de cualquier deducción o impuesto.',
+    dedFicto: 'La ley permite deducir automáticamente el 25% del ingreso bruto sin necesidad de presentar facturas ni comprobantes. Es la opción más simple para servicios digitales.',
+    dedReal: 'Gastos documentados con facturas electrónicas: equipo, software, internet, contador, alquiler de oficina, etc. Solo se puede usar si supera el 25% ficto.',
+    pension: 'Aporte voluntario a una OPC (BAC Pensiones, BCR, BN Vital, Popular). Deducible hasta el 10% del ingreso bruto anual según art. 71 Ley 7983. Reduce la base imponible del ISR.',
+    ccssDed: 'Si usás deducción ficta del 25%, podés deducir adicionalmente la CCSS anual completa según art. 8 inc. b) Ley 7092. No aplica si usás gastos reales.',
+    rentaNeta: 'Base sobre la cual se calculan los tramos del ISR. Es el ingreso bruto menos todas las deducciones permitidas.',
+    isrBruto: 'Impuesto calculado aplicando los tramos escalonados 2026 (0%, 10%, 15%, 20%, 25%) sobre la renta neta.',
+    creditos: 'Se restan directamente del ISR calculado (no de la base imponible). ₡20.520/año por hijo + ₡31.080/año por cónyuge dependiente.',
+    isrFinal: 'ISR bruto menos créditos fiscales. Este es el monto que pagás a Hacienda mediante el D-101.',
+    ccssTI: 'Cuota anual obligatoria a la CCSS como trabajador independiente. Se calcula según tu categoría (1-5) basada en el ingreso bruto mensual.',
+    iva: 'Si tu cliente es local, cobrás 13% adicional que trasladás a Hacienda. El IVA no sale de tu bolsillo, lo paga el cliente.',
+    netoAnual: 'Dinero real que te queda en el bolsillo después de pagar CCSS e ISR.',
+    netoMensual: 'Promedio mensual del neto anual. Es tu ingreso real disponible por mes.'
+  };
+
   if(reg==='mixto'){
     rows.push({sec:'Empleo formal'});
     rows.push({l:'Salario bruto anual',v:salCRC*12,u:salCRC*12/tc,cls:'bkdn-pos'});
     rows.push({l:'CCSS obrero (~9.83%)',v:-(salCRC*.0983*12),u:0,cls:'bkdn-neg',note:'estimado'});
     rows.push({sec:'Servicios profesionales'});
   }
-  rows.push({l:`SP bruto (${meses} meses × ${fU(rate)})`,v:spBruto,u:spUSD,cls:'bkdn-pos'});
-  rows.push({l:`Deducible ${ded==='ficto'?'ficto 25%':'gastos reales'} (art. 8 Ley 7092)`,v:-dedGastos,u:-dedGastos/tc,cls:'bkdn-neg'});
-  if(pen) rows.push({l:'Pensión voluntaria deducible 10% (art. 71 Ley 7983)',v:-penAno,u:-penAno/tc,cls:'bkdn-neg'});
-  if(ded==='ficto') rows.push({l:'CCSS TI deducible adicional (art. 8 inc. b)',v:-ccssAno,u:-ccssAno/tc,cls:'bkdn-neg'});
-  rows.push({l:'Renta neta imponible',v:rentaNeta,u:rentaNeta/tc,cls:'',sub:true});
-  rows.push({l:'ISR escalonado (tramos 2026)',v:-isrBruto,u:-isrBruto/tc,cls:'bkdn-neg'});
-  if(cCred>0) rows.push({l:`Créditos fiscales (${hijos} hijo${hijos!==1?'s':''} ${con?'+ cónyuge':''})`,v:cCred,u:cCred/tc,cls:'bkdn-pos'});
-  rows.push({l:'ISR definitivo',v:-isrFinal,u:-isrFinal/tc,cls:'bkdn-neg',sub:true});
-  rows.push({l:`CCSS TI (cat. ${catInfo.cat} · ${(catInfo.ta*100).toFixed(2)}% · ${fC(ccssMes)}/mes × 12)`,v:-ccssAno,u:-ccssAno/tc,cls:'bkdn-neg'});
-  if(cli) rows.push({l:'IVA 13% (pass-through al cliente)',v:0,u:0,cls:'bkdn-neu',note:'no sale de tu bolsillo'});
-  rows.push({l:'Neto anual en bolsillo',v:netoAno,u:netoAno/tc,cls:'bkdn-pos',sub:true});
-  rows.push({l:'Neto mensual promedio',v:netoMes,u:netoMes/tc,cls:'bkdn-pos',tot:true});
+  
+  rows.push({
+    l:`SP bruto (${meses} meses × ${fU(rate)})`,
+    v:spBruto,
+    u:spUSD,
+    cls:'bkdn-pos',
+    tip:tooltips.spBruto
+  });
+  
+  rows.push({
+    l:`Deducible ${ded==='ficto'?'ficto 25%':'gastos reales'} (art. 8 Ley 7092)`,
+    v:-dedGastos,
+    u:-dedGastos/tc,
+    cls:'bkdn-neg',
+    tip:ded==='ficto'?tooltips.dedFicto:tooltips.dedReal
+  });
+  
+  if(pen) rows.push({
+    l:'Pensión voluntaria deducible 10% (art. 71 Ley 7983)',
+    v:-penAno,
+    u:-penAno/tc,
+    cls:'bkdn-neg',
+    tip:tooltips.pension
+  });
+  
+  if(ded==='ficto') rows.push({
+    l:'CCSS TI deducible adicional (art. 8 inc. b)',
+    v:-ccssAno,
+    u:-ccssAno/tc,
+    cls:'bkdn-neg',
+    tip:tooltips.ccssDed
+  });
+  
+  rows.push({
+    l:'= Renta neta imponible',
+    v:rentaNeta,
+    u:rentaNeta/tc,
+    cls:'',
+    sub:true,
+    icon:'📊',
+    tip:tooltips.rentaNeta
+  });
+  
+  rows.push({
+    l:'ISR escalonado (tramos 2026)',
+    v:-isrBruto,
+    u:-isrBruto/tc,
+    cls:'bkdn-neg',
+    tip:tooltips.isrBruto
+  });
+  
+  if(cCred>0) rows.push({
+    l:`Créditos fiscales (${hijos} hijo${hijos!==1?'s':''} ${con?'+ cónyuge':''})`,
+    v:cCred,
+    u:cCred/tc,
+    cls:'bkdn-pos',
+    tip:tooltips.creditos
+  });
+  
+  rows.push({
+    l:'= ISR definitivo',
+    v:-isrFinal,
+    u:-isrFinal/tc,
+    cls:'bkdn-neg',
+    sub:true,
+    icon:'💰',
+    tip:tooltips.isrFinal
+  });
+  
+  rows.push({
+    l:`CCSS TI (cat. ${catInfo.cat} · ${(catInfo.ta*100).toFixed(2)}% · ${fC(ccssMes)}/mes × 12)`,
+    v:-ccssAno,
+    u:-ccssAno/tc,
+    cls:'bkdn-neg',
+    tip:tooltips.ccssTI
+  });
+  
+  if(cli) rows.push({
+    l:'IVA 13% (pass-through al cliente)',
+    v:0,
+    u:0,
+    cls:'bkdn-neu',
+    note:'no sale de tu bolsillo',
+    tip:tooltips.iva
+  });
+  
+  rows.push({
+    l:'= Neto anual en bolsillo',
+    v:netoAno,
+    u:netoAno/tc,
+    cls:'bkdn-pos',
+    sub:true,
+    icon:'✓',
+    tip:tooltips.netoAnual
+  });
+  
+  rows.push({
+    l:'Neto mensual promedio',
+    v:netoMes,
+    u:netoMes/tc,
+    cls:'bkdn-pos',
+    tot:true,
+    icon:'💵',
+    tip:tooltips.netoMensual
+  });
 
   $('bkdn').innerHTML=rows.map(r=>{
     if(r.sec) return`<tr class="sh"><td colspan="2">${r.sec}</td></tr>`;
     const z=r.v===0;
+    const tipHtml = r.tip ? `<span class="tipw"><span class="tpic">?</span><div class="tipb">${r.tip}</div></span>` : '';
+    const iconHtml = r.icon ? `<span class="bkdn-icon">${r.icon}</span>` : '';
     return`<tr class="${r.tot?'tot':r.sub?'sub':''}">
-      <td>${r.l}${r.note?`<span class="bkdn-note">(${r.note})</span>`:''}</td>
-      <td class="${r.cls}"><div>${z?'—':(r.v<0?'−':'')+fC(r.v)}</div><div style="font-size:9px;color:var(--muted)">${z?'':(r.u<0?'−':'')+fU(Math.abs(r.u))}</div></td>
+      <td>
+        <span class="bkdn-label-wrapper">
+          ${iconHtml}
+          <span class="bkdn-label-text">${r.l}</span>
+          ${tipHtml}
+        </span>
+        ${r.note?`<span class="bkdn-note">(${r.note})</span>`:''}
+      </td>
+      <td class="${r.cls}">
+        <div class="bkdn-amount">${z?'—':(r.v<0?'−':'')+fC(r.v)}</div>
+        <div class="bkdn-usd">${z?'':(r.u<0?'−':'')+fU(Math.abs(r.u))}</div>
+      </td>
     </tr>`;
   }).join('');
 

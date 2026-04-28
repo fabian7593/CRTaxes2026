@@ -26,8 +26,10 @@
 - [Características](#-características)
 - [Uso](#-uso)
 - [Estructura del Proyecto](#-estructura-del-proyecto)
+- [Glosario de Términos](#-glosario-de-términos)
 - [Contribuir](#-contribuir)
 - [Autor](#-autor)
+- [Licencia](#-licencia)
 - [Licencia](#-licencia)
 
 ---
@@ -284,12 +286,12 @@ Desde 2018, la facturación electrónica es **obligatoria** en Costa Rica:
 - **Tipos de factura**:
   - v4.3: Factura electrónica estándar (cliente local)
   - v4.4: Factura electrónica de exportación (cliente exterior)
-- **Proveedores**: Orioltech, Hacienda, etc.
+- **Proveedores**: [Orioltech](https://orioltech.com/), Hacienda, etc.
 - **Validación**: Cada factura debe ser validada por Hacienda en tiempo real
 
 ---
 
-## ⚡ Características
+## ⚡ Características de la web
 
 ### Cálculos Automáticos
 - ✅ Categoría CCSS automática según ingreso bruto
@@ -313,6 +315,57 @@ Desde 2018, la facturación electrónica es **obligatoria** en Costa Rica:
 - 💰 Cálculo de ahorro fiscal con pensión voluntaria (RVP)
 - 📉 Créditos fiscales por hijos y cónyuge
 - 🌍 Diferenciación IVA: cliente local vs. exportación
+
+---
+
+## 📖 Glosario de Términos
+
+### Siglas y Acrónimos Fiscales
+
+| Término | Significado | Descripción |
+|---------|-------------|-------------|
+| **ATV** | Administración Tributaria Virtual | Plataforma digital del Ministerio de Hacienda para trámites fiscales en línea |
+| **BMC** | Base Mínima de Cotización | Ingreso mínimo sobre el cual se debe cotizar a la CCSS (₡341.228/mes en 2026) |
+| **CCSS** | Caja Costarricense de Seguro Social | Institución que administra el sistema de seguridad social en Costa Rica |
+| **D-101** | Declaración Jurada del ISR | Formulario para declarar el Impuesto Sobre la Renta anualmente |
+| **D-104** | Declaración del IVA | Formulario mensual para declarar el Impuesto al Valor Agregado |
+| **D-110** | Declaración de Pagos Parciales ISR | Formulario para pagos trimestrales anticipados del ISR |
+| **FCL** | Fondo de Capitalización Laboral | Ahorro obligatorio para trabajadores con patrono (no aplica a TI) |
+| **ISR** | Impuesto Sobre la Renta | Impuesto anual sobre las ganancias netas de personas físicas y jurídicas |
+| **IVA** | Impuesto al Valor Agregado | Impuesto del 13% sobre la venta de bienes y servicios en Costa Rica |
+| **IVM** | Invalidez, Vejez y Muerte | Régimen de pensiones de la CCSS que cubre jubilación, invalidez y muerte |
+| **OPC** | Operadora de Pensiones Complementarias | Entidad autorizada para administrar fondos de pensión voluntaria |
+| **ROP** | Régimen Obligatorio de Pensiones Complementarias | Ahorro obligatorio para trabajadores con patrono (no aplica a TI) |
+| **RVP** | Régimen Voluntario de Pensiones | Sistema de ahorro voluntario para complementar la pensión IVM |
+| **SEM** | Seguro de Enfermedad y Maternidad | Componente de la CCSS que cubre servicios de salud |
+| **TI** | Trabajador Independiente | Persona física que presta servicios sin relación de dependencia laboral |
+| **TRIBU-CR** | Tributación Digital Costa Rica | Sistema de cruce automático de información fiscal entre instituciones |
+
+### Términos Fiscales Clave
+
+| Término | Descripción |
+|---------|-------------|
+| **Base Imponible** | Monto sobre el cual se calcula un impuesto (ingreso bruto menos deducciones) |
+| **Crédito Fiscal** | Monto que se resta directamente del impuesto calculado (no de la base imponible) |
+| **Deducción Ficta** | Deducción automática del 25% del ingreso bruto sin necesidad de comprobantes |
+| **Escala Contributiva** | Sistema de categorías progresivas de la CCSS según nivel de ingresos |
+| **Exportación de Servicios** | Servicios prestados a clientes en el exterior, exentos de IVA |
+| **Factura Electrónica v4.3** | Formato de factura para clientes locales (con IVA 13%) |
+| **Factura Electrónica v4.4** | Formato de factura para exportación de servicios (IVA 0%) |
+| **Gastos Reales Documentados** | Deducciones basadas en facturas electrónicas de gastos del negocio |
+| **Renta Neta** | Ingreso bruto menos deducciones permitidas (base para calcular ISR) |
+| **Tasa Efectiva** | Porcentaje real de impuestos pagados sobre el ingreso bruto total |
+| **Tramos Escalonados** | Sistema progresivo del ISR donde cada porción del ingreso tributa a tasas diferentes |
+
+### Conceptos de Seguridad Social
+
+| Término | Descripción |
+|---------|-------------|
+| **Afiliado** | Persona inscrita en la CCSS que paga cuotas y tiene derecho a servicios |
+| **Categoría CCSS** | Nivel de cotización asignado según el ingreso bruto mensual declarado |
+| **Cuotas Omitidas** | Pagos de CCSS no realizados que generan deuda con intereses moratorios |
+| **Pensión por Vejez** | Beneficio mensual al cumplir 65 años y 300 cuotas (25 años de cotización) |
+| **Subdeclaración** | Declarar ingresos menores a los reales para pagar menos CCSS (sancionable) |
 
 ---
 
@@ -352,7 +405,11 @@ Si encontrás un error en los cálculos o en la aplicación:
 
 ### Sobre el Autor
 
-Desarrollador de software costarricense especializado en soluciones web y herramientas para la comunidad tech de Costa Rica. Este proyecto nace de la necesidad de tener una herramienta clara y actualizada para calcular impuestos como trabajador independiente.
+Senior Software Engineer con más de 12 años de experiencia en desarrollo de aplicaciones móviles nativas (Android/iOS), backends con TypeScript/Node.js y sistemas .NET. Ha trabajado en proyectos de fintech, banca, salud y medios, entregando productos end-to-end que han alcanzado más de 250K descargas acumuladas.
+
+Creador de proyectos open-source con 338 estrellas en GitHub, incluyendo MagicalCamera (biblioteca Android ampliamente adoptada), Tenshi (framework backend TypeScript modular), y Vortex TV (plataforma OTT multi-servicio). Especializado en arquitecturas limpias, microservicios, multi-tenant, monolith, integración de APIs complejas (GraphQL, REST).
+
+Este proyecto nace de la experiencia personal como trabajador independiente en Costa Rica y la necesidad de contar con una herramienta clara, actualizada y transparente para calcular impuestos y cargas sociales en el ecosistema tech costarricense.
 
 ---
 
@@ -413,6 +470,9 @@ Esta calculadora es una **herramienta informativa y educativa**. Los cálculos s
 - [ATV - Administración Tributaria Virtual](https://atv.hacienda.go.cr)
 - [Facturación Electrónica Hacienda](https://www.hacienda.go.cr/contenido/14350-factura-electronica)
 - [Calculadora BCCR Tipo de Cambio](https://www.bccr.fi.cr)
+
+### Opciones de Facturación Electrónica
+- [Orioltech](https://orioltech.com/) - Plataforma de facturación electrónica para Costa Rica
 
 
 ---
