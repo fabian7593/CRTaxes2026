@@ -27,7 +27,7 @@
 - [Uso](#-uso)
 - [Glosario de Términos](#-glosario-de-términos)
 - [Contribuir](#-contribuir)
-- [Licencia](#-licencia)
+- [Autor](#-autor)
 - [Licencia](#-licencia)
 
 ---
@@ -390,6 +390,24 @@ Si encontrás un error en los cálculos o en la aplicación:
    - Descripción clara del problema
    - Pasos para reproducirlo
    - Resultado esperado vs. resultado obtenido
+
+---
+
+## 👨‍💻 Autor
+
+**Fabián Rosales**
+
+- 🌐 GitHub: [@fabian7593](https://github.com/fabian7593) (Arcane Coder)
+- 💼 LinkedIn: [frosales-softdev](https://www.linkedin.com/in/frosales-softdev/)
+- 📧 Contacto: [A través de GitHub](https://github.com/fabian7593)
+
+### Sobre el Autor
+
+Senior Software Engineer con más de 12 años de experiencia en desarrollo de aplicaciones móviles nativas (Android/iOS), backends con TypeScript/Node.js y sistemas .NET. Ha trabajado en proyectos de fintech, banca, salud y medios, entregando productos end-to-end que han alcanzado más de 250K descargas acumuladas.
+
+Creador de proyectos open-source con 338 estrellas en GitHub, incluyendo MagicalCamera (biblioteca Android ampliamente adoptada), Tenshi (framework backend TypeScript modular), y Vortex TV (plataforma OTT multi-servicio). Especializado en arquitecturas limpias, microservicios multi-tenant, integración de APIs complejas (GraphQL, REST), y soluciones de alta precisión como sistemas RTK/GNSS con exactitud sub-20cm.
+
+Este proyecto nace de la experiencia personal como trabajador independiente en Costa Rica y la necesidad de contar con una herramienta clara, actualizada y transparente para calcular impuestos y cargas sociales en el ecosistema tech costarricense.
 
 ---
 
