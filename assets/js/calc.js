@@ -1,6 +1,10 @@
 // ─── STATE ────────────────────────────────────────────
 let reg='solo',cli=false,ded='ficto',con=0,pen=0;
 let tcLoaded=false;
+let tcManual=false;
+let currency='usd'; // 'usd' o 'crc'
+let tcVenta=460; // tipo de cambio venta (USD a CRC)
+let tcCompra=450; // tipo de cambio compra (CRC a USD)
 
 // ─── HELPERS ─────────────────────────────────────────
 const $=id=>document.getElementById(id);
@@ -155,6 +159,48 @@ function calcISR(rn){
   return{tot,det};
 }
 
+// ─── ISR RÉGIMEN MIXTO (sin tramo exento) ────────────
+function calcISRMixto(rn, salarioAnual){
+  let tot=0,det=[];
+  
+  // Si el salario consume todo o parte del tramo exento
+  const exentoConsumido = Math.min(salarioAnual, 6244000);
+  const exentoRestante = Math.max(0, 6244000 - exentoConsumido);
+  
+  // Si el salario ya consumió el tramo exento, los honorarios empiezan en el 10%
+  if(exentoConsumido >= 6244000){
+    // Tramo exento ya consumido por el salario
+    det.push({d:0,h:6244000,t:0,l:'Exento',base:0,imp:0});
+    
+    // Los honorarios empiezan directamente en el 10%
+    for(let i=1; i<TR.length; i++){
+      const t = TR[i];
+      const tramoInicio = i===1 ? 0 : (TR[i].d - 6244000);
+      const tramoFin = TR[i].h - 6244000;
+      
+      if(rn <= tramoInicio){
+        det.push({...t,base:0,imp:0});
+        continue;
+      }
+      
+      const base = Math.min(rn, tramoFin) - tramoInicio;
+      const imp = base * t.t;
+      tot += imp;
+      det.push({...t,base,imp});
+    }
+  } else {
+    // Hay exento restante, aplicar cálculo normal
+    const rnConExento = rn + exentoRestante;
+    for(const t of TR){
+      if(rnConExento<=t.d){det.push({...t,base:0,imp:0});continue}
+      const base=Math.min(rnConExento,t.h)-t.d,imp=base*t.t;
+      tot+=imp;det.push({...t,base,imp});
+    }
+  }
+  
+  return{tot,det};
+}
+
 // ─── SETTERS ─────────────────────────────────────────
 function setReg(r){
   reg=r;
@@ -179,6 +225,83 @@ function setDed(d){
 }
 function setCon(v){con=v;$('bnoc').className='chip '+(v===0?'on-g':'');$('bc').className='chip '+(v===1?'on-g':'');calc()}
 function setPen(v){pen=v;$('bnop').className='chip '+(v===0?'on-g':'');$('bp').className='chip '+(v===1?'on-g':'');calc()}
+
+// ─── CURRENCY SWITCHER ───────────────────────────────
+function setCurrency(cur){
+  const prevCurrency = currency;
+  currency = cur;
+  
+  // Actualizar botones
+  $('bcur-usd').className='chip '+(cur==='usd'?'on-g':'');
+  $('bcur-crc').className='chip '+(cur==='crc'?'on-g':'');
+  
+  const slRate = $('sl-rate');
+  const currentValue = +slRate.value;
+  
+  if(prevCurrency !== cur){
+    // Convertir el valor actual a la nueva moneda
+    if(cur === 'crc'){
+      // Cambiar de USD a CRC
+      const newValue = Math.round(currentValue * tcVenta);
+      slRate.min = 200000;
+      slRate.max = 6000000;
+      slRate.step = 50000;
+      slRate.value = newValue;
+      
+      // Actualizar labels y tooltips
+      $('lbl-rate').innerHTML = `Tarifa mensual servicios (CRC/mes)
+        <span class="tipw">
+          <span class="tpic">?</span>
+          <div class="tipb">Tu ingreso mensual promedio por servicios profesionales independientes en colones. Si trabajás para clientes locales que te pagan en colones, este es el monto que recibís mensualmente. El tipo de cambio COMPRA del BCCR se usa como referencia para mostrar el equivalente en dólares.</div>
+        </span>`;
+      $('lbl-tc').innerHTML = `Tipo de cambio CRC → USD (COMPRA · API en vivo)
+        <span class="tipw">
+          <span class="tpic">?</span>
+          <div class="tipb"><strong>Tipo de cambio COMPRA:</strong> Es el que usarías si quisieras convertir colones a dólares. Se muestra como referencia para que veas el equivalente en USD de tus ingresos en colones. El BCCR publica diariamente ambos tipos de cambio (compra y venta).</div>
+        </span>`;
+      $('hints-rate').innerHTML = '<span>₡200k</span><span>₡6M</span>';
+      
+      // Actualizar el tipo de cambio mostrado a COMPRA
+      $('sl-tc').value = tcCompra;
+      
+    } else {
+      // Cambiar de CRC a USD
+      const newValue = Math.round(currentValue / tcCompra);
+      slRate.min = 500;
+      slRate.max = 12000;
+      slRate.step = 100;
+      slRate.value = newValue;
+      
+      // Actualizar labels y tooltips
+      $('lbl-rate').innerHTML = `Tarifa mensual servicios (USD/mes)
+        <span class="tipw">
+          <span class="tpic">?</span>
+          <div class="tipb">Tu ingreso mensual promedio por servicios profesionales independientes en dólares. Si trabajás para clientes extranjeros, este es el monto que te pagan mensualmente. El tipo de cambio VENTA del BCCR se usa para convertir a colones y calcular la CCSS.</div>
+        </span>`;
+      $('lbl-tc').innerHTML = `Tipo de cambio USD → CRC (VENTA · API en vivo)
+        <span class="tipw">
+          <span class="tpic">?</span>
+          <div class="tipb"><strong>Tipo de cambio VENTA:</strong> Es el que usás cuando convertís dólares a colones (cuando te pagan en USD). El BCCR publica diariamente el tipo de cambio de referencia. La calculadora lo carga automáticamente desde la API oficial, pero podés ajustarlo manualmente si tu banco usa una tasa diferente.</div>
+        </span>`;
+      $('hints-rate').innerHTML = '<span>$500</span><span>$12,000</span>';
+      
+      // Actualizar el tipo de cambio mostrado a VENTA
+      $('sl-tc').value = tcVenta;
+    }
+    
+    // Actualizar fills
+    uf(slRate, 'fill-rate');
+    uf($('sl-tc'), 'fill-tc');
+  }
+  
+  calcFromRate();
+}
+
+// ─── CALC FROM RATE (cuando cambia el slider de tarifa) ──
+function calcFromRate(){
+  uf($('sl-rate'), 'fill-rate');
+  calc();
+}
 
 // ─── RENDER CCSS TABLES (for modal) ──────────────────
 function renderCCSSTables(ccssBase,catInfo){
@@ -219,18 +342,37 @@ function calc(){
   const gastosR=+$('sl-gastos').value;
   const salCRC =+$('sl-sal').value;
 
-  // ccssBase = ingreso bruto mensual derivado automáticamente de rate × tc
-  const ccssBase = Math.max(341228, rate * tc);
+  // Calcular el ingreso en CRC según la moneda seleccionada
+  let rateUSD, rateCRC;
+  if(currency === 'usd'){
+    rateUSD = rate;
+    rateCRC = rate * tc; // tc es VENTA (USD a CRC)
+  } else {
+    rateCRC = rate;
+    rateUSD = rate / tc; // tc es COMPRA (CRC a USD)
+  }
 
-  $('out-rate').textContent=fU(rate);
+  // ccssBase = ingreso bruto mensual en CRC
+  const ccssBase = Math.max(341228, rateCRC);
+
+  // Actualizar displays según la moneda
+  if(currency === 'usd'){
+    $('out-rate').textContent=fU(rate);
+  } else {
+    $('out-rate').textContent=fC(rate);
+  }
   $('out-tc').textContent='₡'+tc;
   $('out-meses').textContent=meses+' meses';
   $('out-hijos').textContent=hijos;
   $('out-gastos').textContent=fC(gastosR);
   $('out-sal').textContent=fC(salCRC);
-  // CCSS display: muestra el bruto mensual real
+  // CCSS display: muestra el bruto mensual real en CRC
   $('out-ccss').textContent=fC(ccssBase);
-  $('out-ccss-sub').textContent=`= $${fm(rate)} × ₡${fm(tc)}${ccssBase===341228&&rate*tc<341228?' (BMC mín)':''}`;
+  if(currency === 'usd'){
+    $('out-ccss-sub').textContent=`= ${fU(rateUSD)} × ₡${fm(tc)}${ccssBase===341228&&rateCRC<341228?' (BMC mín)':''}`;
+  } else {
+    $('out-ccss-sub').textContent=`= ${fC(rateCRC)}${ccssBase===341228&&rateCRC<341228?' (BMC mín)':''}`;
+  }
 
   // Sync slider riesgo con el bruto actual
   $('riesgo-bruto-display').textContent=fC(ccssBase);
@@ -241,7 +383,7 @@ function calc(){
   $('riesgo-decl-val').textContent=fC(+rSl.value);
   calcRiesgoCCSS();
 
-  const spBruto=rate*meses*tc, spUSD=rate*meses;
+  const spBruto=rateCRC*meses, spUSD=rateUSD*meses;
   const catInfo=getCat(ccssBase);
   const ccssMes=catInfo.ca, ccssAno=ccssMes*12;
 
@@ -256,12 +398,16 @@ function calc(){
     const r=calcISR(rentaNeta);isrBruto=r.tot;tramoDet=r.det;
     isrFinal=Math.max(0,isrBruto-cCred);
   } else {
+    // Régimen mixto: el salario consume el tramo exento
     const ccssDed=ded==='ficto'?ccssAno:0;
     rentaNeta=Math.max(0,spBruto-dedGastos-penAno-ccssDed);
-    const exRest=Math.max(0,6244000-Math.min(salCRC*12,6244000));
-    const rn2=Math.max(0,rentaNeta-exRest);
-    const r=calcISR(rn2);isrBruto=r.tot;tramoDet=r.det;
-    isrFinal=Math.max(0,isrBruto);rentaNeta=rn2;
+    const salarioAnual = salCRC * 12;
+    
+    // Usar función especial para régimen mixto
+    const r=calcISRMixto(rentaNeta, salarioAnual);
+    isrBruto=r.tot;
+    tramoDet=r.det;
+    isrFinal=Math.max(0,isrBruto-cCred);
   }
 
   const netoAno=spBruto-ccssAno-isrFinal;
@@ -326,7 +472,7 @@ function calc(){
 
   // ── IVA ──────────────────────────────────────────
   $('ivainfo').innerHTML=cli
-    ?`<div class="iva-strip loc"><strong>🏢 Cliente local — IVA 13% aplicable.</strong> Cobrás ₡${fm(rate*tc*0.13)} adicionales/mes al cliente y los trasladás a Hacienda vía D-104 antes del día 15 de cada mes. El IVA no sale de tu bolsillo — lo paga el cliente — pero omitir la declaración genera multa de ₡231.100.</div>`
+    ?`<div class="iva-strip loc"><strong>🏢 Cliente local — IVA 13% aplicable.</strong> Cobrás ₡${fm(rateCRC*0.13)} adicionales/mes al cliente y los trasladás a Hacienda vía D-104 antes del día 15 de cada mes. El IVA no sale de tu bolsillo — lo paga el cliente — pero omitir la declaración genera multa de ₡231.100.</div>`
     :`<div class="iva-strip ext"><strong>🌎 Cliente exterior — IVA exento (art. 8 Ley 9635).</strong> Emitís Factura Electrónica de Exportación v4.4 al 0%. El D-104 mensual igual es obligatorio; acumulás crédito fiscal por compras locales con IVA, recuperable si te inscribís en el Registro de Exportadores.</div>`;
 
   // ── Breakdown table ───────────────────────────────
@@ -357,7 +503,7 @@ function calc(){
   }
   
   rows.push({
-    l:`SP bruto (${meses} meses × ${fU(rate)})`,
+    l:`SP bruto (${meses} meses × ${currency==='usd'?fU(rateUSD):fC(rateCRC)})`,
     v:spBruto,
     u:spUSD,
     cls:'bkdn-pos',
@@ -510,21 +656,22 @@ async function fetchTipoCambio(){
     
     const data = await response.json();
     
-    // Validar que tenga el campo venta y sea un número válido
-    if(data && data.venta && !isNaN(parseFloat(data.venta))){
-      const tcVenta = Math.round(parseFloat(data.venta));
+    // Validar que tenga los campos venta y compra
+    if(data && data.venta && data.compra && !isNaN(parseFloat(data.venta)) && !isNaN(parseFloat(data.compra))){
+      tcVenta = Math.round(parseFloat(data.venta));
+      tcCompra = Math.round(parseFloat(data.compra));
       
       // Actualizar el slider solo si no ha sido modificado por el usuario
-      if(!tcLoaded){
+      if(!tcManual){
         const sliderTC = $('sl-tc');
+        // Usar venta por defecto (USD a CRC)
         sliderTC.value = tcVenta;
         uf(sliderTC, 'fill-tc');
-        tcLoaded = true;
         
         // Actualizar display
         $('out-tc').textContent = '₡' + tcVenta;
         
-        console.log(`✓ Tipo de cambio cargado: ₡${tcVenta} (${data.fecha || 'sin fecha'})`);
+        console.log(`✓ Tipo de cambio cargado: Venta ₡${tcVenta} / Compra ₡${tcCompra} (${data.fecha || 'sin fecha'})`);
       }
       
       calc();
@@ -533,14 +680,15 @@ async function fetchTipoCambio(){
     }
   } catch(error) {
     console.warn('⚠ No se pudo cargar el tipo de cambio desde la API:', error.message);
-    console.log('→ Usando valor por defecto: ₡460');
+    console.log('→ Usando valores por defecto: Venta ₡460 / Compra ₡450');
     
-    // Valor por defecto si falla la API
-    if(!tcLoaded){
+    // Valores por defecto si falla la API
+    if(!tcManual){
+      tcVenta = 460;
+      tcCompra = 450;
       const sliderTC = $('sl-tc');
-      sliderTC.value = 460;
+      sliderTC.value = tcVenta;
       uf(sliderTC, 'fill-tc');
-      tcLoaded = true;
       $('out-tc').textContent = '₡460';
       calc();
     }
@@ -552,3 +700,33 @@ initFills();
 fetchTipoCambio(); // Cargar tipo de cambio al iniciar
 calc();
 
+
+// ─── COPY EMAIL ───────────────────────────────────────
+function copyEmail(event) {
+  event.preventDefault();
+  
+  const email = 'fabian7593@gmail.com';
+  const link = event.currentTarget;
+  
+  // Intentar copiar al portapapeles
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(email)
+      .then(() => {
+        // Mostrar feedback visual
+        link.classList.add('footer-social-link-copied');
+        
+        // Remover la clase después de 2 segundos
+        setTimeout(() => {
+          link.classList.remove('footer-social-link-copied');
+        }, 2000);
+      })
+      .catch(err => {
+        console.warn('No se pudo copiar al portapapeles:', err);
+        // Fallback: abrir cliente de email
+        window.location.href = 'mailto:' + email;
+      });
+  } else {
+    // Fallback para navegadores antiguos
+    window.location.href = 'mailto:' + email;
+  }
+}
