@@ -279,19 +279,19 @@ Las tareas están ordenadas para que cada una construya sobre la anterior. Kiro 
 ## Fase 8 — Página de documentación
 
 ### Task 8.1 — DocsPage
-- [ ] Crear `src/components/layout/DocsPage.tsx`
-- [ ] Hace fetch a la GitHub API con `Accept: application/vnd.github.v3.html`
-- [ ] Estados: loading (spinner), loaded (HTML renderizado), error (botón a GitHub)
-- [ ] Renderiza el HTML recibido con `dangerouslySetInnerHTML` (es contenido de GitHub, confiable)
-- [ ] Aplica estilos de markdown (headings, tables, code blocks, blockquotes, links)
-- [ ] Botón "Volver a la calculadora"
+- [x] Crear `src/components/layout/DocsPage.tsx`
+- [x] Hace fetch a la GitHub API con `Accept: application/vnd.github.v3.html`
+- [x] Estados: loading (spinner), loaded (HTML renderizado), error (botón a GitHub)
+- [x] Renderiza el HTML recibido con `dangerouslySetInnerHTML` (es contenido de GitHub, confiable)
+- [x] Aplica estilos de markdown (headings, tables, code blocks, blockquotes, links)
+- [x] Botón "Volver a la calculadora"
 
 ### Task 8.2 — Routing mínimo
-- [ ] Implementar routing simple sin React Router:
+- [x] Implementar routing simple sin React Router:
   - `useState` en `App.tsx` con `page: 'calculator' | 'docs'`
   - Leer `window.location.search` al montar para detectar `?docs=true`
   - El botón de docs cambia el estado y hace `pushState`
-- [ ] Alternativa: si el proyecto crece, agregar `react-router-dom` en v2
+- [x] Alternativa: si el proyecto crece, agregar `react-router-dom` en v2
 
 ---
 
