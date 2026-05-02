@@ -18,14 +18,12 @@ interface CcssCardProps {
  * - Risk simulator modal (calculates penalties for underdeclaring income)
  */
 export function CcssCard({ ccssResult, onOpenTablesModal, onOpenRiskModal }: CcssCardProps) {
-  const { category, effectiveIncome, semAmount, ivmAmount, totalAmount } = ccssResult
+  const { category, semAmount, ivmAmount, totalAmount } = ccssResult
 
   // Format the category range label
   const rangeLabel = getCategoryRangeLabel(category.cat, category.max)
 
   // Calculate annual amounts
-  const annualSemAmount = semAmount * 12
-  const annualIvmAmount = ivmAmount * 12
   const annualTotalAmount = totalAmount * 12
 
   return (

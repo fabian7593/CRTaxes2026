@@ -19,7 +19,7 @@ interface CcssTablesModalProps {
  * The user's current category is highlighted with a "vos" (you) indicator.
  */
 export function CcssTablesModal({ isOpen, onClose, tablesData }: CcssTablesModalProps) {
-  const { semRows, ivmRows, summaryRows, userCategory } = tablesData
+  const { semRows, ivmRows, summaryRows } = tablesData
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Tablas CCSS 2026" maxWidth="680px">

@@ -65,16 +65,15 @@ export function RiesgoCcssModal({
       {/* Declared amount slider */}
       <div className={styles.modalRiesgoSlider}>
         <SliderField
-          sliderId="riesgo-declarado"
-          labelText="Monto que declararías a la CCSS"
-          currentValue={declaredAmount}
-          minimumValue={ccssConfig.baseMinimaContribucion}
-          maximumValue={actualMonthlyIncome * 1.2}
-          stepSize={10000}
-          displayValue={fC(declaredAmount)}
-          hintLeft={fC(ccssConfig.baseMinimaContribucion)}
-          hintRight={fC(actualMonthlyIncome * 1.2)}
-          onValueChange={setDeclaredAmount}
+          id="riesgo-declarado"
+          label="Monto que declararías a la CCSS"
+          value={declaredAmount}
+          min={ccssConfig.baseMinimaContribucion}
+          max={actualMonthlyIncome * 1.2}
+          step={10000}
+          valueDisplay={fC(declaredAmount)}
+          hints={[fC(ccssConfig.baseMinimaContribucion), fC(actualMonthlyIncome * 1.2)]}
+          onChange={setDeclaredAmount}
         />
       </div>
 
