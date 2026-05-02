@@ -1,0 +1,94 @@
+/* Breakdown table */
+.breakdownTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+/* Section header row */
+.sectionHeader {
+  background: var(--bg2);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.sectionHeader td {
+  padding: 8px 12px;
+  border-top: 1px solid var(--line);
+}
+
+/* Regular breakdown row */
+.breakdownRow td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* Subtotal row */
+.subtotalRow {
+  background: var(--bg2);
+  font-weight: 500;
+}
+
+/* Total row */
+.totalRow {
+  background: var(--ink);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Label cell */
+.labelCell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink3);
+}
+
+.totalRow .labelCell {
+  color: #fff;
+}
+
+/* Icon in label */
+.icon {
+  font-size: 14px;
+}
+
+/* Value cells */
+.valueCell {
+  font-family: var(--mono);
+  font-weight: 500;
+  text-align: right;
+  color: var(--ink);
+}
+
+.totalRow .valueCell {
+  color: #fff;
+}
+
+.usdCell {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-align: right;
+  color: var(--muted);
+}
+
+.totalRow .usdCell {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Color classes */
+.colorPos .valueCell {
+  color: var(--emerald-mid);
+}
+
+.colorNeg .valueCell {
+  color: var(--crimson);
+}
+
+.colorNeu .valueCell {
+  color: var(--amber-mid);
+}

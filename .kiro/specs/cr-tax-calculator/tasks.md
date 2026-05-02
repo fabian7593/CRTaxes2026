@@ -183,67 +183,67 @@ Las tareas están ordenadas para que cada una construya sobre la anterior. Kiro 
 ## Fase 6 — Componentes del calculador
 
 ### Task 6.1 — RegimeSelector
-- [ ] Crear `src/components/calculator/RegimeSelector.tsx`
-- [ ] Props: `value: 'solo' | 'mixto'`, `onChange`
-- [ ] Renderiza los dos tabs con sus iconos, labels y subtítulos (`.rs`)
-- [ ] Strip de advertencia amarilla que aparece solo en modo mixto
+- [x] Crear `src/components/calculator/RegimeSelector.tsx`
+- [x] Props: `value: 'solo' | 'mixto'`, `onChange`
+- [x] Renderiza los dos tabs con sus iconos, labels y subtítulos (`.rs`)
+- [x] Strip de advertencia amarilla que aparece solo en modo mixto
 
 ### Task 6.2 — CurrencySelector
-- [ ] Crear `src/components/calculator/CurrencySelector.tsx`
-- [ ] Props: `value: 'usd' | 'crc'`, `onChange`
-- [ ] Dos chips: USD / CRC (variant 'green' para el activo)
+- [x] Crear `src/components/calculator/CurrencySelector.tsx`
+- [x] Props: `value: 'usd' | 'crc'`, `onChange`
+- [x] Dos chips: USD / CRC (variant 'green' para el activo)
 
 ### Task 6.3 — ClientTypeChips
-- [ ] Props: `value: 'ext' | 'loc'`, `onChange`
-- [ ] Chips: "Exterior" (on-g) / "Local" (on-a)
+- [x] Props: `value: 'ext' | 'loc'`, `onChange`
+- [x] Chips: "Exterior" (on-g) / "Local" (on-a)
 
 ### Task 6.4 — DeductionChips
-- [ ] Props: `value: 'ficto' | 'real'`, `onChange`
-- [ ] Chips: "Ficto 25%" (on-g) / "Gastos reales" (on-a)
+- [x] Props: `value: 'ficto' | 'real'`, `onChange`
+- [x] Chips: "Ficto 25%" (on-g) / "Gastos reales" (on-a)
 
 ### Task 6.5 — InputPanel
-- [ ] Crear `src/components/calculator/InputPanel.tsx`
-- [ ] Ensambla todos los sliders y chips del panel izquierdo
-- [ ] Recibe todo el estado y los setters como props
-- [ ] Incluye: CurrencySelector, slider Tarifa, slider TC, slider Meses, RegimeSelector, slider Salario (condicional), DeductionChips, slider Gastos (condicional), slider Hijos, chips Cónyuge, chips Pensión, ClientTypeChips
+- [x] Crear `src/components/calculator/InputPanel.tsx`
+- [x] Ensambla todos los sliders y chips del panel izquierdo
+- [x] Recibe todo el estado y los setters como props
+- [x] Incluye: CurrencySelector, slider Tarifa, slider TC, slider Meses, RegimeSelector, slider Salario (condicional), DeductionChips, slider Gastos (condicional), slider Hijos, chips Cónyuge, chips Pensión, ClientTypeChips
 
 ### Task 6.6 — RateSlider
-- [ ] Slider especializado para la tarifa mensual
-- [ ] Cambia label, tooltip, hints y rangos según la moneda activa
-- [ ] Usa SliderField internamente
+- [x] Slider especializado para la tarifa mensual
+- [x] Cambia label, tooltip, hints y rangos según la moneda activa
+- [x] Usa SliderField internamente
 
 ### Task 6.7 — TipoCambioSlider
-- [ ] Slider para el tipo de cambio con badge "API en vivo"
-- [ ] Cambia label y tooltip según si está en modo USD (venta) o CRC (compra)
-- [ ] Al cambiar, activa `tcManual = true`
+- [x] Slider para el tipo de cambio con badge "API en vivo"
+- [x] Cambia label y tooltip según si está en modo USD (venta) o CRC (compra)
+- [x] Al cambiar, activa `tcManual = true`
 
 ### Task 6.8 — IvaInfo
-- [ ] Crear `src/components/calculator/IvaInfo.tsx`
-- [ ] Recibe: `clienteLocal: boolean`, `rateCRC: number`
-- [ ] Renderiza el strip con el estilo `.iva-strip.loc` o `.iva-strip.ext`
+- [x] Crear `src/components/calculator/IvaInfo.tsx`
+- [x] Recibe: `clienteLocal: boolean`, `rateCRC: number`
+- [x] Renderiza el strip con el estilo `.iva-strip.loc` o `.iva-strip.ext`
 
 ### Task 6.9 — DistributionBar
-- [ ] Props: `segments: DistributionSegment[]`
-- [ ] Cada segmento: `{ color: string, pct: number, label: string }`
-- [ ] Filtra segmentos con pct < 0.001
-- [ ] Barra + leyenda
+- [x] Props: `segments: DistributionSegment[]`
+- [x] Cada segmento: `{ color: string, pct: number, label: string }`
+- [x] Filtra segmentos con pct < 0.001
+- [x] Barra + leyenda
 
 ### Task 6.10 — AnnualSummary
-- [ ] Props: `rows: AnnualSummaryRow[]`
-- [ ] 4 filas: bruto anual, CCSS anual, ISR anual, neto anual (con estilo `tot`)
-- [ ] Cada fila: label, valor CRC, valor USD
+- [x] Props: `rows: AnnualSummaryRow[]`
+- [x] 4 filas: bruto anual, CCSS anual, ISR anual, neto anual (con estilo `tot`)
+- [x] Cada fila: label, valor CRC, valor USD
 
 ### Task 6.11 — BreakdownTable
-- [ ] Props: `rows: BreakdownRow[]`
-- [ ] Renderiza la tabla con secciones, subtotales y total
-- [ ] Cada fila: label + tooltip opcional + icon opcional + valor CRC + valor USD
-- [ ] Clases de color: pos (emerald), neg (crimson), neu (amber)
+- [x] Props: `rows: BreakdownRow[]`
+- [x] Renderiza la tabla con secciones, subtotales y total
+- [x] Cada fila: label + tooltip opcional + icon opcional + valor CRC + valor USD
+- [x] Clases de color: pos (emerald), neg (crimson), neu (amber)
 
 ### Task 6.12 — ResultPanel
-- [ ] Crea `src/components/calculator/ResultPanel.tsx`
-- [ ] Recibe todos los resultados del hook `useFiscalCalculator`
-- [ ] Ensambla: neto grande, desglose rápido (bruto/CCSS/ISR/tasa), DistributionBar, AnnualSummary, BreakdownTable
-- [ ] Botones para abrir los modales (tramos ISR, tablas CCSS)
+- [x] Crea `src/components/calculator/ResultPanel.tsx`
+- [x] Recibe todos los resultados del hook `useFiscalCalculator`
+- [x] Ensambla: neto grande, desglose rápido (bruto/CCSS/ISR/tasa), DistributionBar, AnnualSummary, BreakdownTable
+- [x] Botones para abrir los modales (tramos ISR, tablas CCSS)
 
 ---
 

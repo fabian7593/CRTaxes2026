@@ -1,0 +1,67 @@
+/* Annual summary container */
+.annualSummary {
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+/* Individual summary row */
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 13px;
+}
+
+/* Total row (highlighted) */
+.summaryRowTotal {
+  background: var(--ink);
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+/* Label column */
+.summaryLabel {
+  font-weight: 500;
+  color: var(--ink3);
+}
+
+.summaryRowTotal .summaryLabel {
+  color: #fff;
+}
+
+/* Values column */
+.summaryValues {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+/* CRC value */
+.summaryValueCRC {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.summaryRowTotal .summaryValueCRC {
+  color: #fff;
+  font-size: 15px;
+}
+
+/* USD value */
+.summaryValueUSD {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.summaryRowTotal .summaryValueUSD {
+  color: rgba(255, 255, 255, 0.7);
+}

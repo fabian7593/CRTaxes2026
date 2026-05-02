@@ -1,0 +1,21 @@
+/* API badge shown when exchange rate is from live API */
+.apiBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--emerald-mid);
+  background: var(--emerald-bg);
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-top: -8px;
+  margin-bottom: 12px;
+}
+
+.apiBadgeIcon {
+  font-size: 8px;
+}
+
+.apiBadgeText {
+  font-weight: 500;
+}

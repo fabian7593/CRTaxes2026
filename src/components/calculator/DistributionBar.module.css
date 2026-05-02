@@ -1,0 +1,47 @@
+/* Distribution bar container */
+.distributionContainer {
+  margin-bottom: 16px;
+}
+
+/* The bar itself */
+.distributionBar {
+  display: flex;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+/* Individual segment in the bar */
+.distributionSegment {
+  /* Width and background set inline via style prop */
+}
+
+/* Legend container */
+.distributionLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Individual legend item */
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--ink3);
+}
+
+/* Colored dot in legend */
+.legendDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  /* Background set inline via style prop */
+}
+
+/* Legend label text */
+.legendLabel {
+  font-weight: 500;
+}
