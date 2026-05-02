@@ -120,7 +120,9 @@ export function useTipoCambio(
       clearTimeout(timeoutId)
       abortController.abort()
     }
-  }, [config, isManualExchangeRate])
+    // We use individual config properties instead of the whole config object
+    // to avoid re-running when a new config object is passed with the same values
+  }, [config.apiUrl, config.timeoutMs, config.ventaDefault, config.compraDefault, isManualExchangeRate])
 
   return {
     exchangeRateSell,

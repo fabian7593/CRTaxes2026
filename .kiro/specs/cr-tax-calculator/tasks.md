@@ -298,20 +298,20 @@ Las tareas están ordenadas para que cada una construya sobre la anterior. Kiro 
 ## Fase 9 — Ensamblaje y App.tsx
 
 ### Task 9.1 — App.tsx
-- [ ] Importar `fiscal.config.json`
-- [ ] Inicializar el estado completo del calculador con los defaults del config
-- [ ] Integrar `useTipoCambio` y actualizar el estado cuando carga
-- [ ] Integrar `useFiscalCalculator` con el estado actual
-- [ ] Manejar los setters de estado y pasarlos como props a los componentes
-- [ ] Estado de los modales (cuál está abierto): `openModal: null | 'ccss-tables' | 'ccss-riesgo' | 'isr-tramos'`
-- [ ] Renderizar `PageLayout` con `InputPanel` y `ResultPanel`
-- [ ] Renderizar los 3 modales (condicionales según `openModal`)
-- [ ] Manejar el routing simple (calculadora vs docs)
+- [x] Importar `fiscal.config.json`
+- [x] Inicializar el estado completo del calculador con los defaults del config
+- [x] Integrar `useTipoCambio` y actualizar el estado cuando carga
+- [x] Integrar `useFiscalCalculator` con el estado actual
+- [x] Manejar los setters de estado y pasarlos como props a los componentes
+- [x] Estado de los modales (cuál está abierto): `openModal: null | 'ccss-tables' | 'ccss-riesgo' | 'isr-tramos'`
+- [x] Renderizar `PageLayout` con `InputPanel` y `ResultPanel`
+- [x] Renderizar los 3 modales (condicionales según `openModal`)
+- [x] Manejar el routing simple (calculadora vs docs)
 
 ### Task 9.2 — Verificación de paridad de cálculos
-- [ ] Con los mismos inputs del ejemplo del README (₡15.000.000 renta neta), verificar que el ISR escalonado da los mismos resultados
-- [ ] Con tarifa $3.000/mes, TC ₡460, 12 meses, régimen solo, ficto, cliente exterior, verificar CCSS, ISR y neto
-- [ ] Con el mismo escenario en régimen mixto con salario ₡800.000, verificar que el ISR mixto es correcto
+- [x] Con los mismos inputs del ejemplo del README (₡15.000.000 renta neta), verificar que el ISR escalonado da los mismos resultados
+- [x] Con tarifa $3.000/mes, TC ₡460, 12 meses, régimen solo, ficto, cliente exterior, verificar CCSS, ISR y neto
+- [x] Con el mismo escenario en régimen mixto con salario ₡800.000, verificar que el ISR mixto es correcto
 
 ---
 
