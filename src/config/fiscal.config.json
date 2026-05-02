@@ -1,0 +1,236 @@
+{
+  "_comment": "Calculadora Fiscal CR — Configuración Fiscal 2026. Actualizar este archivo cada año fiscal.",
+  "_version": "2026.1",
+  "_fuentes": {
+    "ccss": "Decreto N°44756-MTSS, Gaceta N°232, 10 dic 2024 + Acuerdo JD N°9038/2019",
+    "isr": "Decreto 45333-H (Tramos ISR 2026)",
+    "creditos": "Ley 7092 art. 16",
+    "sanciones": "Ley Constitutiva CCSS art. 44",
+    "sociedades": "Ley 7092 art. 19 (Personas Jurídicas)"
+  },
+
+  "regimenes": {
+    "personaFisicaIndependiente": {
+      "nombre": "Persona Física Independiente",
+      "descripcion": "Trabajador independiente (freelancer, contractor, profesional liberal) sin relación de dependencia",
+      "aplicaCCSS": true,
+      "aplicaCreditos": true,
+      "tramosISR": "tramosPersonaFisica"
+    },
+    "personaFisicaMixta": {
+      "nombre": "Persona Física Mixta",
+      "descripcion": "Asalariado con ingresos adicionales por servicios profesionales independientes",
+      "aplicaCCSS": true,
+      "aplicaCreditos": true,
+      "tramosISR": "tramosPersonaFisica",
+      "nota": "El salario consume el tramo exento. Los honorarios tributan desde el primer colón al 10%"
+    },
+    "sociedadAnonima": {
+      "nombre": "Sociedad Anónima (S.A.)",
+      "descripcion": "Persona jurídica con responsabilidad limitada al capital aportado",
+      "aplicaCCSS": false,
+      "aplicaCreditos": false,
+      "tramosISR": "tramosPersonaJuridica",
+      "impuestoAnualFijo": 69000,
+      "nota": "Impuesto anual fijo de ₡69,000 + ISR sobre utilidades según tramos"
+    },
+    "sociedadResponsabilidadLimitada": {
+      "nombre": "Sociedad de Responsabilidad Limitada (S.R.L.)",
+      "descripcion": "Persona jurídica con estructura legal más flexible que S.A.",
+      "aplicaCCSS": false,
+      "aplicaCreditos": false,
+      "tramosISR": "tramosPersonaJuridica",
+      "impuestoAnualFijo": 69000,
+      "nota": "Mismos tramos ISR que S.A. pero con estructura legal distinta"
+    }
+  },
+
+  "ccss": {
+    "baseMinimaContribucion": 341228,
+    "salarioBase2026": 462200,
+    "tasaInteresesMoratorios": 0.0852,
+    "multaFijaMultiplicador": 3,
+    "categorias": [
+      {
+        "cat": 1,
+        "max": 341227,
+        "ivm26": 0.0416,
+        "ivm_est": 0.0529,
+        "ivm_lpt": 0.0030,
+        "sem": 0.0289,
+        "sem_est": 0.0911
+      },
+      {
+        "cat": 2,
+        "max": 734217,
+        "ivm26": 0.0565,
+        "ivm_est": 0.0410,
+        "ivm_lpt": 0.0000,
+        "sem": 0.0433,
+        "sem_est": 0.0767
+      },
+      {
+        "cat": 3,
+        "max": 1468434,
+        "ivm26": 0.0753,
+        "ivm_est": 0.0222,
+        "ivm_lpt": 0.0000,
+        "sem": 0.0624,
+        "sem_est": 0.0576
+      },
+      {
+        "cat": 4,
+        "max": 2202651,
+        "ivm26": 0.0798,
+        "ivm_est": 0.0177,
+        "ivm_lpt": 0.0000,
+        "sem": 0.0802,
+        "sem_est": 0.0398
+      },
+      {
+        "cat": 5,
+        "max": null,
+        "ivm26": 0.0842,
+        "ivm_est": 0.0133,
+        "ivm_lpt": 0.0000,
+        "sem": 0.1069,
+        "sem_est": 0.0131
+      }
+    ]
+  },
+
+  "isr": {
+    "tramosPersonaFisica": [
+      {
+        "desde": 0,
+        "hasta": 6244000,
+        "tasa": 0.00,
+        "label": "Exento"
+      },
+      {
+        "desde": 6244000,
+        "hasta": 8329000,
+        "tasa": 0.10,
+        "label": "10%"
+      },
+      {
+        "desde": 8329000,
+        "hasta": 10414000,
+        "tasa": 0.15,
+        "label": "15%"
+      },
+      {
+        "desde": 10414000,
+        "hasta": 20872000,
+        "tasa": 0.20,
+        "label": "20%"
+      },
+      {
+        "desde": 20872000,
+        "hasta": null,
+        "tasa": 0.25,
+        "label": "25%"
+      }
+    ],
+    "tramosPersonaJuridica": [
+      {
+        "desde": 0,
+        "hasta": 5000000,
+        "tasa": 0.05,
+        "label": "5%"
+      },
+      {
+        "desde": 5000000,
+        "hasta": 7500000,
+        "tasa": 0.10,
+        "label": "10%"
+      },
+      {
+        "desde": 7500000,
+        "hasta": 10000000,
+        "tasa": 0.20,
+        "label": "20%"
+      },
+      {
+        "desde": 10000000,
+        "hasta": null,
+        "tasa": 0.30,
+        "label": "30%"
+      }
+    ]
+  },
+
+  "creditos": {
+    "porHijo": 20520,
+    "porConyuge": 31080
+  },
+
+  "deducciones": {
+    "pctFicto": 0.25,
+    "pctPensionVoluntariaMaximo": 0.10,
+    "ccssObreroEstimado": 0.0983
+  },
+
+  "tipoCambio": {
+    "ventaDefault": 460,
+    "compraDefault": 450,
+    "apiUrl": "https://tipodecambio.paginasweb.cr/api",
+    "timeoutMs": 5000
+  },
+
+  "sliders": {
+    "tarifa": {
+      "usd": {
+        "min": 500,
+        "max": 12000,
+        "step": 100,
+        "default": 3800
+      },
+      "crc": {
+        "min": 200000,
+        "max": 6000000,
+        "step": 50000,
+        "default": 1500000
+      }
+    },
+    "tipoCambio": {
+      "min": 400,
+      "max": 650,
+      "step": 1
+    },
+    "meses": {
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "default": 12
+    },
+    "salario": {
+      "min": 0,
+      "max": 3000000,
+      "step": 50000,
+      "default": 800000
+    },
+    "gastos": {
+      "min": 0,
+      "max": 3000000,
+      "step": 50000,
+      "default": 0
+    },
+    "hijos": {
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "default": 0
+    }
+  },
+
+  "ui": {
+    "catRangeLabels": [
+      "hasta ₡341.227",
+      "₡341.228 – ₡734.217",
+      "₡734.218 – ₡1.468.434",
+      "₡1.468.435 – ₡2.202.651",
+      "más de ₡2.202.651"
+    ]
+  }
+}

@@ -154,3 +154,12 @@ function calculateMonthlyCcss(monthlyIncomeInColones: number, ccssConfig: CcssCo
   }
 }
 ```
+
+### "Archivos Legacy - NO usar" que indique:
+
+- calc.js y currency-handler.js son archivos legacy 
+  de la versión anterior
+- NO deben ser leídos, importados ni referenciados 
+  en ninguna tarea
+- La fuente de verdad para toda la lógica fiscal es 
+  src/config/fiscal.config.json

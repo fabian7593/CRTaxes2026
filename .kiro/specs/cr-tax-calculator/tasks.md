@@ -9,15 +9,15 @@ Las tareas están ordenadas para que cada una construya sobre la anterior. Kiro 
 ## Fase 1 — Scaffolding del proyecto
 
 ### Task 1.1 — Inicializar proyecto Vite + React + TypeScript
-- [ ] Ejecutar `npm create vite@latest cr-tax-calculator -- --template react-ts`
-- [ ] Instalar dependencias: `clsx` (único helper de terceros para composición de clases)
-- [ ] Configurar `tsconfig.json` con `strict: true`, `baseUrl: "src"`, paths aliases (`@/` → `src/`)
-- [ ] Configurar `vite.config.ts` con el alias `@`
-- [ ] Crear `.gitignore` apropiado
-- [ ] Limpiar los archivos de ejemplo de Vite (`App.css`, `index.css` defaults, `assets/react.svg`)
+- [x] Ejecutar `npm create vite@latest cr-tax-calculator -- --template react-ts`
+- [x] Instalar dependencias: `clsx` (único helper de terceros para composición de clases)
+- [x] Configurar `tsconfig.json` con `strict: true`, `baseUrl: "src"`, paths aliases (`@/` → `src/`)
+- [x] Configurar `vite.config.ts` con el alias `@`
+- [x] Crear `.gitignore` apropiado
+- [x] Limpiar los archivos de ejemplo de Vite (`App.css`, `index.css` defaults, `assets/react.svg`)
 
 ### Task 1.2 — Estructura de carpetas
-- [ ] Crear la estructura completa de carpetas según el spec:
+- [x] Crear la estructura completa de carpetas según el spec:
   ```
   src/
   ├── config/
@@ -33,28 +33,29 @@ Las tareas están ordenadas para que cada una construya sobre la anterior. Kiro 
   ```
 
 ### Task 1.3 — Design tokens globales
-- [ ] Crear `src/styles/globals.css` con todas las variables CSS del `:root` (tokens de color, tipografía, bordes, sombras)
-- [ ] Agregar reset CSS mínimo (`*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }`)
-- [ ] Agregar `font-face` o link de Google Fonts para Inter + JetBrains Mono en `index.html`
-- [ ] Importar `globals.css` en `main.tsx`
+- [x] Crear `src/styles/globals.css` con todas las variables CSS del `:root` (tokens de color, tipografía, bordes, sombras)
+- [x] Agregar reset CSS mínimo (`*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }`)
+- [x] Agregar `font-face` o link de Google Fonts para Inter + JetBrains Mono en `index.html`
+- [x] Importar `globals.css` en `main.tsx`
 
 ### Task 1.4 — Configuración fiscal JSON
-- [ ] Crear `src/config/fiscal.config.json` con toda la configuración externalizada:
+- [x] Crear `src/config/fiscal.config.json` con toda la configuración externalizada:
   - Categorías CCSS (5 categorías con tasas IVM/SEM/estado)
-  - Tramos ISR 2026 (5 tramos con desde/hasta/tasa/label)
+  - Tramos ISR 2026 (5 tramos persona física + 4 tramos persona jurídica)
   - Créditos fiscales (hijo/cónyuge)
   - Porcentajes de deducciones (ficto, pensión máximo, CCSS obrero estimado)
   - Valores default y rangos de cada slider
   - Valores default de tipo de cambio (venta/compra) y URL de la API
   - Labels de rangos de categorías CCSS para display
-- [ ] Agregar campos `_comment`, `_version`, `_fuentes` para trazabilidad
+  - Configuración de 4 regímenes fiscales (personaFisicaIndependiente, personaFisicaMixta, sociedadAnonima, sociedadResponsabilidadLimitada)
+- [x] Agregar campos `_comment`, `_version`, `_fuentes` para trazabilidad
 
 ---
 
 ## Fase 2 — Tipos y utilidades
 
 ### Task 2.1 — Tipos TypeScript
-- [ ] Crear `src/types/fiscal.types.ts`:
+- [x] Crear `src/types/fiscal.types.ts`:
   - `CalculatorState` (todo el estado de la app)
   - `CcssCategory` (estructura de una categoría CCSS)
   - `CcssResult` (resultado de getCat)
@@ -65,17 +66,17 @@ Las tareas están ordenadas para que cada una construya sobre la anterior. Kiro 
   - `ContributorType` — preparado para extensión: `'trabajador-independiente' | 'mixto'`
 
 ### Task 2.2 — Formatters
-- [ ] Crear `src/utils/formatters.ts`:
+- [x] Crear `src/utils/formatters.ts`:
   - `NF = new Intl.NumberFormat('es-CR')`
   - `fm(n, d?)` — formato numérico sin símbolo
   - `fC(n)` — formato colones (₡)
   - `fU(n)` — formato dólares ($) con signo negativo correcto
   - `fP(n)` — formato porcentaje (n*100 con 1 decimal + %)
-- [ ] Exportar todas las funciones como named exports
-- [ ] Todos los tipos de parámetros y retornos tipados
+- [x] Exportar todas las funciones como named exports
+- [x] Todos los tipos de parámetros y retornos tipados
 
 ### Task 2.3 — Utilidades CCSS
-- [ ] Crear `src/utils/ccss.utils.ts`:
+- [x] Crear `src/utils/ccss.utils.ts`:
   - `getCat(ingreso: number, config: CcssConfig): CcssResult`
     - Recibe el config (no lo importa internamente) para que sea puro y testeable
     - Aplica base mínima de cotización
@@ -83,7 +84,7 @@ Las tareas están ordenadas para que cada una construya sobre la anterior. Kiro 
   - `buildCcssTablesData(ccssBase: number, catInfo: CcssResult, config: CcssConfig)` → datos para los 3 sub-tablas del modal (SEM, IVM, Resumen)
 
 ### Task 2.4 — Utilidades ISR
-- [ ] Crear `src/utils/isr.utils.ts`:
+- [x] Crear `src/utils/isr.utils.ts`:
   - `calcISR(rentaNeta: number, tramos: ISRTramo[]): ISRResult`
   - `calcISRMixto(rentaNeta: number, salarioAnual: number, tramos: ISRTramo[]): ISRResult`
     - Implementar exactamente la misma lógica que en el original (consumo del tramo exento por el salario)
@@ -94,7 +95,7 @@ Las tareas están ordenadas para que cada una construya sobre la anterior. Kiro 
 ## Fase 3 — Hooks
 
 ### Task 3.1 — useTipoCambio
-- [ ] Crear `src/hooks/useTipoCambio.ts`:
+- [x] Crear `src/hooks/useTipoCambio.ts`:
   - Hace fetch a la URL de la API (del config) al montar
   - AbortController con timeout del config
   - Retorna `{ tcVenta, tcCompra, loaded, error }`
@@ -102,7 +103,7 @@ Las tareas están ordenadas para que cada una construya sobre la anterior. Kiro 
   - No actualiza si el usuario ya tocó el TC (`tcManual`)
 
 ### Task 3.2 — useFiscalCalculator
-- [ ] Crear `src/hooks/useFiscalCalculator.ts`:
+- [x] Crear `src/hooks/useFiscalCalculator.ts`:
   - Recibe el `CalculatorState` como parámetro
   - Ejecuta todos los cálculos: CCSS, ISR (solo o mixto), deducciones, créditos, neto
   - Retorna el resultado completo: `{ ccssResult, isrResult, netoMes, netoAno, spBruto, tramoDet, distributionSegments, breakdownRows, annualSummaryRows }`
@@ -110,7 +111,7 @@ Las tareas están ordenadas para que cada una construya sobre la anterior. Kiro 
   - Importa funciones de `ccss.utils`, `isr.utils`, lee el config
 
 ### Task 3.3 — useCurrencyConverter
-- [ ] Crear `src/hooks/useCurrencyConverter.ts`:
+- [x] Crear `src/hooks/useCurrencyConverter.ts`:
   - Lógica de conversión al cambiar de moneda (USD→CRC, CRC→USD)
   - Retorna `{ convertRate, getSliderConfig }` — configura min/max/step según moneda activa
 
