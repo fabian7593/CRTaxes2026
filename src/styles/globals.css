@@ -1,0 +1,75 @@
+/* ═══════════════════════════════════════════════════════════════
+   GLOBALS — Design Tokens & Reset
+   Calculadora Fiscal CR 2026
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Textos ──────────────────────────────────────────────── */
+  --ink: #1a1a2e;
+  --ink2: #2d2d4e;
+  --ink3: #4a4a6a;
+  --muted: #8888aa;
+  --soft: #c4c4d8;
+  --line: #e8e8f0;
+
+  /* ── Fondos ──────────────────────────────────────────────── */
+  --bg: #f5f4f0;
+  --bg2: #eeecf0;
+  --surface: #fff;
+  --surface2: #f9f8ff;
+
+  /* ── Colores semánticos ──────────────────────────────────── */
+  --emerald: #00c896;
+  --emerald-bg: #e6fff9;
+  --emerald-mid: #00a07a;
+
+  --crimson: #e84545;
+  --crimson-bg: #fff0f0;
+
+  --amber: #f5a400;
+  --amber-bg: #fff8e6;
+  --amber-mid: #c07800;
+
+  --cobalt: #3b5bdb;
+  --cobalt-bg: #eef2ff;
+
+  --violet: #7c3aed;
+  --violet-bg: #f5f0ff;
+
+  --teal: #0891b2;
+  --teal-bg: #e0f7fa;
+
+  /* ── Bordes y sombras ────────────────────────────────────── */
+  --r: 14px;
+  --rs: 8px;
+  --shadow: 0 1px 3px rgba(26, 26, 46, 0.06), 0 4px 16px rgba(26, 26, 46, 0.06);
+  --shadow-lg: 0 8px 40px rgba(26, 26, 46, 0.15);
+
+  /* ── Tipografía ──────────────────────────────────────────── */
+  --sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+/* ── Reset CSS ─────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

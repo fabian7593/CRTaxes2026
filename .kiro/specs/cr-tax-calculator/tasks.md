@@ -1,0 +1,356 @@
+# Tasks — Plan de Implementación
+
+## Orden de ejecución
+
+Las tareas están ordenadas para que cada una construya sobre la anterior. Kiro debe completarlas en este orden.
+
+---
+
+## Fase 1 — Scaffolding del proyecto
+
+### Task 1.1 — Inicializar proyecto Vite + React + TypeScript
+- [ ] Ejecutar `npm create vite@latest cr-tax-calculator -- --template react-ts`
+- [ ] Instalar dependencias: `clsx` (único helper de terceros para composición de clases)
+- [ ] Configurar `tsconfig.json` con `strict: true`, `baseUrl: "src"`, paths aliases (`@/` → `src/`)
+- [ ] Configurar `vite.config.ts` con el alias `@`
+- [ ] Crear `.gitignore` apropiado
+- [ ] Limpiar los archivos de ejemplo de Vite (`App.css`, `index.css` defaults, `assets/react.svg`)
+
+### Task 1.2 — Estructura de carpetas
+- [ ] Crear la estructura completa de carpetas según el spec:
+  ```
+  src/
+  ├── config/
+  ├── types/
+  ├── hooks/
+  ├── utils/
+  ├── components/
+  │   ├── layout/
+  │   ├── ui/
+  │   ├── calculator/
+  │   └── ccss/
+  └── styles/
+  ```
+
+### Task 1.3 — Design tokens globales
+- [ ] Crear `src/styles/globals.css` con todas las variables CSS del `:root` (tokens de color, tipografía, bordes, sombras)
+- [ ] Agregar reset CSS mínimo (`*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }`)
+- [ ] Agregar `font-face` o link de Google Fonts para Inter + JetBrains Mono en `index.html`
+- [ ] Importar `globals.css` en `main.tsx`
+
+### Task 1.4 — Configuración fiscal JSON
+- [ ] Crear `src/config/fiscal.config.json` con toda la configuración externalizada:
+  - Categorías CCSS (5 categorías con tasas IVM/SEM/estado)
+  - Tramos ISR 2026 (5 tramos con desde/hasta/tasa/label)
+  - Créditos fiscales (hijo/cónyuge)
+  - Porcentajes de deducciones (ficto, pensión máximo, CCSS obrero estimado)
+  - Valores default y rangos de cada slider
+  - Valores default de tipo de cambio (venta/compra) y URL de la API
+  - Labels de rangos de categorías CCSS para display
+- [ ] Agregar campos `_comment`, `_version`, `_fuentes` para trazabilidad
+
+---
+
+## Fase 2 — Tipos y utilidades
+
+### Task 2.1 — Tipos TypeScript
+- [ ] Crear `src/types/fiscal.types.ts`:
+  - `CalculatorState` (todo el estado de la app)
+  - `CcssCategory` (estructura de una categoría CCSS)
+  - `CcssResult` (resultado de getCat)
+  - `ISRTramo` (estructura de un tramo ISR)
+  - `ISRResult` (resultado de calcISR con tot + det)
+  - `BreakdownRow` (filas del desglose)
+  - `DistributionSegment` (segmentos de la barra)
+  - `ContributorType` — preparado para extensión: `'trabajador-independiente' | 'mixto'`
+
+### Task 2.2 — Formatters
+- [ ] Crear `src/utils/formatters.ts`:
+  - `NF = new Intl.NumberFormat('es-CR')`
+  - `fm(n, d?)` — formato numérico sin símbolo
+  - `fC(n)` — formato colones (₡)
+  - `fU(n)` — formato dólares ($) con signo negativo correcto
+  - `fP(n)` — formato porcentaje (n*100 con 1 decimal + %)
+- [ ] Exportar todas las funciones como named exports
+- [ ] Todos los tipos de parámetros y retornos tipados
+
+### Task 2.3 — Utilidades CCSS
+- [ ] Crear `src/utils/ccss.utils.ts`:
+  - `getCat(ingreso: number, config: CcssConfig): CcssResult`
+    - Recibe el config (no lo importa internamente) para que sea puro y testeable
+    - Aplica base mínima de cotización
+    - Retorna categoría, tasas, cuotas SEM/IVM/total
+  - `buildCcssTablesData(ccssBase: number, catInfo: CcssResult, config: CcssConfig)` → datos para los 3 sub-tablas del modal (SEM, IVM, Resumen)
+
+### Task 2.4 — Utilidades ISR
+- [ ] Crear `src/utils/isr.utils.ts`:
+  - `calcISR(rentaNeta: number, tramos: ISRTramo[]): ISRResult`
+  - `calcISRMixto(rentaNeta: number, salarioAnual: number, tramos: ISRTramo[]): ISRResult`
+    - Implementar exactamente la misma lógica que en el original (consumo del tramo exento por el salario)
+  - Ambas funciones reciben los tramos como parámetro (vienen del config)
+
+---
+
+## Fase 3 — Hooks
+
+### Task 3.1 — useTipoCambio
+- [ ] Crear `src/hooks/useTipoCambio.ts`:
+  - Hace fetch a la URL de la API (del config) al montar
+  - AbortController con timeout del config
+  - Retorna `{ tcVenta, tcCompra, loaded, error }`
+  - Fallback a valores default del config si falla
+  - No actualiza si el usuario ya tocó el TC (`tcManual`)
+
+### Task 3.2 — useFiscalCalculator
+- [ ] Crear `src/hooks/useFiscalCalculator.ts`:
+  - Recibe el `CalculatorState` como parámetro
+  - Ejecuta todos los cálculos: CCSS, ISR (solo o mixto), deducciones, créditos, neto
+  - Retorna el resultado completo: `{ ccssResult, isrResult, netoMes, netoAno, spBruto, tramoDet, distributionSegments, breakdownRows, annualSummaryRows }`
+  - Usa `useMemo` para no recalcular cuando los inputs no cambiaron
+  - Importa funciones de `ccss.utils`, `isr.utils`, lee el config
+
+### Task 3.3 — useCurrencyConverter
+- [ ] Crear `src/hooks/useCurrencyConverter.ts`:
+  - Lógica de conversión al cambiar de moneda (USD→CRC, CRC→USD)
+  - Retorna `{ convertRate, getSliderConfig }` — configura min/max/step según moneda activa
+
+---
+
+## Fase 4 — Componentes UI base
+
+### Task 4.1 — Tooltip
+- [ ] Crear `src/components/ui/Tooltip.tsx` y `Tooltip.module.css`
+- [ ] Props: `content: string | React.ReactNode`
+- [ ] Renderiza el círculo `?` con el bubble on-hover
+- [ ] CSS exacto del `.tipw`, `.tpic`, `.tipb` del original
+
+### Task 4.2 — Chip
+- [ ] Crear `src/components/ui/Chip.tsx` y `Chip.module.css`
+- [ ] Props: `label: string`, `active: boolean`, `variant: 'green' | 'amber'`, `onClick: () => void`
+- [ ] `role="radio"`, `aria-checked={active}` para accesibilidad
+- [ ] Aplica `.on-g` o `.on-a` según variant y active
+
+### Task 4.3 — SliderField
+- [ ] Crear `src/components/ui/SliderField.tsx` y `SliderField.module.css`
+- [ ] Props: `id`, `label`, `value`, `min`, `max`, `step`, `valueDisplay` (string formateado), `onChange`, `hints: [string, string]`, `tooltip?`
+- [ ] Renderiza track custom con fill animado
+- [ ] Calcula el ancho del fill como `(value - min) / (max - min) * 100`
+- [ ] El input range real está sobre el track con opacity:0
+
+### Task 4.4 — Modal
+- [ ] Crear `src/components/ui/Modal.tsx` y `Modal.module.css`
+- [ ] Props: `isOpen`, `onClose`, `title`, `children`, `maxWidth?`
+- [ ] `useEffect` para cerrar con Escape
+- [ ] Click en overlay cierra el modal
+- [ ] `document.body.style.overflow = 'hidden'` cuando está abierto
+- [ ] `role="dialog"`, `aria-modal="true"`, `aria-labelledby`
+
+### Task 4.5 — CardSection
+- [ ] Crear `src/components/ui/CardSection.tsx` y `CardSection.module.css`
+- [ ] Props: `title`, `icon?` (emoji string), `iconVariant?: 'g' | 'a' | 'b' | 'r'`, `children`
+- [ ] Renderiza el header uppercase + línea decorativa + card wrapper
+
+### Task 4.6 — Badge (para Hero)
+- [ ] Crear `src/components/ui/Badge.tsx`
+- [ ] Props: `label`, `variant?: 'default' | 'green' | 'amber'`
+
+---
+
+## Fase 5 — Componentes de layout
+
+### Task 5.1 — Hero
+- [ ] Crear `src/components/layout/Hero.tsx` y `Hero.module.css`
+- [ ] Texto hardcodeado del hero (eyebrow, título con `<em>`, subtítulo, badges)
+- [ ] Botón "Documentación" que abre la página de docs
+- [ ] CSS con los pseudo-elementos `::before` y `::after` para los gradientes radiales
+- [ ] Las badges usan el componente `Badge`
+
+### Task 5.2 — PageLayout
+- [ ] Crear `src/components/layout/PageLayout.tsx` y `PageLayout.module.css`
+- [ ] Renderiza: Hero + two-col grid + Footer
+- [ ] El two-col recibe `left` y `right` como children o props
+- [ ] El panel derecho tiene `position: sticky; top: 20px` en desktop
+
+### Task 5.3 — Footer
+- [ ] Crear `src/components/layout/Footer.tsx` y `Footer.module.css`
+- [ ] Links: GitHub, LinkedIn, WhatsApp, Email (con copy-to-clipboard)
+- [ ] Función `copyEmail` con feedback visual (clase `copied` por 2s)
+- [ ] Texto de disclaimer y links a instituciones
+
+---
+
+## Fase 6 — Componentes del calculador
+
+### Task 6.1 — RegimeSelector
+- [ ] Crear `src/components/calculator/RegimeSelector.tsx`
+- [ ] Props: `value: 'solo' | 'mixto'`, `onChange`
+- [ ] Renderiza los dos tabs con sus iconos, labels y subtítulos (`.rs`)
+- [ ] Strip de advertencia amarilla que aparece solo en modo mixto
+
+### Task 6.2 — CurrencySelector
+- [ ] Crear `src/components/calculator/CurrencySelector.tsx`
+- [ ] Props: `value: 'usd' | 'crc'`, `onChange`
+- [ ] Dos chips: USD / CRC (variant 'green' para el activo)
+
+### Task 6.3 — ClientTypeChips
+- [ ] Props: `value: 'ext' | 'loc'`, `onChange`
+- [ ] Chips: "Exterior" (on-g) / "Local" (on-a)
+
+### Task 6.4 — DeductionChips
+- [ ] Props: `value: 'ficto' | 'real'`, `onChange`
+- [ ] Chips: "Ficto 25%" (on-g) / "Gastos reales" (on-a)
+
+### Task 6.5 — InputPanel
+- [ ] Crear `src/components/calculator/InputPanel.tsx`
+- [ ] Ensambla todos los sliders y chips del panel izquierdo
+- [ ] Recibe todo el estado y los setters como props
+- [ ] Incluye: CurrencySelector, slider Tarifa, slider TC, slider Meses, RegimeSelector, slider Salario (condicional), DeductionChips, slider Gastos (condicional), slider Hijos, chips Cónyuge, chips Pensión, ClientTypeChips
+
+### Task 6.6 — RateSlider
+- [ ] Slider especializado para la tarifa mensual
+- [ ] Cambia label, tooltip, hints y rangos según la moneda activa
+- [ ] Usa SliderField internamente
+
+### Task 6.7 — TipoCambioSlider
+- [ ] Slider para el tipo de cambio con badge "API en vivo"
+- [ ] Cambia label y tooltip según si está en modo USD (venta) o CRC (compra)
+- [ ] Al cambiar, activa `tcManual = true`
+
+### Task 6.8 — IvaInfo
+- [ ] Crear `src/components/calculator/IvaInfo.tsx`
+- [ ] Recibe: `clienteLocal: boolean`, `rateCRC: number`
+- [ ] Renderiza el strip con el estilo `.iva-strip.loc` o `.iva-strip.ext`
+
+### Task 6.9 — DistributionBar
+- [ ] Props: `segments: DistributionSegment[]`
+- [ ] Cada segmento: `{ color: string, pct: number, label: string }`
+- [ ] Filtra segmentos con pct < 0.001
+- [ ] Barra + leyenda
+
+### Task 6.10 — AnnualSummary
+- [ ] Props: `rows: AnnualSummaryRow[]`
+- [ ] 4 filas: bruto anual, CCSS anual, ISR anual, neto anual (con estilo `tot`)
+- [ ] Cada fila: label, valor CRC, valor USD
+
+### Task 6.11 — BreakdownTable
+- [ ] Props: `rows: BreakdownRow[]`
+- [ ] Renderiza la tabla con secciones, subtotales y total
+- [ ] Cada fila: label + tooltip opcional + icon opcional + valor CRC + valor USD
+- [ ] Clases de color: pos (emerald), neg (crimson), neu (amber)
+
+### Task 6.12 — ResultPanel
+- [ ] Crea `src/components/calculator/ResultPanel.tsx`
+- [ ] Recibe todos los resultados del hook `useFiscalCalculator`
+- [ ] Ensambla: neto grande, desglose rápido (bruto/CCSS/ISR/tasa), DistributionBar, AnnualSummary, BreakdownTable
+- [ ] Botones para abrir los modales (tramos ISR, tablas CCSS)
+
+---
+
+## Fase 7 — Componentes CCSS
+
+### Task 7.1 — CcssCard
+- [ ] Crear `src/components/ccss/CcssCard.tsx`
+- [ ] Muestra: nombre de la categoría, rango, tags SEM/IVM, cuotas (mensual/SEM/IVM/anual)
+- [ ] Botón para abrir el modal de tablas CCSS
+- [ ] Botón para abrir el modal de riesgo
+
+### Task 7.2 — CcssTablesModal
+- [ ] Crea `src/components/ccss/CcssTablesModal.tsx`
+- [ ] Recibe los datos de las tablas precalculados
+- [ ] Usa el componente `Modal`
+- [ ] Renderiza las 3 sub-tablas (SEM, IVM, Resumen) con la fila "vos" resaltada
+
+### Task 7.3 — RiesgoCcssModal
+- [ ] Crea `src/components/ccss/RiesgoCcssModal.tsx`
+- [ ] Usa el componente `Modal`
+- [ ] Slider para el monto declarado (inicializa al bruto actual)
+- [ ] Recalculo en tiempo real del riesgo
+- [ ] Muestra resultado "sin exposición" o tarjeta roja con el desglose de sanciones
+
+### Task 7.4 — TramoModal
+- [ ] Crea `src/components/calculator/TramoModal.tsx`
+- [ ] Muestra los 5 tramos ISR con barras proporcionales
+- [ ] Resalta los tramos activos (base > 0)
+- [ ] Muestra el total ISR bruto
+
+---
+
+## Fase 8 — Página de documentación
+
+### Task 8.1 — DocsPage
+- [ ] Crear `src/components/layout/DocsPage.tsx`
+- [ ] Hace fetch a la GitHub API con `Accept: application/vnd.github.v3.html`
+- [ ] Estados: loading (spinner), loaded (HTML renderizado), error (botón a GitHub)
+- [ ] Renderiza el HTML recibido con `dangerouslySetInnerHTML` (es contenido de GitHub, confiable)
+- [ ] Aplica estilos de markdown (headings, tables, code blocks, blockquotes, links)
+- [ ] Botón "Volver a la calculadora"
+
+### Task 8.2 — Routing mínimo
+- [ ] Implementar routing simple sin React Router:
+  - `useState` en `App.tsx` con `page: 'calculator' | 'docs'`
+  - Leer `window.location.search` al montar para detectar `?docs=true`
+  - El botón de docs cambia el estado y hace `pushState`
+- [ ] Alternativa: si el proyecto crece, agregar `react-router-dom` en v2
+
+---
+
+## Fase 9 — Ensamblaje y App.tsx
+
+### Task 9.1 — App.tsx
+- [ ] Importar `fiscal.config.json`
+- [ ] Inicializar el estado completo del calculador con los defaults del config
+- [ ] Integrar `useTipoCambio` y actualizar el estado cuando carga
+- [ ] Integrar `useFiscalCalculator` con el estado actual
+- [ ] Manejar los setters de estado y pasarlos como props a los componentes
+- [ ] Estado de los modales (cuál está abierto): `openModal: null | 'ccss-tables' | 'ccss-riesgo' | 'isr-tramos'`
+- [ ] Renderizar `PageLayout` con `InputPanel` y `ResultPanel`
+- [ ] Renderizar los 3 modales (condicionales según `openModal`)
+- [ ] Manejar el routing simple (calculadora vs docs)
+
+### Task 9.2 — Verificación de paridad de cálculos
+- [ ] Con los mismos inputs del ejemplo del README (₡15.000.000 renta neta), verificar que el ISR escalonado da los mismos resultados
+- [ ] Con tarifa $3.000/mes, TC ₡460, 12 meses, régimen solo, ficto, cliente exterior, verificar CCSS, ISR y neto
+- [ ] Con el mismo escenario en régimen mixto con salario ₡800.000, verificar que el ISR mixto es correcto
+
+---
+
+## Fase 10 — Configuración de deploy
+
+### Task 10.1 — Vercel
+- [ ] Crear `vercel.json` con configuración básica:
+  ```json
+  {
+    "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  }
+  ```
+- [ ] Verificar que `vite build` termina sin errores de TypeScript
+- [ ] Agregar script en `package.json`: `"type-check": "tsc --noEmit"`
+
+### Task 10.2 — GitHub Actions (opcional pero recomendado)
+- [ ] Crear `.github/workflows/ci.yml` que corre en cada PR:
+  - `npm ci`
+  - `npm run type-check`
+  - `npm run build`
+
+### Task 10.3 — README actualizado
+- [ ] Actualizar el `README.md` del repo con:
+  - Sección "Desarrollo local" (`npm install`, `npm run dev`)
+  - Sección "Actualizar datos fiscales" — explicar `fiscal.config.json` y qué cambiar cada año
+  - Sección "Arquitectura" — estructura de carpetas con descripción de cada módulo
+  - Sección "Contribuir" — cómo agregar un nuevo régimen fiscal en el futuro
+
+---
+
+## Checklist final antes de PR
+
+- [ ] `npm run type-check` pasa sin errores
+- [ ] `npm run build` termina exitoso
+- [ ] La app en producción carga el tipo de cambio correctamente
+- [ ] El fallback del tipo de cambio funciona (desconectar internet y recargar)
+- [ ] Los 3 modales abren y cierran correctamente (botón, Escape, overlay)
+- [ ] El cambio de moneda USD↔CRC convierte el slider correctamente
+- [ ] El régimen mixto muestra el slider de salario y calcula ISR correctamente
+- [ ] El simulador de riesgo CCSS muestra el cálculo correcto de sanciones
+- [ ] En móvil (< 840px), el layout es de columna única y funciona
+- [ ] No hay valores numéricos fiscales hardcodeados en archivos `.tsx` o `.ts`
+- [ ] El `fiscal.config.json` es el único lugar donde existen las tasas CCSS y tramos ISR
