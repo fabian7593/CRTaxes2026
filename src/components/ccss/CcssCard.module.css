@@ -1,0 +1,160 @@
+/* ── CCSS DISPLAY (compact, inline in card) ─────────── */
+.ccssCompact {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  margin-top: 10px;
+}
+
+.ccssCatPill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ccssCatName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ccssCatRates {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ccssRateTag {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--emerald-bg);
+  border: 1px solid rgba(0, 200, 150, 0.3);
+  color: var(--emerald-mid);
+  font-weight: 500;
+}
+
+.ccssRateTagR {
+  background: var(--cobalt-bg);
+  border-color: rgba(59, 91, 219, 0.3);
+  color: var(--cobalt);
+}
+
+.ccssFooterCompact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.ccssFooterCompact strong {
+  color: var(--emerald-mid);
+}
+
+.ccssFooterCompact .w {
+  color: var(--amber-mid);
+}
+
+/* ── INFO BUTTON ─────────────────────────────────────── */
+.infoBtnRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.infoBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(59, 91, 219, 0.25);
+  background: linear-gradient(135deg, var(--surface) 0%, var(--cobalt-bg) 100%);
+  color: var(--cobalt);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--sans);
+  box-shadow: 0 2px 6px rgba(59, 91, 219, 0.12);
+  position: relative;
+}
+
+.infoBtn:hover {
+  border-color: var(--cobalt);
+  color: var(--cobalt);
+  background: var(--cobalt-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(59, 91, 219, 0.25);
+}
+
+.infoBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(59, 91, 219, 0.15);
+}
+
+.ibDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cobalt);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(59, 91, 219, 0.2);
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgba(59, 91, 219, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(59, 91, 219, 0.3);
+  }
+}
+
+/* ── INFO BUTTON DANGER VARIANT ────────────────────────── */
+.infoBtnDanger {
+  border-color: rgba(232, 69, 69, 0.3);
+  background: linear-gradient(135deg, var(--surface) 0%, var(--crimson-bg) 100%);
+  color: var(--crimson);
+  box-shadow: 0 2px 6px rgba(232, 69, 69, 0.15);
+}
+
+.infoBtnDanger:hover {
+  border-color: var(--crimson);
+  background: var(--crimson-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(232, 69, 69, 0.3);
+}
+
+.infoBtnDanger:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(232, 69, 69, 0.15);
+}
+
+.ibDotDanger {
+  background: var(--crimson);
+  box-shadow: 0 0 0 3px rgba(232, 69, 69, 0.2);
+  animation: pulseDotDanger 2s ease-in-out infinite;
+}
+
+@keyframes pulseDotDanger {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgba(232, 69, 69, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(232, 69, 69, 0.35);
+  }
+}

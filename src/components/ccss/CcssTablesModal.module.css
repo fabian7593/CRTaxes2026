@@ -1,0 +1,144 @@
+/* ── CCSS MODAL TABLES ───────────────────────────────── */
+.modalCcssNote {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: var(--mono);
+  margin-bottom: 12px;
+}
+
+.modalCcssHighlight {
+  color: var(--amber-mid);
+  font-weight: 500;
+}
+
+.modalCcssFooter {
+  margin-top: 12px;
+  font-size: 11px;
+  color: var(--ink3);
+  line-height: 1.6;
+}
+
+.modalCcssFooter strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ctblScroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 8px;
+}
+
+.ctbl {
+  width: 100%;
+  min-width: 300px;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+/* Table headers - Blue variant (SEM) */
+.ctbl thead tr.thB th {
+  background: var(--cobalt-bg);
+  color: var(--cobalt);
+  font-weight: 600;
+  padding: 6px 8px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+/* Table headers - Purple variant (IVM) */
+.ctbl thead tr.thP th {
+  background: var(--violet-bg);
+  color: var(--violet);
+  font-weight: 600;
+  padding: 6px 8px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+/* Table headers - Green variant (Summary) */
+.ctbl thead tr.thG th {
+  background: var(--emerald-bg);
+  color: var(--emerald-mid);
+  font-weight: 600;
+  padding: 6px 8px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+/* Sub-headers (column labels) */
+.ctbl thead tr.thSub th {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--muted);
+  font-weight: 400;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.ctbl thead tr.thSub th:first-child,
+.ctbl thead tr.thSub th:nth-child(2) {
+  text-align: left;
+}
+
+/* Table cells */
+.ctbl td {
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink3);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.ctbl td:first-child,
+.ctbl td:nth-child(2) {
+  text-align: left;
+}
+
+.ctbl tr:last-child td {
+  border-bottom: none;
+}
+
+/* Current user row highlight */
+.ctbl tr.cur td {
+  background: var(--emerald-bg);
+  color: var(--emerald-mid);
+  font-weight: 500;
+}
+
+/* Amber highlight for summary amounts */
+.ctbl .ca {
+  color: var(--amber-mid);
+  font-weight: 500;
+}
+
+/* "vos" (you) badge */
+.youB {
+  display: inline-block;
+  background: var(--emerald);
+  color: #fff;
+  font-size: 8px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-left: 4px;
+  vertical-align: middle;
+  font-weight: 600;
+}
+
+/* Gap between tables */
+.ctblGap {
+  height: 16px;
+}

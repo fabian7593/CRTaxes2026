@@ -1,0 +1,185 @@
+/* ── MODAL RIESGO ────────────────────────────────────── */
+.modalRiesgoAlert {
+  background: var(--amber-bg);
+  border: 1px solid rgba(245, 164, 0, 0.3);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 11px;
+  color: var(--amber-mid);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.modalRiesgoAlert strong {
+  font-weight: 600;
+}
+
+.modalRiesgoBruto {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+
+.modalRiesgoBrutoLabel {
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.modalRiesgoBrutoValue {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--emerald-mid);
+}
+
+.modalRiesgoSlider {
+  margin-bottom: 18px;
+}
+
+/* Risk card (when there is exposure) */
+.riskCard {
+  background: var(--crimson-bg);
+  border: 2px solid var(--crimson);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.riskCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.riskCardIcon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.riskCardTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--crimson);
+  margin-bottom: 2px;
+}
+
+.riskCardSubtitle {
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--crimson);
+  opacity: 0.8;
+}
+
+.riskBreakdown {
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.riskRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.riskRow:last-child {
+  border-bottom: none;
+}
+
+.riskRowTotal {
+  border-top: 2px solid var(--line);
+  padding-top: 10px;
+  margin-top: 4px;
+}
+
+.riskLabel {
+  font-size: 11px;
+  color: var(--ink3);
+  flex: 1;
+}
+
+.riskRowTotal .riskLabel {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.riskValue {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--crimson);
+  white-space: nowrap;
+  margin-left: 12px;
+}
+
+.riskRowTotal .riskValue {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.riskRatio {
+  font-size: 11px;
+  color: var(--crimson);
+  line-height: 1.6;
+  text-align: center;
+}
+
+.riskRatio strong {
+  font-weight: 600;
+}
+
+.riskRatioValue {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* No risk card (when declared >= actual) */
+.noRiskCard {
+  background: var(--emerald-bg);
+  border: 2px solid var(--emerald);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.noRiskIcon {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+.noRiskTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--emerald-mid);
+  margin-bottom: 6px;
+}
+
+.noRiskMessage {
+  font-size: 12px;
+  color: var(--emerald-mid);
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.modalRiesgoFooter {
+  font-size: 11px;
+  color: var(--ink3);
+  line-height: 1.6;
+}
+
+.modalRiesgoFooter strong {
+  font-weight: 600;
+  color: var(--ink);
+}

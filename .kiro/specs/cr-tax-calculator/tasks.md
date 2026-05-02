@@ -250,29 +250,29 @@ Las tareas están ordenadas para que cada una construya sobre la anterior. Kiro 
 ## Fase 7 — Componentes CCSS
 
 ### Task 7.1 — CcssCard
-- [ ] Crear `src/components/ccss/CcssCard.tsx`
-- [ ] Muestra: nombre de la categoría, rango, tags SEM/IVM, cuotas (mensual/SEM/IVM/anual)
-- [ ] Botón para abrir el modal de tablas CCSS
-- [ ] Botón para abrir el modal de riesgo
+- [x] Crear `src/components/ccss/CcssCard.tsx`
+- [x] Muestra: nombre de la categoría, rango, tags SEM/IVM, cuotas (mensual/SEM/IVM/anual)
+- [x] Botón para abrir el modal de tablas CCSS
+- [x] Botón para abrir el modal de riesgo
 
 ### Task 7.2 — CcssTablesModal
-- [ ] Crea `src/components/ccss/CcssTablesModal.tsx`
-- [ ] Recibe los datos de las tablas precalculados
-- [ ] Usa el componente `Modal`
-- [ ] Renderiza las 3 sub-tablas (SEM, IVM, Resumen) con la fila "vos" resaltada
+- [x] Crea `src/components/ccss/CcssTablesModal.tsx`
+- [x] Recibe los datos de las tablas precalculados
+- [x] Usa el componente `Modal`
+- [x] Renderiza las 3 sub-tablas (SEM, IVM, Resumen) con la fila "vos" resaltada
 
 ### Task 7.3 — RiesgoCcssModal
-- [ ] Crea `src/components/ccss/RiesgoCcssModal.tsx`
+- [x] Crea `src/components/ccss/RiesgoCcssModal.tsx`
 - [ ] Usa el componente `Modal`
-- [ ] Slider para el monto declarado (inicializa al bruto actual)
-- [ ] Recalculo en tiempo real del riesgo
-- [ ] Muestra resultado "sin exposición" o tarjeta roja con el desglose de sanciones
+- [x] Slider para el monto declarado (inicializa al bruto actual)
+- [x] Recalculo en tiempo real del riesgo
+- [x] Muestra resultado "sin exposición" o tarjeta roja con el desglose de sanciones
 
 ### Task 7.4 — TramoModal
-- [ ] Crea `src/components/calculator/TramoModal.tsx`
-- [ ] Muestra los 5 tramos ISR con barras proporcionales
-- [ ] Resalta los tramos activos (base > 0)
-- [ ] Muestra el total ISR bruto
+- [x] Crea `src/components/calculator/TramoModal.tsx`
+- [x] Muestra los 5 tramos ISR con barras proporcionales
+- [x] Resalta los tramos activos (base > 0)
+- [x] Muestra el total ISR bruto
 
 ---
 
