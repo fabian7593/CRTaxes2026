@@ -1,0 +1,114 @@
+/* Footer with dark background */
+.footer {
+  background: var(--ink);
+  color: rgba(255, 255, 255, 0.5);
+  padding: 40px 0;
+  margin-top: 40px;
+  font-size: 12px;
+}
+
+/* Footer container */
+.footerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
+/* Social links row */
+.footerSocial {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+/* Social link styles */
+.footerSocialLink {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+}
+
+.footerSocialLink:hover {
+  color: var(--emerald);
+}
+
+/* Copied state for email button */
+.footerSocialLink.copied {
+  color: var(--emerald);
+}
+
+/* Disclaimer section */
+.footerDisclaimer {
+  max-width: 800px;
+  margin: 0 auto 24px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  line-height: 1.6;
+}
+
+.footerDisclaimer p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.footerDisclaimer strong {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+}
+
+/* Institutional links */
+.footerLinks {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.footerLinks p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.footerLink {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footerLink:hover {
+  color: var(--emerald);
+}
+
+.footerSeparator {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Copyright */
+.footerCopyright {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 840px) {
+  .footer {
+    padding: 32px 0;
+    margin-top: 32px;
+  }
+
+  .footerDisclaimer {
+    font-size: 11px;
+  }
+}

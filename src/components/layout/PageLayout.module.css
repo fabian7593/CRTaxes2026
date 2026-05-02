@@ -1,0 +1,46 @@
+/* Page wrapper - full height layout */
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+/* Main content area */
+.mainContent {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Two-column grid layout */
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* Left panel - input controls */
+.leftPanel {
+  /* No special styles needed - just a container */
+}
+
+/* Right panel - results (sticky on desktop) */
+.rightPanel {
+  position: sticky;
+  top: 20px;
+}
+
+/* Responsive: single column on mobile */
+@media (max-width: 840px) {
+  .twoCol {
+    grid-template-columns: 1fr;
+  }
+
+  .rightPanel {
+    position: static;
+  }
+}

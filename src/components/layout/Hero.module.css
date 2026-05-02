@@ -1,0 +1,133 @@
+/* Hero section with dark background and gradient overlays */
+.hero {
+  background: var(--ink);
+  color: #fff;
+  padding: 36px 0 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gradient overlays using pseudo-elements */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(0, 200, 150, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(59, 91, 219, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Container for hero content */
+.heroContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+/* Eyebrow text above title */
+.heroEyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--emerald);
+  margin-bottom: 12px;
+}
+
+/* Main title */
+.heroTitle {
+  font-size: clamp(20px, 3.5vw, 30px);
+  font-weight: 700;
+  line-height: 1.3;
+  color: #fff;
+  margin: 0 0 16px 0;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Emphasized text in title */
+.heroTitle em {
+  color: var(--emerald);
+  font-style: normal;
+}
+
+/* Subtitle */
+.heroSubtitle {
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0 0 20px 0;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Badges container */
+.heroBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+/* Documentation button */
+.heroButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  background: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.heroButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.heroButton:active {
+  transform: translateY(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 840px) {
+  .hero {
+    padding: 28px 0 24px;
+  }
+
+  .heroTitle {
+    font-size: 22px;
+  }
+
+  .heroSubtitle {
+    font-size: 12px;
+  }
+}

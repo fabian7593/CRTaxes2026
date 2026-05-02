@@ -160,23 +160,23 @@ Las tareas están ordenadas para que cada una construya sobre la anterior. Kiro 
 ## Fase 5 — Componentes de layout
 
 ### Task 5.1 — Hero
-- [ ] Crear `src/components/layout/Hero.tsx` y `Hero.module.css`
-- [ ] Texto hardcodeado del hero (eyebrow, título con `<em>`, subtítulo, badges)
-- [ ] Botón "Documentación" que abre la página de docs
-- [ ] CSS con los pseudo-elementos `::before` y `::after` para los gradientes radiales
-- [ ] Las badges usan el componente `Badge`
+- [x] Crear `src/components/layout/Hero.tsx` y `Hero.module.css`
+- [x] Texto hardcodeado del hero (eyebrow, título con `<em>`, subtítulo, badges)
+- [x] Botón "Documentación" que abre la página de docs
+- [x] CSS con los pseudo-elementos `::before` y `::after` para los gradientes radiales
+- [x] Las badges usan el componente `Badge`
 
 ### Task 5.2 — PageLayout
-- [ ] Crear `src/components/layout/PageLayout.tsx` y `PageLayout.module.css`
-- [ ] Renderiza: Hero + two-col grid + Footer
-- [ ] El two-col recibe `left` y `right` como children o props
-- [ ] El panel derecho tiene `position: sticky; top: 20px` en desktop
+- [x] Crear `src/components/layout/PageLayout.tsx` y `PageLayout.module.css`
+- [x] Renderiza: Hero + two-col grid + Footer
+- [x] El two-col recibe `left` y `right` como children o props
+- [x] El panel derecho tiene `position: sticky; top: 20px` en desktop
 
 ### Task 5.3 — Footer
-- [ ] Crear `src/components/layout/Footer.tsx` y `Footer.module.css`
-- [ ] Links: GitHub, LinkedIn, WhatsApp, Email (con copy-to-clipboard)
-- [ ] Función `copyEmail` con feedback visual (clase `copied` por 2s)
-- [ ] Texto de disclaimer y links a instituciones
+- [x] Crear `src/components/layout/Footer.tsx` y `Footer.module.css`
+- [x] Links: GitHub, LinkedIn, WhatsApp, Email (con copy-to-clipboard)
+- [x] Función `copyEmail` con feedback visual (clase `copied` por 2s)
+- [x] Texto de disclaimer y links a instituciones
 
 ---
 
