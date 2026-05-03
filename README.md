@@ -24,8 +24,10 @@
   - [ISR - Impuesto Sobre la Renta](#2-isr---impuesto-sobre-la-renta)
   - [IVA - Impuesto al Valor Agregado](#3-iva---impuesto-al-valor-agregado)
 - [Características](#-características)
-- [Uso](#-uso)
 - [Glosario de Términos](#-glosario-de-términos)
+- [Desarrollo Local](#-desarrollo-local)
+- [Actualizar Datos Fiscales](#-actualizar-datos-fiscales)
+- [Arquitectura](#️-arquitectura)
 - [Contribuir](#-contribuir)
 - [Autor](#-autor)
 - [Licencia](#-licencia)
@@ -366,6 +368,471 @@ Desde 2018, la facturación electrónica es **obligatoria** en Costa Rica:
 ---
 
 
+## 💻 Desarrollo Local
+
+### Requisitos Previos
+
+- **Node.js**: v18 o superior
+- **npm**: v9 o superior
+- **Git**: Para clonar el repositorio
+
+### Instalación
+
+```bash
+# Clonar el repositorio
+git clone https://github.com/fabian7593/CRTaxes2026.git
+cd CRTaxes2026
+
+# Instalar dependencias
+npm install
+
+# Iniciar servidor de desarrollo
+npm run dev
+```
+
+El servidor de desarrollo se iniciará en `http://localhost:5173`
+
+### Scripts Disponibles
+
+| Comando | Descripción |
+|---------|-------------|
+| `npm run dev` | Inicia el servidor de desarrollo con hot-reload |
+| `npm run build` | Compila el proyecto para producción en `/dist` |
+| `npm run preview` | Preview del build de producción |
+| `npm run type-check` | Verifica tipos TypeScript sin compilar |
+| `npm run lint` | Ejecuta ESLint para verificar el código |
+
+### Estructura del Proyecto
+
+```
+cr-tax-calculator/
+├── src/
+│   ├── config/
+│   │   └── fiscal.config.json      ← ÚNICA fuente de valores fiscales
+│   ├── types/
+│   │   └── fiscal.types.ts         ← Interfaces TypeScript del dominio
+│   ├── hooks/
+│   │   ├── useFiscalCalculator.ts  ← Orquesta todos los cálculos
+│   │   ├── useTipoCambio.ts        ← Fetch API + fallback
+│   │   └── useCurrencyConverter.ts ← Conversión USD/CRC
+│   ├── utils/
+│   │   ├── formatters.ts           ← Formateo de moneda y números
+│   │   ├── ccss.utils.ts           ← Lógica de cálculo CCSS
+│   │   └── isr.utils.ts            ← Lógica de cálculo ISR
+│   ├── components/
+│   │   ├── layout/                 ← Hero, Footer, PageLayout
+│   │   ├── ui/                     ← Componentes genéricos reutilizables
+│   │   ├── calculator/             ← Componentes específicos del calculador
+│   │   └── ccss/                   ← Componentes de CCSS
+│   ├── styles/
+│   │   └── globals.css             ← Variables CSS y reset
+│   ├── App.tsx                     ← Estado global y ensamblaje
+│   └── main.tsx                    ← Entry point
+├── .github/
+│   └── workflows/
+│       └── ci.yml                  ← GitHub Actions CI
+├── vercel.json                     ← Configuración de deploy
+└── package.json
+```
+
+---
+
+## 🔧 Actualizar Datos Fiscales
+
+### ¿Cuándo actualizar?
+
+Los datos fiscales deben actualizarse **cada año fiscal** cuando:
+- La CCSS publica nuevas escalas contributivas (usualmente en diciembre)
+- El Ministerio de Hacienda publica nuevos tramos ISR (usualmente en diciembre)
+- Cambian los créditos fiscales por hijos o cónyuge
+- Se ajusta el salario base o la base mínima de cotización
+
+### Archivo de Configuración: `fiscal.config.json`
+
+**Ubicación**: `src/config/fiscal.config.json`
+
+Este archivo es la **única fuente de verdad** para todos los valores numéricos fiscales. Ningún archivo `.tsx` o `.ts` debe contener valores hardcodeados como tasas, tramos o montos.
+
+### Estructura del Archivo
+
+#### 1. Metadatos
+
+```json
+{
+  "_comment": "Calculadora Fiscal CR — Configuración Fiscal 2026",
+  "_version": "2026.1",
+  "_fuentes": {
+    "ccss": "Decreto N°44756-MTSS, Gaceta N°232, 10 dic 2024",
+    "isr": "Decreto 45333-H (Tramos ISR 2026)",
+    "creditos": "Ley 7092 art. 16"
+  }
+}
+```
+
+- `_version`: Año fiscal + versión (ej: "2027.1" para la primera versión de 2027)
+- `_fuentes`: Referencias legales para trazabilidad
+
+#### 2. Regímenes Fiscales
+
+```json
+"regimenes": {
+  "personaFisicaIndependiente": {
+    "nombre": "Persona Física Independiente",
+    "aplicaCCSS": true,
+    "aplicaCreditos": true,
+    "tramosISR": "tramosPersonaFisica"
+  }
+}
+```
+
+Define los 4 regímenes soportados y sus características.
+
+#### 3. Categorías CCSS
+
+```json
+"ccss": {
+  "baseMinimaContribucion": 341228,
+  "salarioBase2026": 462200,
+  "tasaInteresesMoratorios": 0.0852,
+  "categorias": [
+    {
+      "cat": 1,
+      "max": 341227,
+      "ivm26": 0.0416,
+      "sem": 0.0289
+    }
+  ]
+}
+```
+
+**Importante**: Las tasas están en formato decimal:
+- `0.0416` = 4.16% (IVM afiliado categoría 1)
+- `0.0289` = 2.89% (SEM afiliado categoría 1)
+
+**Conversión**: Para convertir un porcentaje a decimal, dividir entre 100:
+- 4.16% → 4.16 / 100 = 0.0416
+- 10.69% → 10.69 / 100 = 0.1069
+
+**Uso en el código**: Las funciones de cálculo multiplican estos decimales por el ingreso:
+```typescript
+const cuotaSEM = ingreso * categoria.sem  // ingreso * 0.0289
+const cuotaIVM = ingreso * categoria.ivm26  // ingreso * 0.0416
+```
+
+**Campos de cada categoría**:
+- `cat`: Número de categoría (1-5)
+- `max`: Ingreso máximo mensual en colones para esta categoría (`null` para categoría 5)
+- `ivm26`: Tasa IVM 2026 del afiliado (decimal)
+- `ivm_est`: Tasa IVM del Estado (decimal)
+- `ivm_lpt`: Tasa IVM Ley de Protección al Trabajador (decimal)
+- `sem`: Tasa SEM del afiliado (decimal)
+- `sem_est`: Tasa SEM del Estado (decimal)
+
+#### 4. Tramos ISR
+
+```json
+"isr": {
+  "tramosPersonaFisica": [
+    {
+      "desde": 0,
+      "hasta": 6244000,
+      "tasa": 0.00,
+      "label": "Exento"
+    },
+    {
+      "desde": 6244000,
+      "hasta": 8329000,
+      "tasa": 0.10,
+      "label": "10%"
+    }
+  ]
+}
+```
+
+**Importante**: Las tasas están en formato decimal:
+- `0.00` = 0% (tramo exento)
+- `0.10` = 10%
+- `0.15` = 15%
+- `0.25` = 25%
+
+**Conversión**: Para convertir un porcentaje a decimal, dividir entre 100:
+- 10% → 10 / 100 = 0.10
+- 25% → 25 / 100 = 0.25
+
+**Uso en el código**: El cálculo escalonado multiplica la base de cada tramo por su tasa:
+```typescript
+const impuestoTramo = baseTramo * tramo.tasa  // baseTramo * 0.10
+```
+
+**Campos de cada tramo**:
+- `desde`: Ingreso anual desde (en colones)
+- `hasta`: Ingreso anual hasta (en colones, `null` para el último tramo)
+- `tasa`: Tasa del tramo (decimal)
+- `label`: Etiqueta para mostrar en la UI
+
+#### 5. Créditos Fiscales
+
+```json
+"creditos": {
+  "porHijo": 20520,
+  "porConyuge": 31080
+}
+```
+
+Montos anuales en colones que se **restan directamente del ISR calculado**.
+
+#### 6. Deducciones
+
+```json
+"deducciones": {
+  "pctFicto": 0.25,
+  "pctPensionVoluntariaMaximo": 0.10,
+  "ccssObreroEstimado": 0.0983
+}
+```
+
+- `pctFicto`: Porcentaje de deducción ficta (0.25 = 25%)
+- `pctPensionVoluntariaMaximo`: Máximo deducible de pensión voluntaria (0.10 = 10% del bruto)
+- `ccssObreroEstimado`: Tasa CCSS obrero estimada para cálculo de gastos reales (0.0983 = 9.83%)
+
+#### 7. Tipo de Cambio
+
+```json
+"tipoCambio": {
+  "ventaDefault": 460,
+  "compraDefault": 450,
+  "apiUrl": "https://tipodecambio.paginasweb.cr/api",
+  "timeoutMs": 5000
+}
+```
+
+Valores de fallback si la API falla.
+
+#### 8. Configuración de Sliders
+
+```json
+"sliders": {
+  "tarifa": {
+    "usd": {
+      "min": 200,
+      "max": 12000,
+      "step": 100,
+      "default": 3800
+    }
+  }
+}
+```
+
+Define los rangos y valores por defecto de cada slider en la UI.
+
+### Cómo Actualizar para 2027
+
+1. **Obtener los nuevos valores oficiales**:
+   - CCSS: Buscar en La Gaceta el decreto de escala contributiva
+   - ISR: Buscar el decreto de tramos ISR del Ministerio de Hacienda
+   - Créditos: Verificar si hubo cambios en la Ley 7092
+
+2. **Actualizar `fiscal.config.json`**:
+   ```bash
+   # Abrir el archivo
+   code src/config/fiscal.config.json
+   ```
+
+3. **Actualizar metadatos**:
+   ```json
+   "_version": "2027.1",
+   "_fuentes": {
+     "ccss": "Decreto N°XXXXX-MTSS, Gaceta N°XXX, fecha",
+     "isr": "Decreto XXXXX-H (Tramos ISR 2027)"
+   }
+   ```
+
+4. **Actualizar valores numéricos**:
+   - Categorías CCSS: `max`, `ivm26`, `sem`
+   - Tramos ISR: `desde`, `hasta`, `tasa`
+   - Créditos: `porHijo`, `porConyuge`
+   - Base mínima: `baseMinimaContribucion`
+   - Salario base: `salarioBase2027`
+
+5. **Verificar tipos TypeScript**:
+   ```bash
+   npm run type-check
+   ```
+
+6. **Probar localmente**:
+   ```bash
+   npm run dev
+   ```
+
+7. **Crear Pull Request** con los cambios
+
+### Ejemplo: Actualizar Tasa IVM 2027
+
+Si la CCSS aumenta la tasa IVM en 0.16 puntos porcentuales (incremento trienal):
+
+```json
+// Antes (2026)
+{
+  "cat": 1,
+  "ivm26": 0.0416,  // 4.16%
+  "sem": 0.0289
+}
+
+// Después (2027)
+{
+  "cat": 1,
+  "ivm27": 0.0432,  // 4.32% (4.16% + 0.16%)
+  "sem": 0.0289
+}
+```
+
+**Importante**: Cambiar también el nombre del campo de `ivm26` a `ivm27` y actualizar las referencias en el código TypeScript.
+
+---
+
+## 🏗️ Arquitectura
+
+### Stack Tecnológico
+
+- **Framework**: React 18 con hooks funcionales
+- **Build Tool**: Vite
+- **Lenguaje**: TypeScript con `strict: true`
+- **Estilos**: CSS Modules (`.module.css`)
+- **Utilidades**: `clsx` para composición de clases
+
+### Principios de Diseño
+
+#### 1. Separación de Responsabilidades
+
+```
+UI Components (components/)
+    ↓ props
+Hooks (hooks/)
+    ↓ usa
+Utils (utils/)
+    ↓ lee
+Config (config/fiscal.config.json)
+```
+
+- **Componentes UI**: Solo renderizado, reciben todo por props
+- **Hooks**: Orquestan lógica y estado
+- **Utils**: Funciones puras de cálculo
+- **Config**: Única fuente de verdad para valores fiscales
+
+#### 2. Componentes Genéricos vs. Específicos
+
+**Componentes UI Genéricos** (`components/ui/`):
+- No conocen el dominio fiscal
+- Reutilizables en cualquier proyecto
+- Ejemplos: `Chip`, `SliderField`, `Modal`, `Tooltip`
+
+**Componentes Específicos** (`components/calculator/`, `components/ccss/`):
+- Conocen el dominio fiscal
+- Usan componentes genéricos internamente
+- Ejemplos: `RegimeSelector`, `CcssCard`, `BreakdownTable`
+
+#### 3. Flujo de Datos
+
+```
+App.tsx (estado global)
+    ↓
+useFiscalCalculator(state, config)
+    ↓
+{ ccssResult, isrResult, netoMes, ... }
+    ↓
+InputPanel + ResultPanel (props)
+```
+
+Todo el estado vive en `App.tsx`. Los componentes son **controlados** (controlled components).
+
+#### 4. Cálculos Fiscales
+
+**CCSS** (`ccss.utils.ts`):
+```typescript
+getCat(ingreso, config) → CcssResult
+```
+- Aplica base mínima de cotización
+- Encuentra la categoría según el ingreso
+- Calcula cuotas SEM, IVM y total
+
+**ISR** (`isr.utils.ts`):
+```typescript
+calcISR(rentaNeta, tramos) → ISRResult
+calcISRMixto(rentaNeta, salario, tramos) → ISRResult
+```
+- Cálculo escalonado por tramos
+- Régimen mixto: el salario consume el tramo exento
+
+**Formateo** (`formatters.ts`):
+```typescript
+fC(amount) → "₡450.000"
+fU(amount) → "$3,000"
+fP(rate) → "19.11%"
+```
+
+### Patrones de Código
+
+#### Hook de Cálculo
+
+```typescript
+export function useFiscalCalculator(
+  state: CalculatorState,
+  config: FiscalConfig
+): FiscalResult {
+  return useMemo(() => {
+    // 1. Convertir a CRC
+    const monthlyIncomeCRC = state.currency === 'usd'
+      ? state.monthlyRate * state.exchangeRate
+      : state.monthlyRate
+
+    // 2. Calcular CCSS
+    const ccssResult = getCat(monthlyIncomeCRC, config.ccss)
+
+    // 3. Calcular ISR
+    const isrResult = state.regime === 'solo'
+      ? calcISR(taxableIncome, config.isr.tramosPersonaFisica)
+      : calcISRMixto(taxableIncome, state.annualSalary, config.isr.tramosPersonaFisica)
+
+    // 4. Retornar resultados
+    return { ccssResult, isrResult, ... }
+  }, [state, config])
+}
+```
+
+#### Componente Controlado
+
+```typescript
+interface SliderFieldProps {
+  value: number
+  onChange: (newValue: number) => void
+  min: number
+  max: number
+  // ...
+}
+
+export function SliderField({ value, onChange, ... }: SliderFieldProps) {
+  return (
+    <input
+      type="range"
+      value={value}
+      onChange={(e) => onChange(Number(e.target.value))}
+    />
+  )
+}
+```
+
+### Testing
+
+Actualmente el proyecto no tiene tests automatizados, pero la arquitectura está diseñada para facilitar testing:
+
+- **Utils**: Funciones puras, fáciles de testear
+- **Hooks**: Pueden testearse con `@testing-library/react-hooks`
+- **Componentes**: Pueden testearse con `@testing-library/react`
+
+**Contribuciones de tests son bienvenidas!**
+
+---
+
 ## 🤝 Contribuir
 
 ¡Las contribuciones son bienvenidas! Este proyecto está abierto a la comunidad para mantenerlo actualizado con los cambios fiscales de Costa Rica.
@@ -378,8 +845,55 @@ Desde 2018, la facturación electrónica es **obligatoria** en Costa Rica:
 4. **Push** a la rama (`git push origin feature/nueva-funcionalidad`)
 5. Abrí un **Pull Request**
 
+### Tipos de Contribuciones
 
-### Reportar Bugs
+#### 1. Actualizar Datos Fiscales (Prioridad Alta)
+
+Si encontrás que los datos fiscales están desactualizados:
+
+1. Obtener la fuente oficial (decreto, gaceta, ley)
+2. Actualizar `src/config/fiscal.config.json`
+3. Actualizar el campo `_fuentes` con la referencia legal
+4. Crear PR con título: `[Fiscal] Actualizar datos 2027`
+
+**Ver sección "Actualizar Datos Fiscales" arriba para detalles.**
+
+#### 2. Agregar Nuevo Régimen Fiscal
+
+Para agregar un nuevo tipo de contribuyente (ej: Sociedad Anónima, Monotributo):
+
+1. **Agregar configuración en `fiscal.config.json`**:
+   ```json
+   "regimenes": {
+     "nuevoRegimen": {
+       "nombre": "Nombre del Régimen",
+       "descripcion": "Descripción breve",
+       "aplicaCCSS": true/false,
+       "aplicaCreditos": true/false,
+       "tramosISR": "tramosPersonaFisica" o "tramosPersonaJuridica",
+       "impuestoAnualFijo": 0  // opcional
+     }
+   }
+   ```
+
+2. **Actualizar tipos TypeScript** en `src/types/fiscal.types.ts`:
+   ```typescript
+   type RegimeType = 'solo' | 'mixto' | 'nuevoRegimen'
+   ```
+
+3. **Actualizar lógica de cálculo** en `src/hooks/useFiscalCalculator.ts`:
+   - Agregar condiciones para el nuevo régimen
+   - Aplicar reglas específicas (CCSS, ISR, créditos)
+
+4. **Actualizar UI** en `src/components/calculator/RegimeSelector.tsx`:
+   - Agregar opción en el selector
+   - Agregar descripción y tooltip
+
+5. **Documentar** en el README:
+   - Agregar sección explicando el nuevo régimen
+   - Incluir marco legal y normativo
+
+#### 3. Reportar Bugs
 
 Si encontrás un error en los cálculos o en la aplicación:
 
@@ -388,6 +902,61 @@ Si encontrás un error en los cálculos o en la aplicación:
    - Descripción clara del problema
    - Pasos para reproducirlo
    - Resultado esperado vs. resultado obtenido
+   - Screenshots si es relevante
+
+#### 4. Mejorar Documentación
+
+- Corregir errores en el README
+- Agregar ejemplos de uso
+- Traducir a otros idiomas
+- Mejorar comentarios en el código
+
+#### 5. Agregar Tests
+
+El proyecto actualmente no tiene tests automatizados. Contribuciones de tests son muy bienvenidas:
+
+- Tests unitarios para `utils/` (Jest/Vitest)
+- Tests de integración para `hooks/`
+- Tests de componentes con `@testing-library/react`
+
+### Guías de Estilo
+
+#### Código TypeScript
+
+- Usar `strict: true` — sin `any` implícito
+- Nombres de variables y funciones descriptivos (no abreviaciones)
+- Comentarios en inglés explicando el "por qué", no el "qué"
+- Funciones puras cuando sea posible
+
+#### CSS Modules
+
+- Usar variables CSS de `globals.css` — nunca colores hardcodeados
+- Nombres de clases en camelCase
+- Un archivo `.module.css` por componente
+
+#### Commits
+
+Usar [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+feat: agregar soporte para Sociedad Anónima
+fix: corregir cálculo ISR en régimen mixto
+docs: actualizar README con datos 2027
+style: mejorar espaciado en ResultPanel
+refactor: extraer lógica de deducciones a util
+test: agregar tests para ccss.utils
+```
+
+### Proceso de Review
+
+1. Todos los PRs requieren al menos 1 aprobación
+2. Los tests de CI deben pasar (type-check + build)
+3. El código debe seguir las guías de estilo del proyecto
+4. Los cambios en `fiscal.config.json` deben incluir fuentes oficiales
+
+### Código de Conducta
+
+Este proyecto sigue el [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/). Esperamos que todos los contribuyentes sean respetuosos y constructivos.
 
 ---
 
