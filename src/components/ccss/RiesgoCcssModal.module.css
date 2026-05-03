@@ -5,13 +5,14 @@
   border-radius: 8px;
   padding: 10px 14px;
   font-size: 11px;
-  color: var(--amber-mid);
+  color: var(--ink);
   line-height: 1.6;
   margin-bottom: 16px;
 }
 
 .modalRiesgoAlert strong {
   font-weight: 600;
+  color: var(--ink);
 }
 
 .modalRiesgoBruto {

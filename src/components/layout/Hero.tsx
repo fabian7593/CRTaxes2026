@@ -1,30 +1,25 @@
 import { Badge } from '@/components/ui/Badge'
 import styles from './Hero.module.css'
 
-interface HeroProps {
-  onDocsClick: () => void
-}
-
 /**
  * Hero section at the top of the calculator page.
- * Features gradient backgrounds, title, subtitle, badges, and documentation link.
+ * Features gradient backgrounds, title, subtitle, and badges.
  */
-export function Hero({ onDocsClick }: HeroProps) {
+export function Hero() {
   return (
     <section className={styles.hero}>
       <div className={styles.heroContainer}>
         {/* Eyebrow text */}
-        <div className={styles.heroEyebrow}>CALCULADORA FISCAL CR 2026</div>
+        <div className={styles.heroEyebrow}>Calculadora fiscal · costa rica 2026</div>
 
         {/* Main title with emphasis */}
         <h1 className={styles.heroTitle}>
-          Calculá tu <em>ingreso neto real</em> como trabajador independiente
+          Calculadora <em>Trabajador Independiente</em> Costa Rica
         </h1>
 
         {/* Subtitle */}
         <p className={styles.heroSubtitle}>
-          Herramienta open source para calcular CCSS, ISR y neto mensual según la legislación
-          costarricense vigente. Actualizada con tramos 2026 (Decreto 45333-H).
+          Decreto 45333-H · Ley 7092 art. 8 inc. s) reformado dic-2025 · Escala CCSS TI Gaceta N°232 + ajuste IVM 2026
         </p>
 
         {/* Badges */}
@@ -34,11 +29,6 @@ export function Hero({ onDocsClick }: HeroProps) {
           <Badge label="Tipo de cambio en vivo" variant="green" />
           <Badge label="Open Source" variant="default" />
         </div>
-
-        {/* Documentation button */}
-        <button className={styles.heroButton} onClick={onDocsClick} type="button">
-          📖 Documentación
-        </button>
       </div>
     </section>
   )

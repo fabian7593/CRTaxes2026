@@ -13,8 +13,8 @@ interface CurrencySelectorProps {
 export function CurrencySelector({ value, onChange }: CurrencySelectorProps) {
   return (
     <div className={styles.currencySelector}>
-      <Chip label="USD" active={value === 'usd'} variant="green" onClick={() => onChange('usd')} />
-      <Chip label="CRC" active={value === 'crc'} variant="green" onClick={() => onChange('crc')} />
+      <Chip label="$ Dólares (USD)" active={value === 'usd'} variant="green" onClick={() => onChange('usd')} />
+      <Chip label="₡ Colones (CRC)" active={value === 'crc'} variant="green" onClick={() => onChange('crc')} />
     </div>
   )
 }

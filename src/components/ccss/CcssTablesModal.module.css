@@ -1,4 +1,22 @@
 /* ── CCSS MODAL TABLES ───────────────────────────────── */
+
+/* IVM 2026 Adjustment Notice */
+.ivmNotice {
+  background: var(--amber-bg);
+  border-left: 3px solid var(--amber);
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--ink3);
+  border-radius: 4px;
+}
+
+.ivmNotice strong {
+  color: var(--amber-mid);
+  font-weight: 600;
+}
+
 .modalCcssNote {
   font-size: 11px;
   color: var(--muted);
@@ -21,6 +39,34 @@
 .modalCcssFooter strong {
   font-weight: 600;
   color: var(--ink);
+}
+
+/* Footer with current user breakdown */
+.ccssFooterModal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 10px 12px;
+  background: var(--surface);
+  border-radius: 6px;
+  font-size: 10px;
+  font-family: var(--mono);
+}
+
+.ccssFooterModal span {
+  color: var(--ink3);
+}
+
+.ccssFooterModal strong {
+  color: var(--emerald-mid);
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.ccssFooterModal .w {
+  color: var(--muted);
+  font-size: 9px;
 }
 
 .ctblScroll {

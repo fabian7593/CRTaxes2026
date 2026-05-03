@@ -355,3 +355,138 @@ Las tareas están ordenadas para que cada una construya sobre la anterior. Kiro 
 - [ ] En móvil (< 840px), el layout es de columna única y funciona
 - [ ] No hay valores numéricos fiscales hardcodeados en archivos `.tsx` o `.ts`
 - [ ] El `fiscal.config.json` es el único lugar donde existen las tasas CCSS y tramos ISR
+
+---
+
+## Fase 11 — Paridad Visual con Diseño Original (CRÍTICO)
+
+### Task 11.1 — Auditoría visual completa y corrección de estilos
+- [x] Comparar pixel por pixel la versión React actual con el HTML original (`index.html` + `assets/css/main.css`)
+- [x] Identificar todas las diferencias visuales: colores, espaciados, tamaños de fuente, bordes, sombras, animaciones
+- [x] Actualizar `src/styles/globals.css` para que coincida exactamente con las variables CSS del original
+- [x] Verificar que todos los componentes usen las mismas clases CSS y estilos que el original
+
+### Task 11.2 — Corrección del Hero
+- [x] El Hero debe verse exactamente igual al original: gradientes radiales con `::before` y `::after`
+- [x] Verificar colores de fondo, tamaños de texto, espaciados
+- [x] Los badges deben tener el mismo estilo (bordes, colores, tamaños)
+- [x] El botón "Documentación" debe tener el mismo estilo
+
+### Task 11.3 — Corrección de RegimeSelector
+- [x] Los tabs deben verse exactamente como en el original
+- [x] Verificar colores de fondo cuando están activos (solo/mixto)
+- [x] El warning strip amarillo debe aparecer solo en modo mixto con el mismo estilo
+- [x] Iconos, labels y subtítulos deben tener los mismos tamaños y colores
+
+### Task 11.4 — Corrección de Sliders
+- [x] Todos los sliders deben verse exactamente como en el original
+- [x] Track, fill, hints deben tener los mismos colores y tamaños
+- [x] Los labels y tooltips deben tener el mismo estilo
+- [x] Los valores mostrados deben usar la misma tipografía (JetBrains Mono)
+
+### Task 11.5 — Corrección de Chips
+- [x] Los chips deben verse exactamente como en el original
+- [x] Verificar colores cuando están activos (on-g, on-a)
+- [x] Bordes, padding, border-radius deben coincidir
+- [x] Hover states deben funcionar igual
+
+### Task 11.6 — Corrección de Cards y CardSections
+- [x] Las cards deben tener el mismo estilo: bordes, sombras, padding
+- [x] Los títulos de las cards deben verse igual (uppercase, color, tamaño)
+- [x] Los iconos circulares (ci-g, ci-a, ci-b, ci-r) deben verse iguales
+- [x] La línea decorativa después del título debe estar presente
+
+### Task 11.7 — Corrección del ResultPanel
+- [x] El panel de resultados debe verse exactamente como en el original
+- [x] El neto mensual grande debe tener el mismo tamaño, color y tipografía
+- [x] Los mini-metrics deben verse iguales (grid 2x2, colores, tamaños)
+- [x] La barra de distribución debe verse igual
+- [x] El resumen anual debe verse igual
+- [x] La tabla de desglose debe verse exactamente como en el original
+
+### Task 11.8 — Corrección de CCSS display
+- [x] El display de CCSS debe verse exactamente como en el original
+- [x] La base de cotización debe mostrarse con el mismo estilo
+- [x] La categoría y las tasas (SEM/IVM) deben verse iguales
+- [x] La cuota mensual destacada debe tener el mismo estilo
+- [x] Los botones de info deben verse iguales
+
+### Task 11.9 — Corrección de IVA strip
+- [x] El strip de IVA debe verse exactamente como en el original
+- [x] Colores diferentes para cliente local (amber) vs exterior (emerald)
+- [x] Mismo padding, border-radius, tamaño de fuente
+
+### Task 11.10 — Corrección de Modals
+- [x] Los modales deben verse exactamente como en el original
+- [x] Header, body, close button deben tener el mismo estilo
+- [x] Las tablas CCSS deben verse iguales (colores de headers, filas, "vos" badge)
+- [x] El modal de riesgo debe verse igual
+- [x] El modal de tramos ISR debe verse igual
+- [x] Backdrop blur debe funcionar
+
+### Task 11.11 — Corrección del Footer
+- [x] El footer debe verse exactamente como en el original
+- [x] Gradientes radiales con `::before` y `::after`
+- [x] Author card con avatar, nombre, rol, social links
+- [x] Links de documentación, GitHub, facturador
+- [x] Animación del corazón (heartbeat)
+- [x] Tooltips en los social links
+- [x] Copy email functionality con feedback visual
+
+### Task 11.12 — Verificación responsive
+- [x] En desktop (> 840px): two-column layout, sticky result panel
+- [x] En mobile (< 840px): single column, result panel no sticky
+- [x] Todos los componentes deben verse bien en ambos tamaños
+- [x] Los sliders deben funcionar bien en mobile
+
+### Task 11.13 — Verificación final pixel-perfect
+- [x] Abrir ambas versiones lado a lado (HTML original vs React)
+- [x] Comparar cada sección visualmente
+- [x] Tomar screenshots y compararlos
+- [x] Ajustar cualquier diferencia restante hasta lograr paridad visual 100%
+
+---
+
+## Fase 12 — Corrección Estructural del Layout (CRÍTICO)
+
+**NOTA**: Esta fase corrige diferencias ESTRUCTURALES (orden de elementos, agrupación en cards) que no fueron resueltas en Fase 11.
+
+### Task 12.1 — Reestructurar InputPanel y ResultPanel
+- [x] 12.1.1 Mover `RegimeSelector` FUERA de cualquier card en InputPanel
+- [x] 12.1.2 Crear card "Moneda e Ingreso" con CurrencySelector, RateSlider, TipoCambioSlider, meses
+- [x] 12.1.3 Crear card "Régimen Fiscal" con indicador de régimen y slider de salario (condicional)
+- [x] 12.1.4 Crear card "Deducciones" con DeductionChips, slider gastos, slider pensión
+- [x] 12.1.5 Crear card "Créditos Fiscales" con slider hijos y chips cónyuge
+- [x] 12.1.6 Crear card "Tipo de Cliente" con ClientTypeChips e IvaInfo
+- [x] 12.1.7 Actualizar CcssCard para que sea completa con alert, doc links, base, categoría, tasas, cuota, breakdown, botones info
+- [x] 12.1.8 Crear card "Desglose Anual Detallado" con BreakdownTable
+- [x] 12.1.9 Reestructurar ResultPanel: hero oscuro para neto mensual (background: var(--ink))
+- [x] 12.1.10 Crear card "Métricas Rápidas" con grid 2x2 en ResultPanel
+- [x] 12.1.11 Crear card "Distribución" con DistributionBar en ResultPanel
+- [x] 12.1.12 Crear card "Resumen Anual" con AnnualSummary en ResultPanel
+- [x] 12.1.13 Verificar separación visual: todas las cards con margin-bottom: 14px, borde, sombra
+- [x] 12.1.14 Actualizar Hero para que sea más compacto
+- [x] 12.1.15 Verificación estructural final: comparar HTML generado con original
+
+### Task 12.2 — CORRECCIÓN CRÍTICA: Consolidar en UNA SOLA card "Configuración fiscal"
+- [x] 12.2.1 ELIMINAR las cards separadas: "Deducciones", "Créditos Fiscales", "Tipo de Cliente"
+- [x] 12.2.2 Crear UNA SOLA card "Configuración fiscal" (icono 📋, ci-b) que contenga TODO:
+  - Sección "Tipo de cliente" con chips (Exterior/Local) + tooltip
+  - Separador `<hr class="sep">`
+  - Sección "Deducción para renta" con chips (Ficto/Real) + tooltip + slider gastos (condicional)
+  - Separador `<hr class="sep">`
+  - Sección "Hijos" con slider + tooltip
+  - Sección "Cónyuge" con chips + tooltip
+  - Sección "Pensión voluntaria" con chips + tooltip
+- [x] 12.2.3 Mover IvaInfo FUERA de la card, debe aparecer DESPUÉS de la card como strip independiente
+- [x] 12.2.4 Actualizar el orden de cards en InputPanel:
+  1. RegimeSelector (fuera de cards)
+  2. Card "Moneda e Ingreso"
+  3. Card "Régimen Fiscal" (solo si mixto muestra salary slider)
+  4. Card "Configuración fiscal" (ÚNICA card con todo: cliente, deducciones, hijos, cónyuge, pensión)
+  5. IvaInfo strip (fuera de card, después de Configuración fiscal)
+  6. Card "CCSS"
+  7. Card "Desglose Anual Detallado"
+- [x] 12.2.5 Usar clases CSS del original: `.config-section`, `.config-section-sm`, `.config-label`, `hr.sep`
+- [x] 12.2.6 Verificar que los tooltips tengan la clase `.tip-left` donde corresponda
+- [x] 12.2.7 Build y verificación final

@@ -87,41 +87,46 @@ export function buildCcssTablesData(
 ): CcssTablesData {
   const userCategoryNumber = currentCategoryInfo.category.cat;
 
-  // Build SEM (health insurance) table rows
+  // Build SEM (health insurance) table rows with affiliate/state/joint rates
   const semRows: CcssTableRow[] = ccssConfig.categorias.map((category) => {
     // Calculate the amount for this category using the user's effective income
     // This shows "what if you were in this category" for comparison
     const amount = category.sem * ccssBase;
     
     return {
-      category: category.cat,
+      category: `Cat ${category.cat}`,
       range: getCategoryRangeLabel(category, ccssConfig),
       rate: category.sem,
+      stateRate: category.sem_est,
+      jointRate: category.sem + category.sem_est,
       amount,
       isCurrentUser: category.cat === userCategoryNumber,
     };
   });
 
-  // Build IVM (pension) table rows
+  // Build IVM (pension) table rows with affiliate/state/joint rates
   const ivmRows: CcssTableRow[] = ccssConfig.categorias.map((category) => {
     const amount = category.ivm26 * ccssBase;
+    const stateRate = category.ivm_est + category.ivm_lpt;
     
     return {
-      category: category.cat,
+      category: `Cat ${category.cat}`,
       range: getCategoryRangeLabel(category, ccssConfig),
       rate: category.ivm26,
+      stateRate,
+      jointRate: category.ivm26 + stateRate,
       amount,
       isCurrentUser: category.cat === userCategoryNumber,
     };
   });
 
-  // Build summary table rows (combined SEM + IVM)
+  // Build summary table rows (combined SEM + IVM affiliate rates only)
   const summaryRows: CcssTableRow[] = ccssConfig.categorias.map((category) => {
     const combinedRate = category.sem + category.ivm26;
     const amount = combinedRate * ccssBase;
     
     return {
-      category: category.cat,
+      category: `Cat ${category.cat}`,
       range: getCategoryRangeLabel(category, ccssConfig),
       rate: combinedRate,
       amount,
@@ -134,6 +139,9 @@ export function buildCcssTablesData(
     ivmRows,
     summaryRows,
     userCategory: userCategoryNumber,
+    currentUserTotal: currentCategoryInfo.totalAmount,
+    currentUserSem: currentCategoryInfo.semAmount,
+    currentUserIvm: currentCategoryInfo.ivmAmount,
   };
 }
 

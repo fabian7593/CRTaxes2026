@@ -14,24 +14,32 @@
   font-size: 13px;
 }
 
-/* Total row (highlighted) */
+/* Negative row (CCSS, ISR) - red color */
+.summaryRowNegative .summaryValueCRC {
+  color: var(--crimson);
+}
+
+/* Total row (highlighted in green with blur) */
 .summaryRowTotal {
-  background: var(--ink);
-  color: #fff;
+  background: rgba(0, 200, 150, 0.15);
+  color: var(--emerald-mid);
   padding: 10px 12px;
   border-radius: 8px;
   margin-top: 4px;
   font-weight: 600;
+  border: 1px solid rgba(0, 200, 150, 0.3);
 }
 
 /* Label column */
 .summaryLabel {
   font-weight: 500;
   color: var(--ink3);
+  white-space: nowrap;
 }
 
 .summaryRowTotal .summaryLabel {
-  color: #fff;
+  color: var(--emerald-mid);
+  font-weight: 600;
 }
 
 /* Values column */
@@ -40,6 +48,7 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 2px;
+  min-width: 0;
 }
 
 /* CRC value */
@@ -48,11 +57,13 @@
   font-size: 14px;
   font-weight: 500;
   color: var(--ink);
+  white-space: nowrap;
 }
 
 .summaryRowTotal .summaryValueCRC {
-  color: #fff;
-  font-size: 15px;
+  color: var(--emerald-mid);
+  font-size: 16px;
+  font-weight: 700;
 }
 
 /* USD value */
@@ -60,8 +71,10 @@
   font-family: var(--mono);
   font-size: 11px;
   color: var(--muted);
+  white-space: nowrap;
 }
 
 .summaryRowTotal .summaryValueUSD {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--emerald-mid);
+  opacity: 0.8;
 }

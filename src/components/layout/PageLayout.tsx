@@ -6,7 +6,6 @@ import styles from './PageLayout.module.css'
 interface PageLayoutProps {
   left: ReactNode
   right: ReactNode
-  onDocsClick: () => void
 }
 
 /**
@@ -14,10 +13,10 @@ interface PageLayoutProps {
  * Renders Hero at top, two-column grid for content, and Footer at bottom.
  * The right panel is sticky on desktop for better UX.
  */
-export function PageLayout({ left, right, onDocsClick }: PageLayoutProps) {
+export function PageLayout({ left, right }: PageLayoutProps) {
   return (
     <div className={styles.pageWrapper}>
-      <Hero onDocsClick={onDocsClick} />
+      <Hero />
 
       <main className={styles.mainContent}>
         <div className={styles.twoCol}>

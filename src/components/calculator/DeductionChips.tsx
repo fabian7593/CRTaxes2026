@@ -14,13 +14,13 @@ export function DeductionChips({ value, onChange }: DeductionChipsProps) {
   return (
     <div className={styles.deductionChips}>
       <Chip
-        label="Ficto 25%"
+        label="Ficto 25% (Sin Facturas)"
         active={value === 'ficto'}
         variant="green"
         onClick={() => onChange('ficto')}
       />
       <Chip
-        label="Gastos reales"
+        label="Gastos reales documentados"
         active={value === 'real'}
         variant="amber"
         onClick={() => onChange('real')}

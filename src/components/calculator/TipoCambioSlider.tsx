@@ -1,6 +1,5 @@
 import { SliderField } from '@/components/ui/SliderField'
 import { formatNumber } from '@/utils/formatters'
-import styles from './TipoCambioSlider.module.css'
 
 interface TipoCambioSliderProps {
   currency: 'usd' | 'crc'
@@ -23,7 +22,6 @@ export function TipoCambioSlider({
   min,
   max,
   step,
-  isManual,
   onChange,
 }: TipoCambioSliderProps) {
   const isUSD = currency === 'usd'
@@ -52,12 +50,7 @@ export function TipoCambioSlider({
         hints={hints}
         tooltip={tooltip}
       />
-      {!isManual && (
-        <div className={styles.apiBadge}>
-          <span className={styles.apiBadgeIcon}>🟢</span>
-          <span className={styles.apiBadgeText}>API en vivo</span>
-        </div>
-      )}
+    
     </div>
   )
 }

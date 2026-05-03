@@ -6,6 +6,7 @@ interface ModalProps {
   isOpen: boolean
   onClose: () => void
   title: string
+  subtitle?: string
   children: ReactNode
   maxWidth?: string
 }
@@ -14,7 +15,7 @@ interface ModalProps {
  * Modal dialog component with overlay, escape key handling, and body scroll lock.
  * Closes when clicking the overlay or pressing Escape.
  */
-export function Modal({ isOpen, onClose, title, children, maxWidth = '560px' }: ModalProps) {
+export function Modal({ isOpen, onClose, title, subtitle, children, maxWidth = '560px' }: ModalProps) {
   // Handle Escape key to close modal
   useEffect(() => {
     if (!isOpen) return
@@ -59,9 +60,12 @@ export function Modal({ isOpen, onClose, title, children, maxWidth = '560px' }: 
       >
         {/* Header with title and close button */}
         <div className={styles.modalHeader}>
-          <h2 id="modal-title" className={styles.modalTitle}>
-            {title}
-          </h2>
+          <div>
+            <h2 id="modal-title" className={styles.modalTitle}>
+              {title}
+            </h2>
+            {subtitle && <p className={styles.modalSubtitle}>{subtitle}</p>}
+          </div>
           <button
             className={styles.modalClose}
             onClick={onClose}

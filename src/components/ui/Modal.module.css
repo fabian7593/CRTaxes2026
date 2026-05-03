@@ -38,6 +38,14 @@
   margin: 0;
 }
 
+.modalSubtitle {
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--muted);
+  margin: 4px 0 0 0;
+  line-height: 1.4;
+}
+
 /* Close button (×) */
 .modalClose {
   background: none;

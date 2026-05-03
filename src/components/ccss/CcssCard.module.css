@@ -1,67 +1,250 @@
-/* ── CCSS DISPLAY (compact, inline in card) ─────────── */
-.ccssCompact {
+/* ── INFORMATIONAL ALERT ─────────────────────────────── */
+.altInfo {
+  background: var(--cobalt-bg);
+  border: 1px solid rgba(59, 91, 219, 0.3);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink3);
+  margin-bottom: 12px;
+}
+
+.altInfo strong {
+  color: var(--cobalt);
+  font-weight: 600;
+}
+
+.altInfo em {
+  font-style: italic;
+  color: var(--ink);
+}
+
+/* ── DOCUMENT LINKS (HORIZONTAL GRID) ──────────────────── */
+.docLinksHorizontal {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.docLinkCompact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.docLinkCompact:hover {
+  background: var(--surface2);
+  border-color: var(--cobalt);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 91, 219, 0.15);
+}
+
+.docIconCompact {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.docInfoCompact {
+  flex: 1;
+  min-width: 0;
+}
+
+.docTitleCompact {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.docDescCompact {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.3;
+}
+
+.docArrowCompact {
+  font-size: 16px;
+  color: var(--cobalt);
+  flex-shrink: 0;
+}
+
+/* ── CONTRIBUTION BASE (SIMPLE) ────────────────────────── */
+.ccssBaseSimple {
   background: var(--surface2);
   border: 1px solid var(--line);
   border-radius: 10px;
   padding: 14px;
-  margin-top: 10px;
+  margin-bottom: 14px;
+  text-align: center;
 }
 
-.ccssCatPill {
+.ccssBaseSimpleHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 8px;
 }
 
-.ccssCatName {
+.ccssBaseSimpleLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.ccssBaseSimpleAmount {
+  font-family: var(--mono);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--emerald-mid);
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.ccssBaseSimpleFormula {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ── CATEGORY AND PAYMENT INFO (CLEAN DESIGN) ──────────── */
+.ccssInfoClean {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 600px) {
+  .ccssInfoClean {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Category section */
+.ccssCategoryClean {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.ccssCategoryCleanLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.ccssCategoryCleanValue {
   font-size: 13px;
   font-weight: 600;
   color: var(--ink);
+  margin-bottom: 10px;
+  line-height: 1.3;
 }
 
-.ccssCatRates {
+.ccssCategoryCleanRates {
   display: flex;
+  align-items: center;
   gap: 6px;
   flex-wrap: wrap;
 }
 
-.ccssRateTag {
+.ccssRateBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 20px;
   font-family: var(--mono);
   font-size: 11px;
-  padding: 3px 10px;
-  border-radius: 20px;
-  background: var(--emerald-bg);
-  border: 1px solid rgba(0, 200, 150, 0.3);
-  color: var(--emerald-mid);
   font-weight: 500;
 }
 
-.ccssRateTagR {
-  background: var(--cobalt-bg);
-  border-color: rgba(59, 91, 219, 0.3);
-  color: var(--cobalt);
-}
-
-.ccssFooterCompact {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid var(--line);
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--muted);
-}
-
-.ccssFooterCompact strong {
+.ccssRateBadgeSem {
+  background: var(--emerald-bg);
+  border: 1px solid rgba(0, 200, 150, 0.3);
   color: var(--emerald-mid);
 }
 
-.ccssFooterCompact .w {
-  color: var(--amber-mid);
+.ccssRateBadgeIvm {
+  background: var(--cobalt-bg);
+  border: 1px solid rgba(59, 91, 219, 0.3);
+  color: var(--cobalt);
+}
+
+.ccssRateBadgeLabel {
+  opacity: 0.8;
+}
+
+.ccssRateBadgeValue {
+  font-weight: 600;
+}
+
+.ccssRateBadgePlus {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Payment section */
+.ccssPaymentClean {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.ccssPaymentCleanLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.ccssPaymentCleanAmount {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--emerald-mid);
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.ccssPaymentCleanBreakdown {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--muted);
+  font-family: var(--mono);
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.ccssPaymentCleanBreakdown strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.ccssPaymentCleanSep {
+  color: var(--line);
 }
 
 /* ── INFO BUTTON ─────────────────────────────────────── */

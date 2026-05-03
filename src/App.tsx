@@ -10,6 +10,7 @@ import { InputPanel } from '@/components/calculator/InputPanel'
 import { ResultPanel } from '@/components/calculator/ResultPanel'
 import { CcssTablesModal } from '@/components/ccss/CcssTablesModal'
 import { RiesgoCcssModal } from '@/components/ccss/RiesgoCcssModal'
+import { PensionFundsModal } from '@/components/ccss/PensionFundsModal'
 import { TramoModal } from '@/components/calculator/TramoModal'
 
 /**
@@ -68,7 +69,7 @@ function App() {
     // Deductions
     deductionType: 'ficto',
     documentedExpenses: fiscalConfig.sliders.gastos.default,
-    voluntaryPensionAmount: 0,
+    hasVoluntaryPension: false,
 
     // Tax credits
     numberOfChildren: fiscalConfig.sliders.hijos.default,
@@ -181,11 +182,6 @@ function App() {
   // ========================================================================
   // Navigation Handlers
   // ========================================================================
-  const navigateToDocs = () => {
-    setCurrentPage('docs')
-    window.history.pushState({}, '', '?docs=true')
-  }
-
   const navigateToCalculator = () => {
     setCurrentPage('calculator')
     window.history.pushState({}, '', '/')
@@ -209,6 +205,9 @@ function App() {
             state={calculatorState}
             onStateChange={handleStateChange}
             sliderConfig={sliderConfig}
+            ccssResult={fiscalResult.ccssResult}
+            breakdownRows={fiscalResult.breakdownRows}
+            onOpenModal={setOpenModal}
           />
         }
         right={
@@ -219,7 +218,6 @@ function App() {
             onOpenModal={setOpenModal}
           />
         }
-        onDocsClick={navigateToDocs}
       />
 
       {/* Modals - rendered conditionally based on openModal state */}
@@ -245,6 +243,11 @@ function App() {
         onClose={() => setOpenModal(null)}
         isrResult={fiscalResult.isrResult}
       />
+
+      <PensionFundsModal
+        isOpen={openModal === 'pension-funds'}
+        onClose={() => setOpenModal(null)}
+      />
     </>
   )
 }
@@ -256,7 +259,7 @@ function App() {
  */
 function buildCcssTablesData(
   ccssResult: {
-    category: { cat: number; sem: number; ivm26: number };
+    category: { cat: number; sem: number; ivm26: number; sem_est: number; ivm_est: number; ivm_lpt: number };
     effectiveIncome: number;
     totalRate: number;
     semAmount: number;
@@ -268,27 +271,34 @@ function buildCcssTablesData(
   const userCategory = ccssResult.category.cat
   const userIncome = ccssResult.effectiveIncome
 
-  // Build SEM rows
+  // Build SEM rows with affiliate/state/joint rates
   const semRows = config.ccss.categorias.map((category, index) => ({
-    category: category.cat,
+    category: `Cat ${category.cat}`,
     range: config.ui.catRangeLabels[index],
     rate: category.sem,
+    stateRate: category.sem_est,
+    jointRate: category.sem + category.sem_est,
     amount: category.sem * userIncome,
     isCurrentUser: category.cat === userCategory,
   }))
 
-  // Build IVM rows
-  const ivmRows = config.ccss.categorias.map((category, index) => ({
-    category: category.cat,
-    range: config.ui.catRangeLabels[index],
-    rate: category.ivm26,
-    amount: category.ivm26 * userIncome,
-    isCurrentUser: category.cat === userCategory,
-  }))
+  // Build IVM rows with affiliate/state/joint rates
+  const ivmRows = config.ccss.categorias.map((category, index) => {
+    const stateRate = category.ivm_est + category.ivm_lpt
+    return {
+      category: `Cat ${category.cat}`,
+      range: config.ui.catRangeLabels[index],
+      rate: category.ivm26,
+      stateRate,
+      jointRate: category.ivm26 + stateRate,
+      amount: category.ivm26 * userIncome,
+      isCurrentUser: category.cat === userCategory,
+    }
+  })
 
-  // Build summary rows (SEM + IVM combined)
+  // Build summary rows (SEM + IVM affiliate rates only)
   const summaryRows = config.ccss.categorias.map((category, index) => ({
-    category: category.cat,
+    category: `Cat ${category.cat}`,
     range: config.ui.catRangeLabels[index],
     rate: category.sem + category.ivm26,
     amount: (category.sem + category.ivm26) * userIncome,
@@ -300,6 +310,9 @@ function buildCcssTablesData(
     ivmRows,
     summaryRows,
     userCategory,
+    currentUserTotal: ccssResult.totalAmount,
+    currentUserSem: ccssResult.semAmount,
+    currentUserIvm: ccssResult.ivmAmount,
   }
 }
 

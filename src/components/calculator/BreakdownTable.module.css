@@ -1,3 +1,10 @@
+/* Scroll wrapper for table */
+.scrollWrapper {
+  overflow-x: auto;
+  overflow-y: visible;
+  margin-bottom: 12px;
+}
+
 /* Breakdown table */
 .breakdownTable {
   width: 100%;
@@ -22,14 +29,25 @@
 
 /* Regular breakdown row */
 .breakdownRow td {
-  padding: 8px 12px;
+  padding: 12px;
   border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+  min-height: 60px;
+  height: 60px;
 }
 
 /* Subtotal row */
 .subtotalRow {
   background: var(--bg2);
   font-weight: 500;
+}
+
+.subtotalRow td {
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+  min-height: 60px;
+  height: 60px;
 }
 
 /* Total row */
@@ -40,12 +58,26 @@
   font-size: 14px;
 }
 
+.totalRow td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+  min-height: 64px;
+  height: 64px;
+}
+
 /* Label cell */
 .labelCell {
   display: flex;
   align-items: center;
   gap: 6px;
   color: var(--ink3);
+  position: relative;
+}
+
+.totalRow .labelCell,
+.subtotalRow .labelCell {
+  font-weight: 600;
 }
 
 .totalRow .labelCell {
@@ -55,40 +87,128 @@
 /* Icon in label */
 .icon {
   font-size: 14px;
+  flex-shrink: 0;
 }
 
-/* Value cells */
+.labelText {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Value cell - contains both CRC and USD stacked */
 .valueCell {
+  text-align: right;
+  vertical-align: middle;
+  min-width: 140px;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+
+/* CRC amount (top line) */
+.amountCRC {
   font-family: var(--mono);
   font-weight: 500;
-  text-align: right;
+  font-size: 13px;
   color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: 3px;
 }
 
-.totalRow .valueCell {
+.totalRow .amountCRC {
   color: #fff;
+  font-size: 14px;
+  font-weight: 600;
 }
 
-.usdCell {
+.subtotalRow .amountCRC {
+  font-weight: 600;
+}
+
+/* USD amount (bottom line) */
+.amountUSD {
   font-family: var(--mono);
   font-size: 11px;
-  text-align: right;
   color: var(--muted);
+  line-height: 1.3;
 }
 
-.totalRow .usdCell {
+.totalRow .amountUSD {
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* Color classes */
-.colorPos .valueCell {
+/* Color classes for amounts */
+.colorPos .amountCRC {
   color: var(--emerald-mid);
 }
 
-.colorNeg .valueCell {
+.colorNeg .amountCRC {
   color: var(--crimson);
 }
 
-.colorNeu .valueCell {
+.colorNeu .amountCRC {
   color: var(--amber-mid);
+}
+
+.totalRow.colorPos .amountCRC {
+  color: var(--emerald);
+}
+
+/* Info button row */
+.infoButtonRow {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Info button - matches CCSS button design */
+.infoButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(59, 91, 219, 0.25);
+  background: linear-gradient(135deg, var(--surface) 0%, var(--cobalt-bg) 100%);
+  color: var(--cobalt);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--sans);
+  box-shadow: 0 2px 6px rgba(59, 91, 219, 0.12);
+  position: relative;
+}
+
+.infoButton:hover {
+  border-color: var(--cobalt);
+  color: var(--cobalt);
+  background: var(--cobalt-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(59, 91, 219, 0.25);
+}
+
+.infoButton:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(59, 91, 219, 0.15);
+}
+
+/* Info dot indicator - matches CCSS dot with pulse animation */
+.infoDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cobalt);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(59, 91, 219, 0.2);
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgba(59, 91, 219, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(59, 91, 219, 0.3);
+  }
 }

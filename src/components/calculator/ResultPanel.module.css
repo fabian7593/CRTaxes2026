@@ -1,3 +1,131 @@
+/* ── RESULT HERO (dark section) ────────────────────────── */
+.resultHero {
+  background: var(--ink);
+  color: #fff;
+  border-radius: var(--r);
+  padding: 22px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+}
+
+.resultHero::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(0, 200, 150, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.resultLabel {
+  font-size: 10px;
+  font-family: var(--mono);
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.resultMain {
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 700;
+  color: var(--emerald);
+  line-height: 1;
+  margin-bottom: 2px;
+  font-family: var(--mono);
+}
+
+.resultUsd {
+  font-family: var(--mono);
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 12px;
+}
+
+.resultPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.resultPill span {
+  color: var(--emerald);
+}
+
+/* ── MINI GRID (2x2 metrics) ────────────────────────── */
+.miniGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.miniM {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 12px;
+  box-shadow: var(--shadow);
+}
+
+.mmLbl {
+  font-size: 9px;
+  font-family: var(--mono);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 3px;
+}
+
+.mmV {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  font-family: var(--mono);
+}
+
+.mmVR {
+  color: var(--crimson);
+}
+
+.mmVA {
+  color: var(--amber-mid);
+}
+
+.mmS {
+  font-size: 9px;
+  font-family: var(--mono);
+  color: var(--muted);
+}
+
+/* Info button in mini metrics */
+.infoButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 9px;
+  padding: 0;
+  color: var(--cobalt);
+  text-decoration: underline;
+  font-family: var(--mono);
+  transition: opacity 0.2s;
+}
+
+.infoButton:hover {
+  opacity: 0.7;
+}
+
 /* Result panel container */
 .resultPanel {
   background: var(--surface);
@@ -78,21 +206,6 @@
 
 .quickValueNeg {
   color: var(--crimson);
-}
-
-/* Info button */
-.infoButton {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 12px;
-  padding: 0;
-  opacity: 0.6;
-  transition: opacity 0.2s;
-}
-
-.infoButton:hover {
-  opacity: 1;
 }
 
 /* Separator */

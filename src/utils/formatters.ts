@@ -28,15 +28,16 @@ export function formatNumber(amount: number, decimalPlaces: number = 0): string 
 /**
  * Formats a number as Costa Rican colones.
  * Always shows the ₡ symbol and uses CR locale formatting (dots as thousands separator).
- * Negative numbers show the absolute value — the caller decides how to display the sign.
+ * Negative numbers show with minus sign: −₡450.000
  *
  * @param amount - The number to format (can be negative)
- * @returns Formatted string like "₡450.000" or "₡1.234.567"
+ * @returns Formatted string like "₡450.000" or "−₡1.234.567"
  */
 export function formatColones(amount: number): string {
+  const isNegative = amount < 0
   const absoluteAmount = Math.abs(amount)
   const formattedNumber = costaRicanNumberFormat.format(absoluteAmount)
-  return `₡${formattedNumber}`
+  return isNegative ? `−₡${formattedNumber}` : `₡${formattedNumber}`
 }
 
 /**
@@ -58,7 +59,7 @@ export function formatDollars(amount: number): string {
   })
   
   const formattedNumber = formatter.format(absoluteAmount)
-  return isNegative ? `-$${formattedNumber}` : `$${formattedNumber}`
+  return isNegative ? `−$${formattedNumber}` : `$${formattedNumber}`
 }
 
 /**

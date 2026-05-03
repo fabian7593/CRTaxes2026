@@ -50,10 +50,18 @@ export function RiesgoCcssModal({
   useMemo(handleModalOpen, [isOpen, actualMonthlyIncome])
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Simulador de Riesgo CCSS" maxWidth="560px">
+    <Modal 
+      isOpen={isOpen} 
+      onClose={onClose} 
+      title="Simulador de Riesgo CCSS"
+      subtitle="Art. 44 Ley CCSS · TRIBU-CR · Ley 9416"
+      maxWidth="560px"
+    >
       <div className={styles.modalRiesgoAlert}>
-        <strong>⚠️ Advertencia:</strong> Subdeclarar ingresos a la CCSS es ilegal y conlleva
-        sanciones severas según el artículo 44 de la Ley Constitutiva de la CCSS.
+        <strong>⚠️ Advertencia:</strong> Reportar un ingreso menor al real a la CCSS constituye 
+        una infracción (art. 44 Ley constitutiva CCSS). TRIBU-CR cruza datos de facturación 
+        electrónica, Hacienda y CCSS. Las cuotas omitidas se cobran retroactivamente con 
+        recargos e intereses.
       </div>
 
       {/* Actual income display */}
@@ -69,10 +77,10 @@ export function RiesgoCcssModal({
           label="Monto que declararías a la CCSS"
           value={declaredAmount}
           min={ccssConfig.baseMinimaContribucion}
-          max={actualMonthlyIncome * 1.2}
+          max={5000000}
           step={10000}
           valueDisplay={fC(declaredAmount)}
-          hints={[fC(ccssConfig.baseMinimaContribucion), fC(actualMonthlyIncome * 1.2)]}
+          hints={[fC(ccssConfig.baseMinimaContribucion), fC(5000000)]}
           onChange={setDeclaredAmount}
         />
       </div>

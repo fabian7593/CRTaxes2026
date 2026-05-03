@@ -1,26 +1,24 @@
-/* Base badge styles */
+/* Base badge styles - matches original .hbadge */
 .badge {
   display: inline-block;
-  font-size: 11px;
-  font-weight: 500;
-  padding: 4px 10px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.05);
-  transition: all 0.15s;
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.05em;
 }
 
-/* Green variant */
+/* Green variant - matches original .hbadge.g */
 .badgeGreen {
-  border-color: var(--emerald);
+  border-color: rgba(0, 200, 150, 0.4);
   color: var(--emerald);
-  background: rgba(0, 200, 150, 0.1);
 }
 
-/* Amber variant */
+/* Amber variant - matches original .hbadge.a */
 .badgeAmber {
-  border-color: var(--amber);
+  border-color: rgba(245, 164, 0, 0.4);
   color: var(--amber);
-  background: rgba(245, 164, 0, 0.1);
 }
+

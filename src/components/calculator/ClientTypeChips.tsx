@@ -14,13 +14,13 @@ export function ClientTypeChips({ value, onChange }: ClientTypeChipsProps) {
   return (
     <div className={styles.clientTypeChips}>
       <Chip
-        label="Exterior"
+        label="Empresa exterior / USA - Sin IVA"
         active={value === 'ext'}
         variant="green"
         onClick={() => onChange('ext')}
       />
       <Chip
-        label="Local"
+        label="Cliente Local - IVA 13%"
         active={value === 'loc'}
         variant="amber"
         onClick={() => onChange('loc')}

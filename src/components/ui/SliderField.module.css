@@ -1,14 +1,19 @@
 /* Slider row container */
 .sliderRow {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+}
+
+.sliderRow:last-child {
+  margin-bottom: 0;
 }
 
 /* Top section: label + value display */
 .sliderTop {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
+  align-items: flex-end;
+  margin-bottom: 7px;
+  gap: 8px;
 }
 
 .sliderLabel {
@@ -17,7 +22,9 @@
   color: var(--ink3);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+  flex-wrap: wrap;
+  flex: 1;
 }
 
 .sliderValue {
@@ -25,15 +32,18 @@
   font-size: 14px;
   font-weight: 500;
   color: var(--ink);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* Track container - holds both the visual fill and the real input */
 .sliderTrack {
   position: relative;
-  height: 8px;
+  height: 6px;
   background: var(--bg2);
-  border-radius: 4px;
-  margin-bottom: 6px;
+  border-radius: 3px;
+  border: 1px solid var(--line);
+  margin-bottom: 4px;
 }
 
 /* Visual fill bar with gradient */
@@ -41,9 +51,9 @@
   position: absolute;
   top: 0;
   left: 0;
-  height: 100%;
+  bottom: 0;
   background: linear-gradient(90deg, var(--emerald), var(--cobalt));
-  border-radius: 4px;
+  border-radius: 3px;
   transition: width 0.08s;
   pointer-events: none;
 }
@@ -51,8 +61,7 @@
 /* The actual range input - positioned over the track with opacity 0 */
 .sliderTrack input[type='range'] {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   opacity: 0;
@@ -64,6 +73,9 @@
 .sliderHints {
   display: flex;
   justify-content: space-between;
-  font-size: 11px;
-  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--soft);
+  margin-top: 4px;
 }
+

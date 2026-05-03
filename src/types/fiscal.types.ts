@@ -279,7 +279,7 @@ export interface CalculatorState {
   // Deductions
   deductionType: DeductionType;   // 'ficto' (25%) or 'real' (documented expenses)
   documentedExpenses: number;     // Documented expenses (only for 'real' deduction)
-  voluntaryPensionAmount: number; // Voluntary pension contribution (RVP)
+  hasVoluntaryPension: boolean;   // Whether voluntary pension is enabled (RVP)
   
   // Tax credits (only for persona física)
   numberOfChildren: number;       // Number of children (0-8)
@@ -363,7 +363,7 @@ export interface FiscalCalculationResult {
 /**
  * Which modal is currently open (if any)
  */
-export type OpenModalType = null | 'ccss-tables' | 'ccss-riesgo' | 'isr-tramos';
+export type OpenModalType = null | 'ccss-tables' | 'ccss-riesgo' | 'isr-tramos' | 'pension-funds';
 
 /**
  * Page type for simple routing
@@ -378,9 +378,11 @@ export type PageType = 'calculator' | 'docs';
  * Row in a CCSS table (SEM or IVM)
  */
 export interface CcssTableRow {
-  category: number;               // Category number (1-5)
+  category: string;               // Category label (e.g., "Cat 1")
   range: string;                  // Income range label
-  rate: number;                   // Rate for this category
+  rate: number;                   // Affiliate rate for this category
+  stateRate?: number;             // State contribution rate (for SEM/IVM tables)
+  jointRate?: number;             // Joint rate (for SEM/IVM tables)
   amount: number;                 // Calculated amount
   isCurrentUser: boolean;         // Whether this is the user's category
 }
@@ -393,6 +395,9 @@ export interface CcssTablesData {
   ivmRows: CcssTableRow[];        // IVM table rows
   summaryRows: CcssTableRow[];    // Summary table rows
   userCategory: number;           // User's current category
+  currentUserTotal: number;       // Current user's total monthly CCSS
+  currentUserSem: number;         // Current user's monthly SEM
+  currentUserIvm: number;         // Current user's monthly IVM
 }
 
 // ============================================================================

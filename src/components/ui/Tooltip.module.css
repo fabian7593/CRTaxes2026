@@ -3,48 +3,67 @@
   position: relative;
   display: inline-flex;
   align-items: center;
+  z-index: 1;
 }
 
-/* The ? icon circle */
+/* The ? icon circle - matches original .tpic */
 .tooltipIcon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   width: 16px;
   height: 16px;
-  background: var(--bg2);
-  border: 1px solid var(--line);
   border-radius: 50%;
-  font-size: 9px;
-  font-family: var(--mono);
+  background: var(--bg2);
+  border: 1.5px solid var(--line);
   color: var(--muted);
+  font-size: 9px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: help;
-  user-select: none;
+  font-family: var(--sans);
+  transition: all 0.15s;
+  flex-shrink: 0;
 }
 
-/* The bubble that appears on hover */
+.tooltipIcon:hover {
+  border-color: var(--cobalt);
+  color: var(--cobalt);
+}
+
+/* The bubble that appears on hover - positioned upward to avoid scroll */
 .tooltipBubble {
+  display: none;
   position: absolute;
-  bottom: calc(100% + 8px);
   left: 50%;
+  bottom: calc(100% + 10px);
   transform: translateX(-50%);
   background: var(--ink);
-  color: #fff;
-  font-size: 12px;
-  line-height: 1.5;
-  padding: 10px 12px;
-  border-radius: 8px;
-  width: 260px;
-  z-index: 100;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  visibility: hidden;
-  opacity: 0;
-  transition: all 0.15s;
+  color: rgba(255, 255, 255, 0.85);
+  border-radius: 10px;
+  padding: 13px 15px;
+  min-width: 260px;
+  max-width: 320px;
+  font-size: 11px;
+  line-height: 1.65;
+  z-index: 500;
+  box-shadow: var(--shadow-lg);
   pointer-events: none;
+}
+
+/* Arrow pointing down from bubble */
+.tooltipBubble::before {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--ink);
+  transform: translateX(-50%) rotate(45deg);
 }
 
 /* Show bubble on hover */
 .tooltipWrapper:hover .tooltipBubble {
-  visibility: visible;
-  opacity: 1;
+  display: block;
 }
+

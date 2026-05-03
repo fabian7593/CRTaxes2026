@@ -20,8 +20,8 @@ export function RegimeSelector({ value, onChange }: RegimeSelectorProps) {
           type="button"
         >
           <span className={styles.regimeIcon}>💼</span>
-          <span className={styles.regimeLabel}>Solo independiente</span>
-          <span className={styles.regimeSubtitle}>Servicios profesionales únicamente</span>
+          <span className={styles.regimeLabel}>Servicios Profesionales</span>
+          <span className={styles.regimeSubtitle}>Freelance · Contractor</span>
         </button>
 
         <button
@@ -30,7 +30,7 @@ export function RegimeSelector({ value, onChange }: RegimeSelectorProps) {
           type="button"
         >
           <span className={styles.regimeIcon}>🔀</span>
-          <span className={styles.regimeLabel}>Independiente + Salario</span>
+          <span className={styles.regimeLabel}>Salario + Independiente</span>
           <span className={styles.regimeSubtitle}>Empleo formal + servicios</span>
         </button>
       </div>

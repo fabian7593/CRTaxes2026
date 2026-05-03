@@ -1,0 +1,44 @@
+/* Config sections - main sections with more spacing */
+.configSection {
+  margin-bottom: 16px;
+}
+
+/* Config sections - smaller sections (children, spouse, pension) */
+.configSectionSm {
+  margin-bottom: 14px;
+}
+
+/* Config label - used for section labels */
+.configLabel {
+  font-size: 13px;
+  color: var(--ink3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+/* Chips container */
+.chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+/* Separator between sections */
+.sep {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 14px 0;
+}
+
+/* Wrapper for expenses slider (shown conditionally) */
+.expensesWrapper {
+  margin-top: 12px;
+}
+
+/* Wrapper for pension slider (shown conditionally) */
+.pensionSliderWrapper {
+  margin-top: 10px;
+}
