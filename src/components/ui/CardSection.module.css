@@ -6,15 +6,7 @@
   padding: 20px;
   box-shadow: var(--shadow);
   margin-bottom: 14px;
-}
-
-/* Mobile: allow tooltips to overflow card and prevent horizontal growth */
-@media (max-width: 840px) {
-  .card {
-    overflow: visible;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
+  overflow: visible;
 }
 
 /* Card title with decorative line */

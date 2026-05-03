@@ -14,8 +14,6 @@
   align-items: flex-end;
   margin-bottom: 7px;
   gap: 8px;
-  min-width: 0;
-  width: 100%;
 }
 
 .sliderLabel {
@@ -40,15 +38,11 @@
   text-align: right;
 }
 
-/* Fixed width for value on mobile to prevent layout shift */
+/* Prevent layout shift on mobile by reserving space for the value */
 @media (max-width: 840px) {
   .sliderValue {
-    /* Fixed width to prevent layout shift - fits up to ₡6,000,000 */
-    width: 100px;
-    min-width: 100px;
-    max-width: 100px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /* Reserve minimum space to prevent layout shift when value changes */
+    min-width: 85px;
     font-size: 13px;
   }
   
@@ -99,4 +93,3 @@
   color: var(--soft);
   margin-top: 4px;
 }
-

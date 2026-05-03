@@ -13,7 +13,6 @@
   width: 100%;
   margin: 0 auto;
   padding: 22px 16px 0;
-  overflow-x: hidden;
 }
 
 /* Two-column grid layout - matches original .two-col */
@@ -22,15 +21,11 @@
   grid-template-columns: 1fr 360px;
   gap: 20px;
   align-items: start;
-  max-width: 100%;
-  overflow-x: hidden;
 }
 
 /* Left panel - input controls */
 .leftPanel {
   min-width: 0;
-  max-width: 100%;
-  overflow-x: hidden;
 }
 
 /* Right panel - results (sticky on desktop) - matches original .sticky-result */
@@ -38,32 +33,20 @@
   position: sticky;
   top: 20px;
   min-width: 0;
-  max-width: 100%;
 }
 
 /* Responsive: single column on mobile */
 @media (max-width: 840px) {
   .mainContent {
     padding: 22px 12px 0;
-    max-width: 100vw;
   }
   
   .twoCol {
     grid-template-columns: 1fr;
-    max-width: 100%;
-    width: 100%;
-  }
-  
-  .leftPanel {
-    max-width: 100%;
-    width: 100%;
   }
 
   .rightPanel {
     position: static !important;
     top: auto !important;
-    max-width: 100%;
-    width: 100%;
   }
 }
-

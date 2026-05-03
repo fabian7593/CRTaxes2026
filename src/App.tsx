@@ -32,13 +32,19 @@ function App() {
 
   // Check URL on mount to see if we should show docs
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    if (params.get('docs') === 'true') {
-      setCurrentPage('docs')
+    const checkRoute = () => {
+      const params = new URLSearchParams(window.location.search)
+      if (params.get('docs') === 'true') {
+        setCurrentPage('docs')
+      } else {
+        setCurrentPage('calculator')
+      }
     }
+    
+    checkRoute()
   }, [])
 
-  // Handle browser back/forward buttons
+  // Handle browser back/forward buttons and manual navigation
   useEffect(() => {
     const handlePopState = () => {
       const params = new URLSearchParams(window.location.search)
