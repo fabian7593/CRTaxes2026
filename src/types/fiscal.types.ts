@@ -365,11 +365,6 @@ export interface FiscalCalculationResult {
  */
 export type OpenModalType = null | 'ccss-tables' | 'ccss-riesgo' | 'isr-tramos' | 'pension-funds';
 
-/**
- * Page type for simple routing
- */
-export type PageType = 'calculator' | 'docs';
-
 // ============================================================================
 // CCSS Tables Data Types (for modal display)
 // ============================================================================

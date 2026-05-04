@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react'
-import type { CalculatorState, OpenModalType, PageType, CcssTablesData } from '@/types/fiscal.types'
+import type { CalculatorState, OpenModalType, CcssTablesData } from '@/types/fiscal.types'
 import fiscalConfig from '@/config/fiscal.config.json'
 import { useTipoCambio } from '@/hooks/useTipoCambio'
 import { useFiscalCalculator } from '@/hooks/useFiscalCalculator'
 import { useCurrencyConverter } from '@/hooks/useCurrencyConverter'
 import { PageLayout } from '@/components/layout/PageLayout'
-import { DocsPage } from '@/components/layout/DocsPage'
 import { InputPanel } from '@/components/calculator/InputPanel'
 import { ResultPanel } from '@/components/calculator/ResultPanel'
 import { CcssTablesModal } from '@/components/ccss/CcssTablesModal'
@@ -21,43 +20,9 @@ import { TramoModal } from '@/components/calculator/TramoModal'
  * - Integrates useTipoCambio hook to fetch live exchange rates
  * - Integrates useFiscalCalculator hook to compute all fiscal values
  * - Handles modal state (which modal is open)
- * - Handles simple routing (calculator vs docs page)
  * - Passes state and handlers down to child components
  */
 function App() {
-  // ========================================================================
-  // Routing State
-  // ========================================================================
-  const [currentPage, setCurrentPage] = useState<PageType>('calculator')
-
-  // Check URL on mount to see if we should show docs
-  useEffect(() => {
-    const checkRoute = () => {
-      const params = new URLSearchParams(window.location.search)
-      if (params.get('docs') === 'true') {
-        setCurrentPage('docs')
-      } else {
-        setCurrentPage('calculator')
-      }
-    }
-    
-    checkRoute()
-  }, [])
-
-  // Handle browser back/forward buttons and manual navigation
-  useEffect(() => {
-    const handlePopState = () => {
-      const params = new URLSearchParams(window.location.search)
-      setCurrentPage(params.get('docs') === 'true' ? 'docs' : 'calculator')
-    }
-
-    window.addEventListener('popstate', handlePopState)
-    return () => window.removeEventListener('popstate', handlePopState)
-  }, [])
-
-  // ========================================================================
-  // Calculator State - initialized with defaults from fiscal.config.json
-  // ========================================================================
   const [calculatorState, setCalculatorState] = useState<CalculatorState>({
     // Currency and rate
     currency: 'usd',
@@ -186,23 +151,8 @@ function App() {
   )
 
   // ========================================================================
-  // Navigation Handlers
-  // ========================================================================
-  const navigateToCalculator = () => {
-    setCurrentPage('calculator')
-    window.history.pushState({}, '', '/')
-  }
-
-  // ========================================================================
   // Render
   // ========================================================================
-
-  // Docs page
-  if (currentPage === 'docs') {
-    return <DocsPage onBackToCalculator={navigateToCalculator} />
-  }
-
-  // Calculator page
   return (
     <>
       <PageLayout

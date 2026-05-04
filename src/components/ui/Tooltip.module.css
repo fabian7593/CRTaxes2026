@@ -77,27 +77,34 @@
   display: block;
 }
 
-/* Mobile: adjust tooltip sizing and positioning */
+/* Mobile: use fixed positioning to prevent clipping */
 @media (max-width: 840px) {
   .tooltipBubble {
     /* Smaller size for mobile */
     min-width: 200px;
-    max-width: min(260px, calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
+    width: max-content;
     font-size: 10px;
     padding: 11px 13px;
-    /* Align to right edge to prevent overflow */
-    left: auto;
-    right: -8px;
-    transform: translateX(0);
+    /* Use fixed positioning */
+    position: fixed;
+    /* Center horizontally in viewport */
+    left: 16px;
+    right: 16px;
+    width: auto;
+    /* Position near the top of viewport when shown */
+    top: auto;
+    bottom: auto;
+    transform: none;
     /* Ensure it's above everything */
-    z-index: 99999;
+    z-index: 999999;
+    /* Add some margin from edges */
+    margin: 0;
   }
   
+  /* Hide arrow on mobile since position is calculated dynamically */
   .tooltipBubble::before {
-    /* Position arrow near right edge */
-    left: auto;
-    right: 16px;
-    transform: translateX(0) rotate(45deg);
+    display: none;
   }
 }
 

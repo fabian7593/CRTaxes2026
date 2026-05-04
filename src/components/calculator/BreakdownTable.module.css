@@ -3,12 +3,17 @@
   overflow-x: auto;
   overflow-y: visible;
   margin-bottom: 12px;
+  /* Allow tooltips to overflow on desktop too */
+  position: relative;
 }
 
-/* Mobile: allow tooltips to overflow the scroll wrapper */
+/* Mobile: ensure tooltips can escape */
 @media (max-width: 840px) {
   .scrollWrapper {
-    overflow: visible;
+    /* Keep horizontal scroll for table, but allow vertical overflow for tooltips */
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -139,11 +144,20 @@
   color: var(--ink3);
   position: relative;
   overflow: visible;
+  /* Ensure tooltips can escape the cell */
+  z-index: 1;
 }
 
 .labelCell > * {
   display: inline;
   vertical-align: middle;
+}
+
+/* Mobile: increase z-index for tooltip visibility */
+@media (max-width: 840px) {
+  .labelCell {
+    z-index: 10;
+  }
 }
 
 .totalRow .labelCell,

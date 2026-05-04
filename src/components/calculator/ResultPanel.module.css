@@ -7,7 +7,7 @@
   margin-bottom: 14px;
   box-shadow: var(--shadow-lg);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   text-align: left;
 }
 
@@ -20,6 +20,8 @@
   height: 160px;
   background: radial-gradient(circle, rgba(0, 200, 150, 0.18) 0%, transparent 70%);
   pointer-events: none;
+  /* Clip the decorative element to the hero bounds */
+  clip-path: inset(50px 50px 0 0 round var(--r));
 }
 
 .resultLabel {
