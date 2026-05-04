@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react'
+import type { CSSProperties, ReactElement } from 'react'
 
 interface IconProps {
   name: IconName
@@ -30,7 +30,7 @@ export type IconName =
  * All icons are minimal, flat SVG designs that match the app's UI/UX.
  */
 export function Icon({ name, size = 20, color = 'currentColor', className, style }: IconProps) {
-  const icons: Record<IconName, JSX.Element> = {
+  const icons: Record<IconName, ReactElement> = {
     heart: (
       <path
         fillRule="evenodd"
