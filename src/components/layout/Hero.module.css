@@ -41,35 +41,47 @@
   text-align: left;
 }
 
-/* Eyebrow text above title */
-.heroEyebrow {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--emerald);
-  margin-bottom: 8px;
-}
-
-/* Main title */
+/* Main title container */
 .heroTitle {
-  font-size: clamp(32px, 4.5vw, 42px);
-  font-weight: 800;
-  line-height: 1.2;
-  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   margin: 0 0 5px 0;
   max-width: 800px;
 }
 
-/* Emphasized text in title */
-.heroTitle em {
+/* Brand name - CRTAXES in large green */
+.heroBrand {
+  font-size: clamp(40px, 6vw, 56px);
+  font-weight: 900;
+  line-height: 1;
   color: var(--emerald);
-  font-style: normal;
+  letter-spacing: -0.02em;
 }
 
-/* Subtitle */
+/* Subtitle - Calculadora Trabajador Independiente */
 .heroSubtitle {
+  font-size: clamp(18px, 2.5vw, 26px);
+  font-weight: 600;
+  line-height: 1.3;
+  color: #fff;
+  margin-top: 2px;
+}
+
+/* Country name - COSTA RICA */
+.heroCountry {
+  font-family: var(--mono);
+  font-size: clamp(24px, 3.5vw, 34px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Legal reference text */
+.heroLegalRef {
   font-family: var(--mono);
   font-size: 10px;
   line-height: 1.6;
@@ -93,11 +105,19 @@
     padding: 24px 0 20px;
   }
 
-  .heroTitle {
-    font-size: 30px;
+  .heroBrand {
+    font-size: 36px;
   }
 
   .heroSubtitle {
+    font-size: 18px;
+  }
+
+  .heroCountry {
+    font-size: 22px;
+  }
+
+  .heroLegalRef {
     font-size: 11px;
   }
 }

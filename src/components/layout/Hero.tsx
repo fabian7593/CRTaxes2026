@@ -9,16 +9,15 @@ export function Hero() {
   return (
     <section className={styles.hero}>
       <div className={styles.heroContainer}>
-        {/* Eyebrow text */}
-        <div className={styles.heroEyebrow}>Calculadora fiscal · costa rica 2026</div>
-
-        {/* Main title with emphasis */}
+        {/* Main title with brand name */}
         <h1 className={styles.heroTitle}>
-          Calculadora <em>Trabajador Independiente</em> Costa Rica
+          <span className={styles.heroBrand}>CR Taxes</span>
+          <span className={styles.heroSubtitle}>Calculadora Impuestos Trabajador Independiente</span>
+          <span className={styles.heroCountry}>Costa Rica</span>
         </h1>
 
-        {/* Subtitle */}
-        <p className={styles.heroSubtitle}>
+        {/* Legal references */}
+        <p className={styles.heroLegalRef}>
           Decreto 45333-H · Ley 7092 art. 8 inc. s) reformado dic-2025 · Escala CCSS TI Gaceta N°232 + ajuste IVM 2026
         </p>
 
